@@ -834,7 +834,7 @@
   @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 </style>
 </head>
-<body data-theme="light" style="--wallpaper: url('assets/cover-bg.png')">
+<body data-theme="light" style="--wallpaper: var(--demo-backdrop)">
 
 <!-- Stage -->
 <div class="stage"></div>
@@ -2083,13 +2083,13 @@
       </div>
     </div>
     <div class="tw-row" style="flex-direction:column;align-items:flex-start;gap:6px;">
-      <span style="width:100%">Wallpaper</span>
+      <span style="width:100%">Backdrop</span>
       <div class="wp-list" id="tweakWallpaper">
-        <div class="wp-thumb active" data-wp="assets/cover-bg.png" style="background-image: url('assets/cover-bg.png');"></div>
-        <div class="wp-thumb" data-wp="assets/wallpaper-aurora.png" style="background-image: url('assets/wallpaper-aurora.png');"></div>
-        <div class="wp-thumb" data-wp="assets/wallpaper-sequoia.png" style="background-image: url('assets/wallpaper-sequoia.png');"></div>
-        <div class="wp-thumb" data-wp="assets/wallpaper-ventura.png" style="background-image: url('assets/wallpaper-ventura.png');"></div>
-        <div class="wp-thumb" data-wp="assets/wallpaper-monterey.png" style="background-image: url('assets/wallpaper-monterey.png');"></div>
+        <div class="wp-thumb active" data-wp="default" style="background: radial-gradient(at 20% 25%, rgba(168,85,247,0.7), transparent 55%), radial-gradient(at 78% 20%, rgba(236,72,153,0.65), transparent 55%), radial-gradient(at 65% 78%, rgba(34,211,238,0.65), transparent 55%), radial-gradient(at 25% 80%, rgba(251,191,36,0.55), transparent 55%), linear-gradient(135deg,#1e1b4b,#312e81);"></div>
+        <div class="wp-thumb" data-wp="aurora" style="background: radial-gradient(at 30% 30%, rgba(110,231,183,0.7), transparent 55%), radial-gradient(at 75% 70%, rgba(96,165,250,0.65), transparent 55%), linear-gradient(135deg,#0c4a6e,#1e3a8a);"></div>
+        <div class="wp-thumb" data-wp="dawn" style="background: radial-gradient(at 25% 25%, rgba(251,113,133,0.7), transparent 55%), radial-gradient(at 80% 75%, rgba(251,191,36,0.7), transparent 55%), linear-gradient(135deg,#7c2d12,#9a3412);"></div>
+        <div class="wp-thumb" data-wp="ocean" style="background: radial-gradient(at 20% 50%, rgba(34,211,238,0.7), transparent 55%), radial-gradient(at 80% 50%, rgba(59,130,246,0.65), transparent 55%), linear-gradient(135deg,#082f49,#164e63);"></div>
+        <div class="wp-thumb" data-wp="forest" style="background: radial-gradient(at 30% 70%, rgba(34,197,94,0.65), transparent 55%), radial-gradient(at 70% 30%, rgba(132,204,22,0.55), transparent 55%), linear-gradient(135deg,#14532d,#365314);"></div>
       </div>
     </div>
   </aside>
@@ -2275,9 +2275,17 @@
   }
   document.querySelectorAll(".sw-dot").forEach(dot => dot.addEventListener("click", () => setAccent(dot.dataset.color)));
 
-  function setWallpaper(url) {
-    document.body.style.setProperty("--wallpaper", `url('${url}')`);
-    document.querySelectorAll(".wp-thumb").forEach(t => t.classList.toggle("active", t.dataset.wp === url));
+  const wallpaperGradients = {
+    default: "radial-gradient(at 20% 25%, rgba(168,85,247,0.7), transparent 55%), radial-gradient(at 78% 20%, rgba(236,72,153,0.65), transparent 55%), radial-gradient(at 65% 78%, rgba(34,211,238,0.65), transparent 55%), radial-gradient(at 25% 80%, rgba(251,191,36,0.55), transparent 55%), linear-gradient(135deg,#1e1b4b,#312e81)",
+    aurora: "radial-gradient(at 30% 30%, rgba(110,231,183,0.7), transparent 55%), radial-gradient(at 75% 70%, rgba(96,165,250,0.65), transparent 55%), linear-gradient(135deg,#0c4a6e,#1e3a8a)",
+    dawn: "radial-gradient(at 25% 25%, rgba(251,113,133,0.7), transparent 55%), radial-gradient(at 80% 75%, rgba(251,191,36,0.7), transparent 55%), linear-gradient(135deg,#7c2d12,#9a3412)",
+    ocean: "radial-gradient(at 20% 50%, rgba(34,211,238,0.7), transparent 55%), radial-gradient(at 80% 50%, rgba(59,130,246,0.65), transparent 55%), linear-gradient(135deg,#082f49,#164e63)",
+    forest: "radial-gradient(at 30% 70%, rgba(34,197,94,0.65), transparent 55%), radial-gradient(at 70% 30%, rgba(132,204,22,0.55), transparent 55%), linear-gradient(135deg,#14532d,#365314)",
+  };
+  function setWallpaper(name) {
+    const grad = wallpaperGradients[name] || wallpaperGradients.default;
+    document.body.style.setProperty("--wallpaper", grad);
+    document.querySelectorAll(".wp-thumb").forEach(t => t.classList.toggle("active", t.dataset.wp === name));
   }
   document.querySelectorAll(".wp-thumb").forEach(t => t.addEventListener("click", () => setWallpaper(t.dataset.wp)));
 

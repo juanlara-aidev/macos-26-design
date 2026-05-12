@@ -31,8 +31,7 @@ window chrome, and the full set of native controls.
 
 | Path | What it is |
 |---|---|
-| `colors_and_type.css` | All design tokens — fonts, type ramp, colors, materials, radii, shadows, spacing, motion. Import this into anything you build. |
-| `assets/` | Wallpapers and other raw assets copied from the Figma (`cover-bg.png` + 4 system wallpapers: Aurora, Sequoia, Ventura, Monterey). |
+| `colors_and_type.css` | All design tokens — fonts, type ramp, colors, materials, radii, shadows, spacing, motion. Includes the `--demo-backdrop` mesh gradient as a procedural stand-in for wallpapers. Import this into anything you build. |
 | `preview/` | **53 specimen cards** — one per foundation or component family. Populate the Design System tab and double as ready-to-copy recipes. |
 | `SKILL.md` | Agent-Skills frontmatter so this folder is portable into Claude Code. |
 
@@ -403,14 +402,15 @@ font. Workarounds, in order of preference:
 "traffic lights") are recreated as plain CSS circles. See
 `preview/window-controls.html` for the recipe.
 
-**Asset inventory in `assets/`:**
-- `cover-bg.png` — the macOS 26 default wallpaper (1920×1080), pulled
-  straight from the Figma cover frame.
-- `wallpaper-aurora.png`, `wallpaper-sequoia.png`,
-  `wallpaper-ventura.png`, `wallpaper-monterey.png` — four additional
-  1920×1080 system wallpapers. Use behind any window mockup to test
-  Liquid Glass surfaces against varied backdrops. See
-  `preview/wallpapers.html` for previews with glass overlay.
+**Backdrops.** The bundle does **not** ship Apple's macOS wallpapers
+(those are Apple's IP and not redistributable). Instead, it provides
+a procedural mesh-gradient stand-in via the `--demo-backdrop` CSS
+variable in `colors_and_type.css` (CC0). `preview/wallpapers.html`
+shows four alternative procedural backdrops (Aurora, Dawn, Ocean,
+Forest) with a Liquid Glass overlay so you can test how floating
+surfaces read against varied compositions. For production, supply
+your own wallpaper following the imagery rules above
+(photographic, warm-cool balanced, abstract gradient or landscape).
 
 **App icons.** Apple ships every app icon as a **squircle** at the
 shared **22% corner radius**. `preview/app-icons.html` documents

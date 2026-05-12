@@ -104,6 +104,16 @@
   --dur-fast: 120ms;
   --dur: 220ms;
   --dur-slow: 320ms;
+
+  /* Demo backdrop — procedural mesh gradient (no Apple IP).
+     Use this as a stand-in for previewing Liquid Glass surfaces,
+     or replace with your own wallpaper in the consumer app. */
+  --demo-backdrop:
+    radial-gradient(at 20% 25%, rgba(168, 85, 247, 0.55), transparent 50%),
+    radial-gradient(at 78% 20%, rgba(236, 72, 153, 0.50), transparent 50%),
+    radial-gradient(at 65% 78%, rgba(34, 211, 238, 0.50), transparent 50%),
+    radial-gradient(at 25% 80%, rgba(251, 191, 36, 0.40), transparent 50%),
+    linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
 }
 
 /* ─── Dark mode overrides ─── */

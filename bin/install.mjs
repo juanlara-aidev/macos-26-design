@@ -167,7 +167,7 @@ console.log(c('bold', '  Qué incluye'));
 console.log(`    • SKILL.md + README (tokens, reglas y navegación del bundle)`);
 console.log(`    • colors_and_type.css — tokens calibrados contra el Figma oficial`);
 console.log(`    • 53 specimens HTML (foundations · controls · surfaces · patterns)`);
-console.log(`    • 4 wallpapers Apple + cover (solo para mocks — ver LICENSE)`);
+console.log(`    • Mesh gradient procedural como demo backdrop (sin assets de Apple)`);
 console.log(`    • 4 escenarios de eval para medir el comportamiento de la skill`);
 console.log();
 console.log(c('bold', '  Cómo usarla'));

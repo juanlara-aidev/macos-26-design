@@ -1,6 +1,6 @@
 {
   "name": "macos-26-design",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Design System de macOS 26 (Liquid Glass) como skill drop-in para Claude Code, Cursor y Gemini CLI. Instala con un comando.",
   "type": "module",
   "bin": {

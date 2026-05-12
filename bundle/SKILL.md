@@ -61,8 +61,7 @@ Tras instalar, Claude Code descubre la skill por el frontmatter al iniciar la se
 | Tokens canónicos | `colors_and_type.css` | Variables CSS verificadas contra Figma: tipografía, jerarquía de labels por opacidad, system accent colors, materiales Liquid Glass (thin/regular/thick × light/dark), radii, shadows, easing, durations. **Importar este archivo es el primer paso de cualquier integración.** |
 | Doc comprehensivo | `README.md` | 414 líneas. Background, foundations, voz, iconografía, caveats. Lectura recomendada para empaparse del lenguaje visual antes de implementar. TOC al inicio del archivo. |
 | Specimens (53) | `preview/*.html` | Una recipe por foundation/control/superficie. Cada specimen es self-contained y se renderiza directo en el navegador. **Índice categorizado abajo.** |
-| Assets | `assets/` | `cover-bg.png` + 4 wallpapers oficiales (Aurora, Sequoia, Ventura, Monterey). Solo para mocks/preview — no redistribuibles en producción. |
-| Showcase | `macOS 26 Showcase.html` | Vista catálogo con todos los specimens montados en una sola página. Útil para inspección rápida. |
+| Showcase | `showcase.html` | Vista catálogo con todos los specimens montados en una sola página. Útil para inspección rápida. |
 
 ### Specimens categorizados — lectura on-demand
 
@@ -137,13 +136,14 @@ macOS 26 usa **SF Symbols** (~6,900 glyphs, alineados con SF Pro x-height, 9 wei
 
 ---
 
-## Wallpapers y composición
+## Backdrops y composición
 
-`assets/` contiene `cover-bg.png` + 4 wallpapers Apple oficiales (Aurora, Sequoia, Ventura, Monterey). Uso recomendado:
+Este bundle **no incluye los wallpapers oficiales de Apple** (son propiedad de Apple y no se redistribuyen). En su lugar incluye:
 
-- **Mocks/preview**: ponerlos detrás de cualquier ventana mockup para testear Liquid Glass surfaces contra backdrops varied. `preview/wallpapers.html` muestra cada uno con glass overlay.
-- **NO redistribuir en producción** — son assets propiedad de Apple, usables para diseño pero no para shipping en una app distribuida.
-- Para producción, usar wallpaper propio que cumpla: photographic (no flat color), warm-cool balanced (no single-hue), abstract gradient o landscape. La granularidad sutil (subtle film grain) es deseable.
+- **Variable `--demo-backdrop`** en `colors_and_type.css` — un mesh gradient procedural (puro CSS) que sirve como backdrop genérico para previsualizar superficies Liquid Glass. Cero dependencias de imagen, cero issues de licencia.
+- **`preview/wallpapers.html`** muestra 4 mesh gradients alternativos (Aurora, Dawn, Ocean, Forest) con overlay de cristal para ver cómo se leen.
+
+Para producción, el consumidor debe proveer su propio wallpaper que cumpla las reglas de Imagery del `README.md` § Visual foundations: photographic (no flat color), warm-cool balanced (no single-hue), abstract gradient o landscape. Si se necesitan los wallpapers oficiales de macOS, descargarlos directo de Apple y usar bajo los términos que apliquen.
 
 ---
 
@@ -188,7 +188,7 @@ Cuando se invoca con "implementa X componente de macOS 26":
 ## Caveats documentados
 
 - **SF Pro y SF Symbols no se redistribuyen**. El bundle usa fallback chain `-apple-system` para tipo y Lucide CDN para iconografía. Para mocks pixel-perfect en hardware no-Apple, el usuario debe descargar SF Pro desde <https://developer.apple.com/fonts/> y dropear los `.otf`/`.woff2` en una carpeta `fonts/` del target, con `@font-face` matching en `colors_and_type.css`.
-- **Wallpapers de `assets/`**: solo para mocks/preview. Producción requiere asset propio.
+- **Wallpapers Apple no se incluyen**. El bundle usa la variable CSS `--demo-backdrop` (mesh gradient procedural, CC0). Para wallpapers fotográficos reales en producción, el consumidor provee su propio asset.
 - **El Figma pseudocode tenía artefactos de resolución** (algunos accent slots mostraban red repetido). Donde el pseudocode se contradecía, este bundle cross-checkeó contra screenshots Figma renderizados + valores publicados de Apple System Colors y eligió los valores publicados. Caveat documentado en `README.md` sección "Caveats".
 - **macOS 12 vs macOS 26**: este bundle es **macOS 26 específicamente**. macOS 12 (Monterey) tiene radius más cuadrado (10pt window), glass menos pronunciado, paleta similar pero materials con menos blur. No mezclar specimens entre eras.
 
