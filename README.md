@@ -1,6 +1,6 @@
 # macOS 26 Design System
 
-![macOS 26](docs/hero-window-dark.png)
+![macOS 26 — showcase](docs/showcase-dark.png)
 
 Skill drop-in del Design System de **macOS 26** (Liquid Glass) para [Claude Code](https://code.claude.com), Cursor, Gemini CLI y cualquier agente compatible con [Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview).
 
