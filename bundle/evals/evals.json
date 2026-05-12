@@ -14,7 +14,7 @@
         "Aplica las 12 reglas duras: 26pt outer radius (--r-window), Liquid Glass solo en sidebar/toolbar (no en el contenido principal), spacing 24pt window edge, shadow-window con hairline, focus-visible con --focus-ring",
         "Recrea la traffic-light buttons (rojo/amarillo/verde) con CSS plain según preview/window-controls.html, sin SF Symbols",
         "Usa SF Pro vía fallback chain -apple-system (no descarga ni redistribuye la fuente)",
-        "Anuncia al operador qué specimens leyó, qué tokens importó y dónde quedó el componente"
+        "Anuncia al usuario qué specimens leyó, qué tokens importó y dónde quedó el componente"
       ]
     },
     {
@@ -60,7 +60,7 @@
         "Sustituye los glyphs con Lucide CDN (https://unpkg.com/lucide-static@latest/icons/<name>.svg) manteniendo stroke 2px y tamaño aligned al x-height de SF Pro",
         "Mantiene SF Pro como first choice en --font-system pero documenta que en Linux caerá al system font (Cantarell/Ubuntu/etc.); no descarga SF Pro porque no es redistribuible",
         "NO sustituye los traffic-light window controls — esos quedan como CSS plain según preview/window-controls.html, no como icons",
-        "Flagea explícitamente al operador la substitución (no es pixel-equivalent) y ofrece la opción de bundlear SF Pro localmente desde developer.apple.com/fonts si el operador acepta el caveat de licencia",
+        "Flagea explícitamente al usuario la substitución (no es pixel-equivalent) y ofrece la opción de bundlear SF Pro localmente desde developer.apple.com/fonts si el usuario acepta el caveat de licencia",
         "Verifica que no haya emojis en chrome tras la sustitución (status comunicado vía Lucide + color + copy)"
       ]
     }

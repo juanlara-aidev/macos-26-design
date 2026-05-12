@@ -181,7 +181,7 @@ Cuando se invoca con "implementa X componente de macOS 26":
 4. **Aplica estados completos**: idle, hover, press, focus-visible, disabled. El specimen los incluye todos.
 5. **Verifica accessibility**: contraste WCAG AA, focus ring visible con `:focus-visible`, labels asociados a inputs, role/aria donde aplique.
 6. **Valida visual (si disponible)**: dev server + screenshot vs. el specimen. Mismatch ≥ 4px en spacing o color diff > 2% requiere ajuste.
-7. **Anuncia al operador**: qué componente quedó listo, qué tokens se importaron, qué diferencias intencionales hay vs. el specimen (e.g., "el target usa Inter en vez de SF Pro porque está en Linux").
+7. **Anuncia al usuario**: qué componente quedó listo, qué tokens se importaron, qué diferencias intencionales hay vs. el specimen (e.g., "el target usa Inter en vez de SF Pro porque está en Linux").
 
 ---
 
@@ -191,22 +191,6 @@ Cuando se invoca con "implementa X componente de macOS 26":
 - **Wallpapers de `assets/`**: solo para mocks/preview. Producción requiere asset propio.
 - **El Figma pseudocode tenía artefactos de resolución** (algunos accent slots mostraban red repetido). Donde el pseudocode se contradecía, este bundle cross-checkeó contra screenshots Figma renderizados + valores publicados de Apple System Colors y eligió los valores publicados. Caveat documentado en `README.md` sección "Caveats".
 - **macOS 12 vs macOS 26**: este bundle es **macOS 26 específicamente**. macOS 12 (Monterey) tiene radius más cuadrado (10pt window), glass menos pronunciado, paleta similar pero materials con menos blur. No mezclar specimens entre eras.
-
----
-
-## Cross-references con skills hermanas
-
-- `frontend-design` (Praxis canónica) — consume este bundle como input cuando el brief del proyecto pide "look macOS". El agente combina: jerarquía visual + microinteracciones de `frontend-design` + tokens y specimens de este DS.
-- `pwa-mobile` (Praxis canónica) — los iconos PWA generados deben respetar el squircle 22% del DS si el target apunta a sensación Apple desktop-PWA híbrida.
-- `image-kit` / `image-generation` — pueden generar wallpapers propios siguiendo las reglas de "Imagery" del README.md sección "Visual foundations".
-
----
-
-## Aprendizajes propagables
-
-Sección append-only. Cuando se descubra un drift entre el bundle y un target real, anotar el fix aquí con formato `[YYYY-MM-DD]: contexto → fix → aplicar en`.
-
-*Vacío hasta primer uso productivo.*
 
 ---
 
