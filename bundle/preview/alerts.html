@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Alerts</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+.alert { width: 280px; padding: 22px 22px 16px; border-radius: 16px; background: rgba(252,252,252,0.95); backdrop-filter: var(--glass-blur); box-shadow: var(--shadow-popover); display: flex; flex-direction: column; gap: 6px; text-align: center; align-items: center; }
+.alert h3 { margin: 0; font: 700 13px/16px var(--font-system); }
+.alert p { margin: 0; font: 400 11px/14px var(--font-system); color: var(--label-secondary); }
+.alert .actions { margin-top: 14px; display: flex; gap: 8px; width: 100%; }
+.alert .actions.stacked { flex-direction: column; }
+.alert .btn { flex: 1; padding: 4px 10px; border-radius: 7px; border: 0; font: 500 13px/16px var(--font-system); cursor: default; box-shadow: var(--shadow-control); background: #fff; color: var(--label-primary); }
+.alert .btn.primary { background: var(--accent); color: #fff; }
+.alert .btn.destructive { background: var(--sys-red); color: #fff; }
+.row { gap: 18px; align-items: flex-start; }
+</style>
+<div class="row">
+  <div class="alert">
+    <h3>Do you want to save the changes you made to the document "Untitled"?</h3>
+    <p>Your changes will be lost if you don't save them.</p>
+    <div class="actions stacked">
+      <button class="btn primary">Save</button>
+      <button class="btn">Don't Save</button>
+      <button class="btn">Cancel</button>
+    </div>
+  </div>
+  <div class="alert">
+    <h3>Move "Folder 2" to the Trash?</h3>
+    <p>This item will be moved to the Trash. You can put it back later.</p>
+    <div class="actions">
+      <button class="btn">Cancel</button>
+      <button class="btn destructive">Move to Trash</button>
+    </div>
+  </div>
+  <div class="alert">
+    <h3>Connect to "Office Wi‑Fi"?</h3>
+    <p>The selected network requires a password.</p>
+    <div class="actions">
+      <button class="btn">Cancel</button>
+      <button class="btn primary">Join</button>
+    </div>
+  </div>
+</div>
+</body></html>

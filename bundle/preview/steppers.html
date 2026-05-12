@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Steppers</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head>
+<body>
+<style>
+  .stack-v { display: flex; flex-direction: column; gap: 22px; max-width: 720px; }
+  .lbl { font: 700 10px/14px var(--font-system); color: var(--label-tertiary); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+
+  /* Pure stepper (just chevrons) */
+  .stp-pure {
+    display: inline-flex; flex-direction: column;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow:
+      inset 0 0 0 0.5px rgba(0,0,0,0.18),
+      0 1px 0 rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+  .stp-pure span {
+    width: 16px; height: 11px;
+    display: grid; place-items: center;
+    color: rgba(0,0,0,0.78);
+    background: #fff;
+    cursor: default;
+    user-select: none;
+  }
+  .stp-pure span + span { border-top: 0.5px solid rgba(0,0,0,0.12); }
+  .stp-pure span:hover { background: rgba(0,0,0,0.06); }
+  .stp-pure span:active { background: var(--accent); color: #fff; }
+  .stp-pure svg { width: 8px; height: 6px; }
+
+  /* Stepper + field combo */
+  .stp-field {
+    display: inline-flex; align-items: stretch;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow:
+      inset 0 0 0 0.5px rgba(0,0,0,0.18),
+      inset 0 1px 1px rgba(0,0,0,0.05);
+    height: 22px;
+  }
+  .stp-field input {
+    width: 50px; border: 0; outline: 0; background: transparent;
+    font: 400 13px/22px var(--font-system); color: rgba(0,0,0,0.85);
+    text-align: right;
+    padding: 0 4px 0 8px;
+  }
+  .stp-field .u {
+    padding-right: 6px; font: 400 12px/22px var(--font-system); color: rgba(0,0,0,0.45);
+    align-self: center;
+  }
+  .stp-field .stp {
+    display: flex; flex-direction: column;
+    border-left: 0.5px solid rgba(0,0,0,0.12);
+  }
+  .stp-field .stp span {
+    width: 14px; flex: 1;
+    display: grid; place-items: center;
+    color: rgba(0,0,0,0.78);
+    cursor: default;
+  }
+  .stp-field .stp span + span { border-top: 0.5px solid rgba(0,0,0,0.12); }
+  .stp-field .stp span:active { background: var(--accent); color: #fff; }
+  .stp-field .stp svg { width: 7px; height: 5px; }
+
+  /* Horizontal +/- variant */
+  .stp-pm {
+    display: inline-flex; align-items: center; gap: 0;
+    border-radius: 7px;
+    background: rgba(0,0,0,0.06);
+    padding: 2px;
+  }
+  .stp-pm .b {
+    width: 26px; height: 22px; border-radius: 5px;
+    display: grid; place-items: center;
+    color: rgba(0,0,0,0.85);
+  }
+  .stp-pm .b:hover { background: rgba(0,0,0,0.06); }
+  .stp-pm .b:active { background: var(--accent); color: #fff; }
+  .stp-pm .v {
+    min-width: 38px; text-align: center;
+    font: 600 13px/22px var(--font-system); color: rgba(0,0,0,0.88);
+  }
+  .stp-pm svg { width: 12px; height: 12px; }
+
+  /* Big +/- (Photos-style "copies" stepper) */
+  .stp-big {
+    display: inline-flex; align-items: center;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .stp-big .b {
+    width: 36px; height: 30px; display: grid; place-items: center;
+    color: rgba(0,0,0,0.85);
+  }
+  .stp-big .b:hover { background: rgba(0,0,0,0.05); }
+  .stp-big .b:active { background: var(--accent); color: #fff; }
+  .stp-big .v {
+    min-width: 52px; text-align: center;
+    font: 600 16px/30px var(--font-system); color: rgba(0,0,0,0.88);
+    border-left: 0.5px solid rgba(0,0,0,0.12);
+    border-right: 0.5px solid rgba(0,0,0,0.12);
+  }
+  .stp-big svg { width: 14px; height: 14px; }
+
+  /* Pressed state */
+  .stp-pure.pressed span.up { background: var(--accent); color: #fff; }
+
+  /* Disabled */
+  .stp-disabled { opacity: 0.42; }
+
+  /* Form-row context */
+  .form-ex {
+    background: #fff; padding: 14px 16px; border-radius: 10px;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.10), 0 4px 14px rgba(0,0,0,0.06);
+    display: grid; grid-template-columns: 96px 1fr; column-gap: 12px; row-gap: 8px;
+    max-width: 360px;
+    align-items: center;
+  }
+  .form-ex .lab { font: 400 13px/22px var(--font-system); color: rgba(0,0,0,0.55); text-align: right; }
+</style>
+
+<div class="stack-v">
+
+  <div>
+    <div class="lbl">Pure stepper · chevrons only (paired with a separate field)</div>
+    <div class="row">
+      <span class="stp-pure">
+        <span class="up"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4.5 5,1.5 8,4.5"/></svg></span>
+        <span class="down"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,1.5 5,4.5 8,1.5"/></svg></span>
+      </span>
+      <span class="stp-pure pressed">
+        <span class="up"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4.5 5,1.5 8,4.5"/></svg></span>
+        <span class="down"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,1.5 5,4.5 8,1.5"/></svg></span>
+      </span>
+      <span class="stp-pure stp-disabled">
+        <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4.5 5,1.5 8,4.5"/></svg></span>
+        <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,1.5 5,4.5 8,1.5"/></svg></span>
+      </span>
+      <span style="font:400 11px/14px var(--font-system);color:var(--label-tertiary)">idle · clicked (up) · disabled</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">Field + stepper · number entry with controls</div>
+    <div class="row">
+      <span class="stp-field">
+        <input value="32">
+        <span class="u">pt</span>
+        <span class="stp">
+          <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4.5 5,1.5 8,4.5"/></svg></span>
+          <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,1.5 5,4.5 8,1.5"/></svg></span>
+        </span>
+      </span>
+      <span class="stp-field">
+        <input value="1.20">
+        <span class="u">×</span>
+        <span class="stp">
+          <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4.5 5,1.5 8,4.5"/></svg></span>
+          <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,1.5 5,4.5 8,1.5"/></svg></span>
+        </span>
+      </span>
+      <span class="stp-field" style="height:26px;">
+        <input value="100" style="width:60px;font-size:14px;line-height:26px;">
+        <span class="u" style="line-height:26px">%</span>
+        <span class="stp">
+          <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4.5 5,1.5 8,4.5"/></svg></span>
+          <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,1.5 5,4.5 8,1.5"/></svg></span>
+        </span>
+      </span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">Capsule +/-  · inline counter</div>
+    <div class="row">
+      <span class="stp-pm">
+        <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        <span class="v">3</span>
+        <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+      </span>
+      <span class="stp-pm">
+        <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        <span class="v">12</span>
+        <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+      </span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">Large +/-  · primary stepper (Print copies, Quantity)</div>
+    <div class="row">
+      <span class="stp-big">
+        <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        <span class="v">1</span>
+        <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+      </span>
+      <span class="stp-big">
+        <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        <span class="v">24</span>
+        <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+      </span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">In context · inspector row</div>
+    <div class="form-ex">
+      <span class="lab">Font size</span>
+      <span class="stp-field">
+        <input value="14">
+        <span class="u">pt</span>
+        <span class="stp">
+          <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4.5 5,1.5 8,4.5"/></svg></span>
+          <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,1.5 5,4.5 8,1.5"/></svg></span>
+        </span>
+      </span>
+      <span class="lab">Tracking</span>
+      <span class="stp-field">
+        <input value="0">
+        <span class="u">%</span>
+        <span class="stp">
+          <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4.5 5,1.5 8,4.5"/></svg></span>
+          <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,1.5 5,4.5 8,1.5"/></svg></span>
+        </span>
+      </span>
+      <span class="lab">Opacity</span>
+      <span class="stp-field">
+        <input value="100">
+        <span class="u">%</span>
+        <span class="stp">
+          <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4.5 5,1.5 8,4.5"/></svg></span>
+          <span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,1.5 5,4.5 8,1.5"/></svg></span>
+        </span>
+      </span>
+    </div>
+  </div>
+
+</div>
+</body></html>

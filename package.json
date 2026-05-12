@@ -1,0 +1,42 @@
+{
+  "name": "macos-26-design",
+  "version": "0.1.0",
+  "description": "macOS 26 Design System (Liquid Glass era) — drop-in Agent Skill for Claude Code, Cursor, and Gemini CLI. One-command install.",
+  "type": "module",
+  "bin": {
+    "macos-26-design": "./bin/install.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "bundle/",
+    "bin/",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "macos",
+    "macos-26",
+    "design-system",
+    "liquid-glass",
+    "claude-code",
+    "agent-skill",
+    "anthropic",
+    "agent-skills",
+    "apple",
+    "ui-kit",
+    "sf-pro",
+    "skill"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juanlara-aidev/macos-26-design.git"
+  },
+  "homepage": "https://github.com/juanlara-aidev/macos-26-design#readme",
+  "bugs": {
+    "url": "https://github.com/juanlara-aidev/macos-26-design/issues"
+  },
+  "license": "MIT",
+  "author": "Juan Lara <juantech.ia@gmail.com> (https://github.com/juanlara-aidev)"
+}

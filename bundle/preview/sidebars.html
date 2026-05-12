@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Sidebars</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+body.tinted { background: #e6e0d6; }
+.sidebar { width: 220px; padding: 8px; background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.42)); backdrop-filter: var(--glass-blur); border-radius: 14px; box-shadow: var(--shadow-glass); }
+.sidebar.small .row { height: 22px; font-size: 12px; }
+.sidebar.large .row { height: 30px; font-size: 14px; }
+.row { display: flex; align-items: center; gap: 8px; padding: 0 10px; height: 26px; border-radius: 6px; font: 500 13px/16px var(--font-system); color: var(--label-primary); }
+.row.selected { background: rgba(0,0,0,0.08); }
+.row .glyph { color: var(--accent); width: 16px; display: grid; place-items: center; }
+.section { padding: 12px 10px 4px; font: 700 11px/14px var(--font-system); color: var(--label-secondary); text-transform: uppercase; letter-spacing: .04em; }
+.row { margin: 0; }
+</style>
+<div class="swatch-bg" style="display:flex; gap: 18px; flex-wrap: wrap">
+  <div class="sidebar small">
+    <div class="section">Small</div>
+    <div class="row"><span class="glyph">●</span>AirDrop</div>
+    <div class="row selected"><span class="glyph">●</span>Recents</div>
+    <div class="row"><span class="glyph">●</span>Applications</div>
+    <div class="row"><span class="glyph">●</span>Desktop</div>
+    <div class="row"><span class="glyph">●</span>Downloads</div>
+  </div>
+  <div class="sidebar">
+    <div class="section">Medium</div>
+    <div class="row"><span class="glyph">●</span>Folder 1</div>
+    <div class="row selected"><span class="glyph">●</span>Folder 2</div>
+    <div class="row"><span class="glyph">●</span>Folder 3</div>
+    <div class="row"><span class="glyph">●</span>Folder 4</div>
+    <div class="row"><span class="glyph">●</span>Folder 5</div>
+  </div>
+  <div class="sidebar large">
+    <div class="section">Large</div>
+    <div class="row"><span class="glyph">●</span>Inbox</div>
+    <div class="row selected"><span class="glyph">●</span>Drafts</div>
+    <div class="row"><span class="glyph">●</span>Sent</div>
+    <div class="row"><span class="glyph">●</span>Archive</div>
+    <div class="row"><span class="glyph">●</span>Junk</div>
+  </div>
+</div></body></html>

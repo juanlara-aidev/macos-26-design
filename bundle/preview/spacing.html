@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Spacing</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head>
+<body>
+<style>
+  .scale { display: grid; grid-template-columns: 60px 80px 90px 1fr; gap: 14px 18px; max-width: 780px; align-items: center; }
+  .scale .hdr { font: 700 10px/14px var(--font-system); color: var(--label-tertiary); text-transform: uppercase; letter-spacing: .06em; }
+  .scale .tok { font: 600 12px/14px var(--font-mono); color: rgba(0,0,0,0.85); }
+  .scale .pt { font: 600 13px/14px var(--font-system); color: rgba(0,0,0,0.85); }
+  .scale .use { font: 400 12px/16px var(--font-system); color: var(--label-secondary); }
+  .scale .bar {
+    height: 14px; background: linear-gradient(90deg, #5e9eff 0%, #007aff 100%);
+    border-radius: 3px; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.15);
+  }
+  .examples { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 18px; max-width: 780px; }
+  .ex {
+    background: #fff; padding: 16px; border-radius: 10px;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.10), 0 4px 14px rgba(0,0,0,0.06);
+  }
+  .ex h3 { margin: 0 0 8px; font: 600 11px/14px var(--font-system); color: var(--label-secondary); text-transform: uppercase; letter-spacing: .06em; }
+  .ex .form-row { display: grid; grid-template-columns: 90px 1fr; column-gap: 12px; align-items: center; padding: 6px 0; }
+  .ex .l { font: 400 13px/22px var(--font-system); color: rgba(0,0,0,0.55); text-align: right; }
+  .ex .field {
+    height: 22px; border-radius: 5px; padding: 0 8px;
+    background: #fff; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.18);
+    font: 400 13px/22px var(--font-system); color: rgba(0,0,0,0.85);
+  }
+  .ex .row-12 { display: flex; gap: 12px; }
+  .ex .row-8 { display: flex; gap: 8px; margin-top: 12px; }
+  .btn-ghost {
+    height: 24px; padding: 0 14px; border-radius: 6px;
+    font: 500 13px/24px var(--font-system); background: #fff;
+    box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.18); color: rgba(0,0,0,0.88); border: 0;
+  }
+  .btn-pri { background: var(--accent); color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.20); }
+  .toolbar {
+    height: 52px; display: flex; align-items: center; gap: 6px; padding: 0 16px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.10);
+    margin: -16px -16px 14px -16px; padding-top: 0; padding-bottom: 0;
+    background: rgba(245,245,245,0.85); border-radius: 10px 10px 0 0;
+  }
+  .toolbar .tb-btn {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: rgba(0,0,0,0.06); display: grid; place-items: center;
+  }
+</style>
+
+<h2>Spacing tokens</h2>
+<div class="scale">
+  <div class="hdr">Token</div><div class="hdr">Pt</div><div class="hdr">Bar</div><div class="hdr">Usage</div>
+
+  <div class="tok">--sp-1</div><div class="pt">4 pt</div>
+  <div class="bar" style="width:4px"></div>
+  <div class="use">Inline gap between icon &amp; label; chip inner padding</div>
+
+  <div class="tok">--sp-2</div><div class="pt">8 pt</div>
+  <div class="bar" style="width:8px"></div>
+  <div class="use">Adjacent controls in a row; button padding-y</div>
+
+  <div class="tok">--sp-3</div><div class="pt">12 pt</div>
+  <div class="bar" style="width:12px"></div>
+  <div class="use">Form rows; card inner padding; menu item gap</div>
+
+  <div class="tok">--sp-4</div><div class="pt">16 pt</div>
+  <div class="bar" style="width:16px"></div>
+  <div class="use">Section margin; toolbar h-padding; window edges</div>
+
+  <div class="tok">--sp-5</div><div class="pt">22 pt</div>
+  <div class="bar" style="width:22px"></div>
+  <div class="use">Sheet padding; sidebar padding; alert margins</div>
+
+  <div class="tok">--sp-6</div><div class="pt">24 pt</div>
+  <div class="bar" style="width:24px"></div>
+  <div class="use">Card-to-card; settings sections; dock icon spacing</div>
+
+  <div class="tok">--sp-7</div><div class="pt">28 pt</div>
+  <div class="bar" style="width:28px"></div>
+  <div class="use">Page heading to body; large titles to content</div>
+</div>
+
+<h2 style="margin-top:30px">Applied · row gap rhythm</h2>
+<div class="examples">
+  <div class="ex">
+    <h3>Form (column gap 12, row gap 8)</h3>
+    <div class="form-row"><span class="l">Name</span><input class="field" value="Sequoia"></div>
+    <div class="form-row"><span class="l">Date</span><input class="field" value="June 10, 2026"></div>
+    <div class="form-row"><span class="l">Location</span><input class="field" value="Cupertino"></div>
+    <div class="row-8" style="justify-content:flex-end;">
+      <button class="btn-ghost">Cancel</button>
+      <button class="btn-ghost btn-pri">Save</button>
+    </div>
+  </div>
+  <div class="ex">
+    <div class="toolbar">
+      <div class="tb-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></div>
+      <div class="tb-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 5,12 12,19"/></svg></div>
+      <div style="width:0.5px;height:18px;background:rgba(0,0,0,0.15);margin:0 4px"></div>
+      <div class="tb-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
+    </div>
+    <h3>Toolbar (gap 6, padding-x 16)</h3>
+    <p style="margin:0;font:400 12px/16px var(--font-system);color:var(--label-secondary)">
+      Toolbar inner button row uses 6 pt gaps; group separator is 0.5 px with 8 pt margins.
+    </p>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Popovers, Tooltips, Notifications</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+.popover { width: 240px; padding: 14px; background: rgba(252,252,252,0.96); backdrop-filter: var(--glass-blur); border-radius: 12px; box-shadow: var(--shadow-popover); position: relative; }
+.popover::after { content:""; position: absolute; top: -7px; left: 30px; width: 14px; height: 14px; background: inherit; transform: rotate(45deg); border-radius: 2px; box-shadow: -1px -1px 1px rgba(0,0,0,0.04); }
+.popover h3 { margin: 0 0 4px; font: 700 13px var(--font-system); }
+.popover p { margin: 0; font: 400 11px/14px var(--font-system); color: var(--label-secondary); }
+.tip { display: inline-block; padding: 4px 8px; background: rgba(40,40,40,0.92); color: #fff; font: 500 11px var(--font-system); border-radius: 6px; box-shadow: var(--shadow-tooltip); }
+.notif { width: 340px; padding: 12px 14px; background: rgba(252,252,252,0.95); backdrop-filter: var(--glass-blur); border-radius: 14px; box-shadow: var(--shadow-popover); display: flex; gap: 10px; align-items: flex-start; }
+.notif .app { width: 36px; height: 36px; border-radius: 9px; background: linear-gradient(180deg,#7CC4FF,#1976D2); flex: 0 0 36px; }
+.notif h4 { margin: 0; font: 700 12px var(--font-system); }
+.notif p { margin: 2px 0 0; font: 400 11px/14px var(--font-system); color: var(--label-secondary); }
+.notif .time { margin-left: auto; font: 400 10px var(--font-system); color: var(--label-tertiary); }
+</style>
+<h2>Popovers</h2>
+<div class="row">
+  <div class="popover"><h3>Inspector</h3><p>Properties for the selected layer. Adjust position, fill, and stroke.</p></div>
+  <div class="popover"><h3>Share This Page</h3><p>Send a link by Mail, Messages, or copy to clipboard.</p></div>
+</div>
+<h2>Tooltips</h2>
+<div class="row"><span class="tip">Move to Trash</span><span class="tip">Show Sidebar</span><span class="tip">⌘N — New Folder</span></div>
+<h2>Notifications</h2>
+<div class="row">
+  <div class="notif"><div class="app"></div><div><h4>Messages</h4><p>Jordan: "On my way."</p></div><span class="time">now</span></div>
+  <div class="notif"><div class="app" style="background:linear-gradient(180deg,#FFCD3C,#F9A825)"></div><div><h4>Calendar</h4><p>Design review in 10 minutes.</p></div><span class="time">9:31</span></div>
+</div></body></html>

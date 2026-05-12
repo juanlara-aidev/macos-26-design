@@ -1,0 +1,2412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>macOS 26 — Design System Showcase</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  /* ─────────────────────────────────────────────
+     Global stage
+     ───────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+  body {
+    font-family: var(--font-system);
+    color: var(--label-primary);
+    background: #0e1116;
+  }
+  .stage {
+    position: fixed; inset: 0;
+    background-image: var(--wallpaper);
+    background-size: cover; background-position: center;
+    transition: background-image .4s var(--ease);
+  }
+  .stage::after {
+    /* slight darkening for menubar legibility */
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,0) 12%, rgba(0,0,0,0) 80%, rgba(0,0,0,.15));
+    pointer-events: none;
+  }
+
+  /* ─────────────────────────────────────────────
+     Menu bar
+     ───────────────────────────────────────────── */
+  .menubar {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 28px; padding: 0 14px;
+    display: flex; align-items: center; gap: 20px;
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    color: #fff;
+    font: 400 13px/16px var(--font-system);
+    z-index: 50;
+    text-shadow: 0 1px 1px rgba(0,0,0,.18);
+  }
+  .menubar .apple { font-size: 15px; line-height: 15px; }
+  .menubar b { font-weight: 600; }
+  .menubar .item { cursor: default; }
+  .menubar .spacer { flex: 1; }
+  .menubar .right { display: flex; align-items: center; gap: 14px; }
+  .menubar .right svg { width: 15px; height: 15px; }
+
+  /* ─────────────────────────────────────────────
+     Window
+     ───────────────────────────────────────────── */
+  .window-shell {
+    position: absolute; left: 50%; top: 54px;
+    transform: translateX(-50%);
+    width: min(1240px, calc(100vw - 32px));
+    height: calc(100vh - 54px - 24px);
+    min-height: 600px;
+    display: flex; flex-direction: column;
+    z-index: 10;
+  }
+  .window {
+    flex: 1; min-height: 0;
+    border-radius: var(--r-window);
+    background: #ffffff;
+    box-shadow: var(--shadow-window);
+    display: grid;
+    grid-template-columns: 232px 1fr;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  [data-theme="dark"] .window { background: #1d1d1f; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    position: relative;
+    padding: 38px 8px 12px;
+    background: rgba(140,140,150,0.30);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    color: rgba(0,0,0,0.85);
+    overflow-y: auto;
+    border-right: 0.5px solid rgba(0,0,0,0.10);
+  }
+  [data-theme="dark"] .sidebar {
+    background: rgba(40,40,46,0.62);
+    color: rgba(255,255,255,0.85);
+    border-right-color: rgba(255,255,255,0.08);
+  }
+  .sidebar::-webkit-scrollbar { width: 8px; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(0,0,0,.18); border-radius: 4px; }
+
+  .lights {
+    position: absolute; top: 14px; left: 16px;
+    display: flex; gap: 8px; z-index: 3;
+  }
+  .l { width: 12px; height: 12px; border-radius: 50%;
+       box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.18); cursor: default; }
+  .close { background: #ff5f57; }
+  .min   { background: #febc2e; }
+  .zoom  { background: #28c840; }
+  .lights:hover .l::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%;
+  }
+
+  .sb-section {
+    padding: 12px 12px 4px;
+    font: 600 11px/14px var(--font-system);
+    color: rgba(0,0,0,0.50);
+    text-transform: none;
+    letter-spacing: -0.005em;
+  }
+  [data-theme="dark"] .sb-section { color: rgba(255,255,255,0.50); }
+
+  .sb-item {
+    display: flex; align-items: center; gap: 9px;
+    padding: 5px 10px;
+    margin: 1px 4px;
+    border-radius: 6px;
+    font: 500 13px/16px var(--font-system);
+    color: inherit;
+    cursor: default;
+    user-select: none;
+  }
+  .sb-item:hover { background: rgba(0,0,0,0.06); }
+  [data-theme="dark"] .sb-item:hover { background: rgba(255,255,255,0.08); }
+  .sb-item.active {
+    background: var(--accent);
+    color: #fff;
+  }
+  .sb-item.active .ico { color: rgba(255,255,255,0.95); }
+  .sb-item .ico {
+    width: 18px; height: 18px; flex: 0 0 18px;
+    display: grid; place-items: center;
+    color: var(--accent);
+    border-radius: 4px;
+  }
+  .sb-item .ico svg { width: 14px; height: 14px; }
+  .sb-item.active .ico { color: #fff; }
+  .sb-item .count {
+    margin-left: auto;
+    font: 500 11px/14px var(--font-system);
+    color: rgba(0,0,0,0.45);
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.05);
+  }
+  .sb-item.active .count { background: rgba(255,255,255,.22); color: #fff; }
+  [data-theme="dark"] .sb-item .count { color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.08); }
+
+  /* ── Main area ── */
+  .main {
+    position: relative;
+    display: grid;
+    grid-template-rows: 56px 1fr;
+    background: transparent;
+    min-width: 0;
+  }
+  [data-theme="dark"] .main { color: rgba(255,255,255,0.92); }
+
+  .toolbar {
+    position: relative;
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.08);
+    z-index: 5;
+  }
+  [data-theme="dark"] .toolbar { border-bottom-color: rgba(255,255,255,0.08); }
+  .pill {
+    display: inline-flex; align-items: center;
+    background: rgba(0,0,0,0.06);
+    border-radius: 999px;
+    padding: 3px;
+  }
+  [data-theme="dark"] .pill { background: rgba(255,255,255,0.10); }
+  .pill .icon {
+    width: 28px; height: 22px;
+    display: grid; place-items: center;
+    color: rgba(0,0,0,0.85);
+    border-radius: 999px;
+    cursor: default;
+  }
+  [data-theme="dark"] .pill .icon { color: rgba(255,255,255,0.85); }
+  .pill .icon.disabled { color: rgba(0,0,0,0.30); }
+  .pill .icon:not(.disabled):hover { background: rgba(255,255,255,0.5); }
+  [data-theme="dark"] .pill .icon:not(.disabled):hover { background: rgba(255,255,255,0.10); }
+  .pill .icon svg { width: 13px; height: 13px; }
+  .pill .divider { width: 1px; height: 14px; background: rgba(0,0,0,0.12); margin: 0 1px; }
+  [data-theme="dark"] .pill .divider { background: rgba(255,255,255,0.18); }
+
+  .tb-title {
+    font: 700 17px/22px var(--font-display);
+    letter-spacing: -0.01em;
+    margin: 0 4px;
+  }
+  .tb-sub {
+    font: 400 11px/14px var(--font-system);
+    color: var(--label-secondary);
+    margin-left: 2px;
+  }
+  .tb-spacer { flex: 1; }
+
+  .search {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 26px; padding: 0 10px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 999px;
+    width: 200px;
+    box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.10);
+  }
+  [data-theme="dark"] .search { background: rgba(255,255,255,0.08); box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.12); }
+  .search svg { width: 12px; height: 12px; color: rgba(0,0,0,0.45); flex: 0 0 12px; }
+  .search input {
+    border: 0; background: transparent; outline: 0;
+    font: 400 13px/16px var(--font-system);
+    color: var(--label-primary);
+    width: 100%;
+  }
+  .search input::placeholder { color: rgba(0,0,0,0.40); }
+  [data-theme="dark"] .search input { color: rgba(255,255,255,0.95); }
+  [data-theme="dark"] .search input::placeholder { color: rgba(255,255,255,0.45); }
+
+  /* ── Content area ── */
+  .content {
+    overflow: auto;
+    position: relative;
+    background: #fff;
+  }
+  [data-theme="dark"] .content { background: #1d1d1f; }
+  .content::-webkit-scrollbar { width: 12px; height: 12px; }
+  .content::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,.20); border-radius: 6px;
+    border: 3px solid transparent; background-clip: padding-box;
+  }
+  [data-theme="dark"] .content::-webkit-scrollbar-thumb { background: rgba(255,255,255,.18); background-clip: padding-box; border: 3px solid transparent; }
+
+  .pane { display: none; padding: 28px 32px 64px; min-height: 100%; }
+  .pane.active { display: block; }
+
+  /* Pane header */
+  .pane-h {
+    display: flex; align-items: baseline; gap: 14px;
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+    border-bottom: 0.5px solid var(--separator);
+  }
+  .pane-h h1 {
+    font: 700 26px/32px var(--font-display);
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--label-primary);
+  }
+  .pane-h p {
+    margin: 0;
+    font: 400 13px/18px var(--font-system);
+    color: var(--label-secondary);
+    text-wrap: pretty;
+    max-width: 60ch;
+  }
+  .breadcrumbs {
+    font: 500 11px/14px var(--font-system);
+    color: var(--label-tertiary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .pane-head-wrap { flex: 1; }
+
+  /* Section grid */
+  .section { margin-bottom: 28px; }
+  .section > h2 {
+    font: 600 11px/14px var(--font-system);
+    color: var(--label-secondary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+  }
+  .section > .sub {
+    font: 400 12px/16px var(--font-system);
+    color: var(--label-tertiary);
+    margin: -8px 0 12px;
+    max-width: 64ch;
+  }
+
+  .card {
+    background: var(--card-bg, #fff);
+    border: 0.5px solid var(--separator);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  }
+  [data-theme="dark"] .card { background: #2a2a2c; border-color: rgba(255,255,255,0.08); }
+
+  .grid { display: grid; gap: 14px; }
+  .g-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .g-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .g-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .g-6 { grid-template-columns: repeat(6, minmax(0,1fr)); }
+  .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .rowx { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
+  .stack { display: flex; flex-direction: column; gap: 12px; }
+  .lbl {
+    font: 600 10px/14px var(--font-system);
+    color: var(--label-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    min-width: 110px;
+  }
+  .caption {
+    font: 400 11px/14px var(--font-mono);
+    color: var(--label-tertiary);
+  }
+
+  /* ─────────────────────────────────────────────
+     Dock
+     ───────────────────────────────────────────── */
+  .dock-wrap {
+    position: absolute; bottom: 12px; left: 0; right: 0;
+    display: flex; justify-content: center;
+    z-index: 30;
+    pointer-events: none;
+  }
+  .dock {
+    display: flex; gap: 6px; align-items: flex-end;
+    padding: 6px 8px;
+    background: rgba(255,255,255,0.42);
+    backdrop-filter: var(--glass-blur-strong);
+    -webkit-backdrop-filter: var(--glass-blur-strong);
+    border-radius: 22px;
+    border: 0.5px solid rgba(255,255,255,0.50);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35), inset 0 0.5px 0 rgba(255,255,255,0.6);
+    pointer-events: auto;
+  }
+  [data-theme="dark"] .dock {
+    background: rgba(50,50,55,0.50);
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.55), inset 0 0.5px 0 rgba(255,255,255,0.10);
+  }
+  .dock .app {
+    width: 46px; height: 46px;
+    border-radius: 11px;
+    display: grid; place-items: center;
+    color: #fff;
+    font: 700 18px/1 var(--font-display);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.18), inset 0 0.5px 0 rgba(255,255,255,0.35);
+    transition: transform .18s var(--ease);
+    cursor: default;
+    position: relative;
+  }
+  .dock .app:hover { transform: translateY(-6px) scale(1.10); }
+  .dock .app + .app:hover { margin: 0 4px; }
+  .dock .app::after {
+    content: "";
+    position: absolute; bottom: -7px;
+    width: 3px; height: 3px;
+    border-radius: 50%; background: rgba(255,255,255,0.7);
+    display: none;
+  }
+  .dock .app.running::after { display: block; }
+  .dock .divider {
+    width: 1px; height: 38px; align-self: center;
+    background: rgba(0,0,0,0.12);
+    margin: 0 4px;
+  }
+  [data-theme="dark"] .dock .divider { background: rgba(255,255,255,0.18); }
+
+  /* ─────────────────────────────────────────────
+     Reusable mini-components used in specimens
+     ───────────────────────────────────────────── */
+
+  /* Push button */
+  .btn {
+    height: 22px; padding: 0 12px; border: 0;
+    border-radius: var(--r-control);
+    font: 500 13px/22px var(--font-system);
+    color: var(--btn-label-idle);
+    background: #fff;
+    box-shadow: var(--shadow-control);
+    cursor: default;
+  }
+  [data-theme="dark"] .btn { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.95); }
+  .btn.primary  { background: var(--accent); color: #fff; }
+  .btn.destruct { color: var(--sys-red); }
+  .btn.primary.destruct { background: var(--sys-red); color: #fff; }
+  .btn.borderless { background: transparent; box-shadow: none; color: var(--accent); }
+  .btn.borderless.destruct { color: var(--sys-red); }
+  .btn.hover { background: var(--btn-fill-hover); }
+  .btn.primary.hover { background: color-mix(in srgb, var(--accent) 88%, #000 12%); }
+  .btn.pressed { background: var(--accent-pressed); color: #fff; }
+  .btn.disabled { opacity: 0.4; }
+  .btn.mini { height: 16px; padding: 0 8px; font-size: 11px; line-height: 16px; border-radius: 4px; }
+  .btn.small { height: 19px; padding: 0 10px; font-size: 12px; line-height: 19px; border-radius: 5px; }
+  .btn.large { height: 32px; padding: 0 18px; font-size: 14px; line-height: 32px; border-radius: 8px; }
+
+  /* Text field */
+  .field {
+    height: 22px; padding: 0 8px;
+    background: #fff;
+    border-radius: var(--r-field);
+    box-shadow: var(--shadow-field-inset);
+    font: 400 13px/22px var(--font-system);
+    color: var(--label-primary);
+    border: 0;
+    outline: 0;
+    min-width: 0;
+  }
+  [data-theme="dark"] .field { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.95); }
+  .field:focus-visible { box-shadow: var(--shadow-field-inset), 0 0 0 3px rgba(0,122,255,0.40); }
+  .field.lg { height: 28px; font-size: 14px; line-height: 28px; padding: 0 10px; }
+
+  /* Switch */
+  .sw { width:32px; height:20px; border-radius:12px; background:rgba(120,120,128,0.20); position:relative; transition:.2s; flex-shrink: 0; cursor: default; }
+  .sw::after { content:""; position:absolute; top:1.5px; left:1.5px; width:17px; height:17px; border-radius:50%; background:#fff; box-shadow:0 0 0 0.5px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.18); transition:.2s; }
+  .sw.on { background: var(--sys-green); }
+  .sw.on.accent { background: var(--accent); }
+  .sw.on::after { transform:translateX(12px); }
+  .sw.lg { width:44px; height:26px; }
+  .sw.lg::after { width:23px; height:23px; }
+  .sw.lg.on::after { transform:translateX(18px); }
+  .sw.sm { width:24px; height:14px; border-radius: 8px; }
+  .sw.sm::after { width:11px; height:11px; }
+  .sw.sm.on::after { transform: translateX(10px); }
+
+  /* Segmented control */
+  .seg { display:inline-flex; padding:2px; background:rgba(0,0,0,0.06); border-radius:7px; box-shadow:var(--shadow-control); }
+  [data-theme="dark"] .seg { background:rgba(255,255,255,0.10); box-shadow: none; }
+  .seg span { font:500 13px/22px var(--font-system); padding:0 14px; border-radius:5px; color:var(--label-primary); cursor: default; }
+  [data-theme="dark"] .seg span { color: rgba(255,255,255,0.85); }
+  .seg .sel { background:#fff; box-shadow:0 0.5px 0 rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.10); }
+  [data-theme="dark"] .seg .sel { background: rgba(255,255,255,0.18); color: #fff; }
+
+  /* Slider */
+  .slider { position: relative; width: 200px; height: 16px; display: flex; align-items: center; cursor: default; }
+  .track { position: absolute; left: 0; right: 0; height: 4px; border-radius: 100px; background: var(--fill-secondary); top: 50%; transform: translateY(-50%); }
+  .track .fill { position: absolute; top: 0; bottom: 0; left: 0; background: var(--accent); border-radius: 100px; }
+  .thumb { position: absolute; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 0.5px 0 rgba(0,0,0,0.20), 0 2px 4px rgba(0,0,0,0.18); top: 50%; transform: translate(-50%, -50%); }
+
+  /* Checkbox / radio */
+  .cb { width: 14px; height: 14px; border-radius: 3px; background: #fff; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.30); display: inline-grid; place-items: center; }
+  .cb.on { background: var(--accent); box-shadow: none; }
+  .cb svg { width: 11px; height: 11px; color: #fff; display: none; }
+  .cb.on svg { display: block; }
+  .cb.mixed { background: var(--accent); }
+  .cb.mixed svg { display: block; }
+  .radio { width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.30); display: inline-grid; place-items: center; }
+  .radio.on::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #fff; }
+  .radio.on { background: var(--accent); box-shadow: none; }
+
+  [data-theme="dark"] .cb { background: rgba(255,255,255,0.10); box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.30); }
+  [data-theme="dark"] .radio { background: rgba(255,255,255,0.10); box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.30); }
+
+  /* Tooltip */
+  .tip {
+    background: rgba(0,0,0,0.78);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font: 400 11px/14px var(--font-system);
+    box-shadow: var(--shadow-tooltip);
+    display: inline-block;
+  }
+
+  /* Popover */
+  .popover {
+    background: rgba(245,245,245,0.85);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 12px;
+    box-shadow: var(--shadow-popover);
+    padding: 10px;
+    display: inline-block;
+  }
+  [data-theme="dark"] .popover { background: rgba(50,50,55,0.80); color: rgba(255,255,255,.92); }
+
+  /* Menu */
+  .menu {
+    min-width: 220px;
+    background: rgba(245,245,245,0.92);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 10px;
+    box-shadow: var(--shadow-popover);
+    padding: 4px;
+    font: 400 13px/16px var(--font-system);
+  }
+  [data-theme="dark"] .menu { background: rgba(50,50,55,0.88); color: rgba(255,255,255,.92); }
+  .menu .mi {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 4px 10px;
+    border-radius: 5px;
+    color: var(--label-primary);
+    cursor: default;
+  }
+  [data-theme="dark"] .menu .mi { color: rgba(255,255,255,.92); }
+  .menu .mi:hover { background: var(--accent); color: #fff; }
+  .menu .mi .kbd { font: 400 11px/14px var(--font-system); color: var(--label-tertiary); }
+  .menu .mi:hover .kbd { color: rgba(255,255,255,.7); }
+  .menu .mi.dis { opacity: 0.4; }
+  .menu .sep { height: 0.5px; background: rgba(0,0,0,0.10); margin: 4px 6px; }
+  [data-theme="dark"] .menu .sep { background: rgba(255,255,255,0.12); }
+  .menu .mi.checked::before { content: "✓"; margin-right: 8px; }
+
+  /* Notification */
+  .notif {
+    width: 320px;
+    background: rgba(245,245,245,0.85);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 14px;
+    box-shadow: var(--shadow-popover);
+    padding: 12px;
+    display: grid; grid-template-columns: 32px 1fr auto; gap: 10px; align-items: start;
+  }
+  [data-theme="dark"] .notif { background: rgba(50,50,55,0.85); color: rgba(255,255,255,.92); }
+  .notif .icn {
+    width: 32px; height: 32px; border-radius: 7px;
+    background: var(--accent); color: #fff;
+    display: grid; place-items: center;
+  }
+  .notif .ttl { font: 600 13px/16px var(--font-system); }
+  .notif .sub { font: 400 12px/15px var(--font-system); color: var(--label-secondary); }
+  .notif .ts  { font: 400 11px/14px var(--font-system); color: var(--label-tertiary); }
+
+  /* Sample window mini */
+  .miniwin {
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.22), 0 0 0 0.5px rgba(0,0,0,0.18);
+    overflow: hidden;
+  }
+  [data-theme="dark"] .miniwin { background: #1d1d1f; box-shadow: 0 12px 32px rgba(0,0,0,0.45), 0 0 0 0.5px rgba(255,255,255,0.10); }
+  .miniwin .mw-tb {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.08);
+    font: 600 12px/16px var(--font-system);
+  }
+  [data-theme="dark"] .miniwin .mw-tb { border-bottom-color: rgba(255,255,255,.08); }
+  .miniwin .mw-tb .lights { position: static; }
+  .miniwin .mw-tb .lights .l { width: 10px; height: 10px; }
+
+  /* ─────────────────────────────────────────────
+     Tweaks panel
+     ───────────────────────────────────────────── */
+  .tweaks {
+    position: absolute;
+    right: 14px; bottom: 32px;
+    width: 232px;
+    background: rgba(245,245,245,0.78);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 14px;
+    box-shadow: var(--shadow-popover);
+    padding: 12px 14px;
+    z-index: 40;
+    font: 400 12px/16px var(--font-system);
+    color: var(--label-primary);
+  }
+  [data-theme="dark"] .tweaks { background: rgba(50,50,55,0.85); color: rgba(255,255,255,.92); }
+  .tweaks h3 { font: 600 11px/14px var(--font-system); margin: 0 0 8px; color: var(--label-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
+  .tw-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; gap: 8px; }
+  .tw-row + .tw-row { border-top: 0.5px solid rgba(0,0,0,0.08); }
+  [data-theme="dark"] .tw-row + .tw-row { border-top-color: rgba(255,255,255,.10); }
+  .swatches { display: flex; gap: 6px; flex-wrap: wrap; }
+  .sw-dot { width: 18px; height: 18px; border-radius: 50%; cursor: pointer; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,.10); }
+  .sw-dot.active { box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px var(--accent); }
+  .wp-list { display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; margin-top: 6px; }
+  .wp-thumb { aspect-ratio: 16/10; border-radius: 6px; background-size: cover; background-position: center; cursor: pointer; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,.15); }
+  .wp-thumb.active { box-shadow: inset 0 0 0 0.5px rgba(0,0,0,.15), 0 0 0 2px var(--accent); }
+
+  /* ─────────────────────────────────────────────
+     Specimen styles (per-pane scoping)
+     ───────────────────────────────────────────── */
+
+  /* TYPE RAMP */
+  .ramp { display: grid; grid-template-columns: 120px 1fr 90px; gap: 0; }
+  .ramp > div { padding: 10px 0; border-bottom: 0.5px solid var(--separator); }
+  .ramp .name { font: 600 11px/14px var(--font-system); color: var(--label-secondary); align-self: center; }
+  .ramp .sample { color: var(--label-primary); align-self: center; }
+  .ramp .meta { font: 400 11px/14px var(--font-mono); color: var(--label-tertiary); align-self: center; text-align: right; }
+
+  /* COLORS */
+  .swatch-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 14px; }
+  .swatch { display: flex; flex-direction: column; gap: 6px; cursor: pointer; }
+  .swatch .chip { aspect-ratio: 1.6/1; border-radius: 10px; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.06); transition: transform .15s var(--ease); }
+  .swatch:hover .chip { transform: translateY(-2px); box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.06), 0 6px 16px rgba(0,0,0,0.18); }
+  .swatch .nm { font: 500 11px/14px var(--font-system); }
+  .swatch .hx { font: 400 10px/12px var(--font-mono); color: var(--label-tertiary); }
+  .swatch.active .chip { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* LABELS/FILLS */
+  .opacity-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .opacity-strip > div { padding: 18px; border-radius: 10px; border: 0.5px solid var(--separator); }
+
+  /* MATERIALS */
+  .mat-grid {
+    background-image: var(--wallpaper);
+    background-size: cover; background-position: center;
+    border-radius: 14px; padding: 18px;
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 14px;
+  }
+  .mat {
+    height: 130px;
+    border-radius: 16px;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--shadow-glass);
+    padding: 14px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    color: #1a1a1a;
+    font: 600 13px/16px var(--font-system);
+  }
+  .mat.thin { background: rgba(245,245,245,0.57); }
+  .mat.regular { background: rgba(245,245,245,0.67); }
+  .mat.thick { background: rgba(245,245,245,0.85); }
+  .mat.dthin { background: rgba(38,38,38,0.57); color: #fff; }
+  .mat.dregular { background: rgba(38,38,38,0.67); color: #fff; }
+  .mat.dthick { background: rgba(38,38,38,0.85); color: #fff; }
+  .mat .meta { display:block; font: 400 11px/14px var(--font-mono); opacity: 0.6; font-weight: 400; }
+
+  /* RADII */
+  .radii-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; align-items: end; }
+  .radius-box {
+    aspect-ratio: 1; background: var(--accent); opacity: 0.92;
+    box-shadow: var(--shadow-control);
+  }
+
+  /* SHADOWS */
+  .sh-tile {
+    aspect-ratio: 1.4/1;
+    border-radius: 12px;
+    background: #fff;
+    display: grid; place-items: center;
+    font: 500 12px/16px var(--font-system); color: var(--label-secondary);
+    text-align: center;
+  }
+  [data-theme="dark"] .sh-tile { background: #2a2a2c; color: rgba(255,255,255,.7); }
+
+  /* SPACING */
+  .sp-row { display: flex; align-items: center; gap: 14px; }
+  .sp-row .lbl { min-width: 0; }
+  .sp-bar { height: 16px; background: var(--accent); border-radius: 3px; }
+  .sp-token { font: 400 11px var(--font-mono); color: var(--label-tertiary); min-width: 38px; }
+
+  /* MOTION */
+  .ease-card { padding: 14px; border-radius: 10px; border: 0.5px solid var(--separator); }
+  .ease-track { height: 56px; position: relative; background: var(--fill-tertiary); border-radius: 8px; overflow: hidden; }
+  .ease-ball { position: absolute; top: 50%; left: 8px; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); transform: translateY(-50%); }
+  .ease-card .nm { font: 600 12px/16px var(--font-system); }
+  .ease-card .mt { font: 400 11px/14px var(--font-mono); color: var(--label-tertiary); }
+  .ease-card.standard .ease-ball { animation: easeStd 1.8s var(--ease-std) infinite alternate; }
+  .ease-card.decel    .ease-ball { animation: easeStd 1.8s var(--ease-decel) infinite alternate; }
+  .ease-card.accel    .ease-ball { animation: easeStd 1.8s var(--ease-accel) infinite alternate; }
+  .ease-card.spring   .ease-ball { animation: easeStd 1.8s var(--ease-spring) infinite alternate; }
+  @keyframes easeStd { from { left: 8px; } to { left: calc(100% - 28px); } }
+  :root {
+    --ease-std: cubic-bezier(0.4,0,0.2,1);
+    --ease-decel: cubic-bezier(0,0,0.2,1);
+    --ease-accel: cubic-bezier(0.4,0,1,1);
+    --ease-spring: cubic-bezier(0.5,1.5,0.5,1);
+  }
+
+  /* APP ICONS */
+  .app-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
+  .app-icon {
+    aspect-ratio: 1;
+    border-radius: 22%;
+    display: grid; place-items: center;
+    color: #fff;
+    font: 700 28px/1 var(--font-display);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.22), inset 0 0.5px 0 rgba(255,255,255,0.4);
+  }
+
+  /* SLIDERS-DIALS */
+  .dial { width: 56px; height: 56px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff 0%, #e6e6ea 60%, #d3d3d8 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -1px 1px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.15);
+    position: relative; }
+  .dial::after { content: ""; position: absolute; left: 50%; top: 6px; width: 2px; height: 12px; background: var(--accent); border-radius: 1px; transform-origin: 50% 22px; transform: translateX(-50%); transition: transform .25s var(--ease); }
+  [data-theme="dark"] .dial { background: radial-gradient(circle at 30% 30%, #4a4a4f 0%, #2a2a2c 60%, #1d1d1f 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 1px 2px rgba(0,0,0,0.45); }
+
+  /* STEPPER */
+  .stepper { display: inline-flex; align-items: stretch; height: 20px; }
+  .stepper .num {
+    height: 20px; padding: 0 8px;
+    background: #fff;
+    box-shadow: var(--shadow-field-inset);
+    border-radius: 4px 0 0 4px;
+    font: 400 13px/20px var(--font-system);
+    min-width: 56px;
+    text-align: right;
+    border: 0; outline: 0;
+  }
+  [data-theme="dark"] .stepper .num { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.92); }
+  .stepper .steps { display: flex; flex-direction: column; background: #fff; box-shadow: var(--shadow-control); border-radius: 0 4px 4px 0; overflow: hidden; }
+  [data-theme="dark"] .stepper .steps { background: rgba(255,255,255,0.12); }
+  .stepper .steps span { width: 18px; height: 10px; display: grid; place-items: center; color: var(--label-primary); font-size: 8px; cursor: default; }
+  [data-theme="dark"] .stepper .steps span { color: rgba(255,255,255,.9); }
+  .stepper .steps span:hover { background: var(--accent); color: #fff; }
+
+  /* COLOR WELL */
+  .well {
+    width: 44px; height: 22px; border-radius: 5px;
+    box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.30), 0 0.5px 1px rgba(0,0,0,.18);
+    background: var(--accent);
+    cursor: default;
+  }
+  .well.lg { width: 64px; height: 28px; border-radius: 6px; }
+  .well.sm { width: 32px; height: 18px; }
+  .well.circular { width: 24px; height: 24px; border-radius: 50%; }
+
+  /* DISCLOSURE */
+  .disc-row { display: flex; align-items: center; gap: 6px; padding: 4px 0; font: 500 13px/16px var(--font-system); cursor: default; }
+  .disc-row .tri { width: 10px; height: 10px; display: inline-grid; place-items: center; color: var(--label-secondary); transition: transform .18s var(--ease); }
+  .disc-row .tri svg { width: 8px; height: 8px; }
+  .disc-row.open .tri { transform: rotate(90deg); }
+  .disc-kids { margin-left: 18px; display: none; }
+  .disc-row.open + .disc-kids { display: block; }
+
+  /* WINDOW CONTROLS BIG */
+  .wc-row { display: flex; gap: 14px; align-items: center; }
+  .wc-cell {
+    padding: 14px 16px; border-radius: 10px; border: 0.5px solid var(--separator);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .wc-cell .ttl { font: 600 10px/14px var(--font-system); color: var(--label-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
+  .lights-big { display: flex; gap: 8px; }
+  .lights-big .l { width: 14px; height: 14px; border-radius: 50%; position: relative; }
+  .lights-big .l.icon::after {
+    content: ""; position: absolute; inset: 3px;
+    background: currentColor; -webkit-mask-size: contain; mask-size: contain;
+  }
+
+  /* Form pattern */
+  .form-row { display: grid; grid-template-columns: 130px 1fr; gap: 14px; align-items: center; padding: 6px 0; }
+  .form-row > .lbl-r { font: 400 13px/16px var(--font-system); color: var(--label-primary); text-align: right; min-width: 0; }
+  [data-theme="dark"] .form-row > .lbl-r { color: rgba(255,255,255,0.85); }
+  .form-section { padding: 18px 22px; border-radius: 12px; border: 0.5px solid var(--separator); margin-bottom: 14px; background: #fff; }
+  [data-theme="dark"] .form-section { background: #2a2a2c; border-color: rgba(255,255,255,0.08); }
+  .form-section > h3 { font: 600 13px/16px var(--font-system); margin: 0 0 14px; color: var(--label-primary); }
+  [data-theme="dark"] .form-section > h3 { color: rgba(255,255,255,0.92); }
+
+  /* Tabs */
+  .tabs { display: inline-flex; border-radius: 8px; overflow: hidden; background: rgba(0,0,0,0.04); padding: 3px; }
+  [data-theme="dark"] .tabs { background: rgba(255,255,255,0.08); }
+  .tab { padding: 4px 12px; font: 500 13px/18px var(--font-system); border-radius: 5px; cursor: default; color: var(--label-secondary); }
+  [data-theme="dark"] .tab { color: rgba(255,255,255,0.65); }
+  .tab.sel { background: #fff; color: var(--label-primary); box-shadow: 0 0.5px 0 rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.10); }
+  [data-theme="dark"] .tab.sel { background: rgba(255,255,255,0.18); color: #fff; }
+
+  /* List/Table */
+  .table { width: 100%; border-collapse: separate; border-spacing: 0; font: 400 13px/18px var(--font-system); }
+  .table th { text-align: left; padding: 6px 10px; font: 600 11px/14px var(--font-system); color: var(--label-secondary); border-bottom: 0.5px solid var(--separator); background: rgba(0,0,0,0.02); }
+  [data-theme="dark"] .table th { background: rgba(255,255,255,0.03); }
+  .table td { padding: 7px 10px; border-bottom: 0.5px solid var(--separator); color: var(--label-primary); }
+  [data-theme="dark"] .table td { color: rgba(255,255,255,0.92); }
+  .table tr:hover td { background: rgba(0,0,0,0.03); }
+  [data-theme="dark"] .table tr:hover td { background: rgba(255,255,255,0.04); }
+  .table tr.sel td { background: var(--accent); color: #fff; }
+
+  /* Alert + dialog */
+  .alert-shell {
+    width: 320px;
+    background: rgba(248,248,248,0.92);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 16px;
+    box-shadow: var(--shadow-window);
+    padding: 22px 22px 16px;
+    text-align: center;
+  }
+  [data-theme="dark"] .alert-shell { background: rgba(50,50,55,0.92); color: rgba(255,255,255,.92); }
+  .alert-shell .ai {
+    width: 38px; height: 38px; margin: 0 auto 10px;
+    border-radius: 9px; background: var(--accent); color: #fff;
+    display: grid; place-items: center;
+  }
+  .alert-shell .at { font: 700 13px/16px var(--font-system); margin-bottom: 6px; }
+  .alert-shell .ab { font: 400 12px/16px var(--font-system); color: var(--label-secondary); margin-bottom: 14px; }
+  .alert-shell .ax { display: flex; gap: 8px; }
+  .alert-shell .ax .btn { flex: 1; height: 24px; line-height: 24px; }
+
+  /* Search field special */
+  .search-field {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 22px; padding: 0 8px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: var(--shadow-field-inset);
+    width: 220px;
+  }
+  [data-theme="dark"] .search-field { background: rgba(255,255,255,0.06); }
+  .search-field svg { width: 11px; height: 11px; color: var(--label-tertiary); }
+  .search-field input { border: 0; background: transparent; outline: 0; font: 400 13px var(--font-system); color: var(--label-primary); width: 100%; }
+  [data-theme="dark"] .search-field input { color: rgba(255,255,255,.95); }
+
+  /* Token chip */
+  .token {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 8px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 6px;
+    font: 400 11px/14px var(--font-mono);
+    color: var(--label-secondary);
+  }
+  [data-theme="dark"] .token { background: rgba(255,255,255,0.08); color: rgba(255,255,255,.75); }
+
+  /* Combo */
+  .combo {
+    display: inline-flex; align-items: center;
+    height: 22px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: var(--shadow-control);
+    padding: 0 6px 0 10px;
+    font: 400 13px/22px var(--font-system);
+    color: var(--label-primary);
+    gap: 8px;
+    min-width: 140px;
+  }
+  [data-theme="dark"] .combo { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.92); }
+  .combo .caret { width: 16px; height: 16px; background: var(--accent); border-radius: 3px; display: grid; place-items: center; color: #fff; margin-left: auto; }
+  .combo .caret svg { width: 9px; height: 9px; }
+
+  /* Icon glyph helpers */
+  .ig { display: inline-grid; place-items: center; width: 14px; height: 14px; }
+  .ig svg { width: 100%; height: 100%; }
+
+  /* Animation for entering panes */
+  .pane.active { animation: fadeIn .22s var(--ease); }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body data-theme="light" style="--wallpaper: url('assets/cover-bg.png')">
+
+<!-- Stage -->
+<div class="stage"></div>
+
+<!-- Menu bar -->
+<div class="menubar">
+  <span class="apple item">&#63743;</span>
+  <b class="item">Finder</b>
+  <span class="item">File</span>
+  <span class="item">Edit</span>
+  <span class="item">View</span>
+  <span class="item">Go</span>
+  <span class="item">Window</span>
+  <span class="item">Help</span>
+  <span class="spacer"></span>
+  <div class="right">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8 15.5a6 6 0 0 1 8 0"/><circle cx="12" cy="18.5" r="1" fill="currentColor"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
+    <span style="font-size:12px">Mon Jun 10&nbsp;&nbsp;9:41 AM</span>
+  </div>
+</div>
+
+<!-- Window -->
+<div class="window-shell">
+  <div class="window">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="lights">
+        <span class="l close"></span><span class="l min"></span><span class="l zoom"></span>
+      </div>
+      <!-- populated by JS -->
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <div class="toolbar">
+        <div class="pill">
+          <span class="icon" id="navBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="14,6 8,12 14,18"/></svg></span>
+          <span class="divider"></span>
+          <span class="icon" id="navFwd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="10,6 16,12 10,18"/></svg></span>
+        </div>
+        <span class="tb-title" id="tbTitle">Type Ramp</span>
+        <span class="tb-sub" id="tbSub">11 items</span>
+        <span class="tb-spacer"></span>
+        <div class="pill" id="viewPill">
+          <span class="icon active" data-view="grid" title="As Icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/></svg></span>
+          <span class="icon" data-view="list" title="As List"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></span>
+          <span class="icon" data-view="cols" title="As Columns"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="4" x2="6" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="18" y1="4" x2="18" y2="20"/></svg></span>
+        </div>
+        <div class="pill">
+          <span class="icon" title="Share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16,6 12,2 8,6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></span>
+          <span class="icon" title="Tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.6l-7 7a2 2 0 0 1-2.8 0L3 13V4a1 1 0 0 1 1-1h9l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor"/></svg></span>
+          <span class="icon" id="themeBtn" title="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>
+        </div>
+        <label class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+          <input type="text" id="sbSearch" placeholder="Search specimens" autocomplete="off">
+        </label>
+      </div>
+
+      <div class="content" id="content">
+        <!-- ===================== FOUNDATIONS ===================== -->
+
+        <!-- TYPE RAMP -->
+        <section class="pane" data-pane="type">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Foundations · Typography</div>
+              <h1>Type Ramp</h1>
+            </div>
+            <p>The eleven HIG text styles. SF Pro across the board, with Display optical sizing kicking in around 20 px. Apple favors weight over size jumps — Headline and Body share a size; only the weight changes.</p>
+          </div>
+          <div class="section">
+            <div class="ramp">
+              <div class="name">Large Title</div><div class="sample macos-largetitle">The quick brown fox</div><div class="meta">26/32 · 700</div>
+              <div class="name">Title 1</div><div class="sample macos-title1">The quick brown fox</div><div class="meta">22/26 · 700</div>
+              <div class="name">Title 2</div><div class="sample macos-title2">The quick brown fox</div><div class="meta">17/22 · 700</div>
+              <div class="name">Title 3</div><div class="sample macos-title3">The quick brown fox</div><div class="meta">15/20 · 600</div>
+              <div class="name">Headline</div><div class="sample macos-headline">The quick brown fox</div><div class="meta">13/16 · 700</div>
+              <div class="name">Body</div><div class="sample macos-body">The quick brown fox jumps over the lazy dog. Body is the workhorse size for menu items, list rows, and toolbar labels.</div><div class="meta">13/16 · 400</div>
+              <div class="name">Callout</div><div class="sample macos-callout">The quick brown fox jumps over the lazy dog.</div><div class="meta">12/15 · 400</div>
+              <div class="name">Subheadline</div><div class="sample macos-subheadline">The quick brown fox jumps over the lazy dog.</div><div class="meta">11/14 · 400</div>
+              <div class="name">Footnote</div><div class="sample macos-footnote">The quick brown fox jumps over the lazy dog.</div><div class="meta">10/13 · 400</div>
+              <div class="name">Caption 1</div><div class="sample macos-caption1">The quick brown fox jumps over the lazy dog.</div><div class="meta">10/13 · 400</div>
+              <div class="name">Caption 2</div><div class="sample macos-caption2">The quick brown fox</div><div class="meta">10/13 · 700</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ACCENT COLORS -->
+        <section class="pane" data-pane="accent">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Foundations · Color</div>
+              <h1>Accent Colors</h1>
+            </div>
+            <p>Thirteen system colors. Click any chip to set it as the active accent — the entire app re-skins live, including the sidebar selection, focus rings, and Liquid Glass tints.</p>
+          </div>
+          <div class="section">
+            <h2>Opaque · for solid backgrounds</h2>
+            <div class="swatch-grid" id="accentGrid">
+              <!-- generated -->
+            </div>
+          </div>
+          <div class="section">
+            <h2>Vibrant · for translucent materials</h2>
+            <div class="card" style="padding:14px; background-image: var(--wallpaper); background-size: cover; border: none;">
+              <div style="display: grid; grid-template-columns: repeat(7,1fr); gap: 10px;">
+                <div class="popover" style="text-align:center; color: var(--sys-red);     font: 700 11px var(--font-system)">Red</div>
+                <div class="popover" style="text-align:center; color: var(--sys-orange);  font: 700 11px var(--font-system)">Orange</div>
+                <div class="popover" style="text-align:center; color: var(--sys-yellow);  font: 700 11px var(--font-system)">Yellow</div>
+                <div class="popover" style="text-align:center; color: var(--sys-green);   font: 700 11px var(--font-system)">Green</div>
+                <div class="popover" style="text-align:center; color: var(--sys-mint);    font: 700 11px var(--font-system)">Mint</div>
+                <div class="popover" style="text-align:center; color: var(--sys-blue);    font: 700 11px var(--font-system)">Blue</div>
+                <div class="popover" style="text-align:center; color: var(--sys-purple);  font: 700 11px var(--font-system)">Purple</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- LABELS & FILLS -->
+        <section class="pane" data-pane="labels">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Foundations · Hierarchy</div>
+              <h1>Labels &amp; Fills</h1>
+            </div>
+            <p>One palette, four opacities. Secondary/tertiary aren't separate grays — they're black or white at reduced opacity, which makes the same tokens read correctly over any surface or material.</p>
+          </div>
+          <div class="section">
+            <h2>Label hierarchy</h2>
+            <div class="opacity-strip">
+              <div><div style="color:var(--label-primary);    font:600 22px var(--font-display);">Primary</div><div class="caption">85%</div></div>
+              <div><div style="color:var(--label-secondary);  font:600 22px var(--font-display);">Secondary</div><div class="caption">50%</div></div>
+              <div><div style="color:var(--label-tertiary);   font:600 22px var(--font-display);">Tertiary</div><div class="caption">25%</div></div>
+              <div><div style="color:var(--label-quaternary); font:600 22px var(--font-display);">Quaternary</div><div class="caption">10%</div></div>
+              <div><div style="color:var(--label-quinary);    font:600 22px var(--font-display);">Quinary</div><div class="caption">5%</div></div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Fill hierarchy</h2>
+            <div class="opacity-strip">
+              <div style="background:var(--fill-primary);">Primary fill<div class="caption">10%</div></div>
+              <div style="background:var(--fill-secondary);">Secondary fill<div class="caption">8%</div></div>
+              <div style="background:var(--fill-tertiary);">Tertiary fill<div class="caption">5%</div></div>
+              <div style="background:var(--fill-quaternary);">Quaternary fill<div class="caption">3%</div></div>
+              <div style="background:var(--separator);">Separator<div class="caption">10%</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MATERIALS -->
+        <section class="pane" data-pane="materials">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Foundations · Liquid Glass</div>
+              <h1>Materials</h1>
+            </div>
+            <p>Three thicknesses of frosted glass. Always paired with <span class="token">backdrop-filter: saturate(180%) blur(20px)</span>. Switch the wallpaper from Tweaks to see how each thickness reacts.</p>
+          </div>
+          <div class="section">
+            <h2>Light · over wallpaper</h2>
+            <div class="mat-grid">
+              <div class="mat thin"><div>Thin<span class="meta">57% · blur 20</span></div></div>
+              <div class="mat regular"><div>Regular<span class="meta">67% · blur 20</span></div></div>
+              <div class="mat thick"><div>Thick<span class="meta">85% · blur 20</span></div></div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Dark · over wallpaper</h2>
+            <div class="mat-grid">
+              <div class="mat dthin"><div>Thin<span class="meta">57% · blur 20</span></div></div>
+              <div class="mat dregular"><div>Regular<span class="meta">67% · blur 20</span></div></div>
+              <div class="mat dthick"><div>Thick<span class="meta">85% · blur 20</span></div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- RADII -->
+        <section class="pane" data-pane="radii">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Foundations · Shape</div>
+              <h1>Corner Radii</h1>
+            </div>
+            <p>The signature macOS 26 silhouette lives in the corners — windows at 26 pt, app tiles at 22 %, controls at 6 pt. Pills go fully round.</p>
+          </div>
+          <div class="section">
+            <div class="radii-row">
+              <div><div class="radius-box" style="border-radius: var(--r-field);"></div><div class="caption" style="margin-top:8px;">Field · 5</div></div>
+              <div><div class="radius-box" style="border-radius: var(--r-control);"></div><div class="caption" style="margin-top:8px;">Control · 6</div></div>
+              <div><div class="radius-box" style="border-radius: var(--r-control-lg);"></div><div class="caption" style="margin-top:8px;">Toolbar · 7</div></div>
+              <div><div class="radius-box" style="border-radius: var(--r-card);"></div><div class="caption" style="margin-top:8px;">Card · 8</div></div>
+              <div><div class="radius-box" style="border-radius: var(--r-window-sm);"></div><div class="caption" style="margin-top:8px;">Window sm · 16</div></div>
+              <div><div class="radius-box" style="border-radius: var(--r-tile);"></div><div class="caption" style="margin-top:8px;">Tile · 22</div></div>
+              <div><div class="radius-box" style="border-radius: var(--r-window);"></div><div class="caption" style="margin-top:8px;">Window · 26</div></div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Applied · the macOS 26 silhouette</h2>
+            <div class="grid g-3">
+              <div class="miniwin" style="border-radius: var(--r-window);">
+                <div class="mw-tb"><div class="lights"><span class="l close"></span><span class="l min"></span><span class="l zoom"></span></div><span style="margin-left:6px;">Standard window · 26</span></div>
+                <div style="padding: 16px; font: 400 12px/16px var(--font-system); color: var(--label-secondary);">Default Finder / Mail / Notes</div>
+              </div>
+              <div class="miniwin" style="border-radius: var(--r-window-sm);">
+                <div class="mw-tb"><div class="lights"><span class="l close"></span><span class="l min"></span><span class="l zoom"></span></div><span style="margin-left:6px;">Titlebar-only · 16</span></div>
+                <div style="padding: 16px; font: 400 12px/16px var(--font-system); color: var(--label-secondary);">About / Sign-in</div>
+              </div>
+              <div class="miniwin" style="border-radius: var(--r-sheet); aspect-ratio: 4/3; display: grid; place-items: center; color: var(--label-secondary);">Sheet · 34</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SHADOWS -->
+        <section class="pane" data-pane="shadows">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Foundations · Depth</div>
+              <h1>Shadows</h1>
+            </div>
+            <p>Soft, deep, and quiet. Every shadow is paired with a hairline keyline so the surface remains visible over busy wallpapers.</p>
+          </div>
+          <div class="section">
+            <div class="grid g-4">
+              <div><div class="sh-tile" style="box-shadow: var(--shadow-control);">Control</div><div class="caption" style="margin-top:8px;">--shadow-control</div></div>
+              <div><div class="sh-tile" style="box-shadow: var(--shadow-tooltip);">Tooltip</div><div class="caption" style="margin-top:8px;">--shadow-tooltip</div></div>
+              <div><div class="sh-tile" style="box-shadow: var(--shadow-popover);">Popover</div><div class="caption" style="margin-top:8px;">--shadow-popover</div></div>
+              <div><div class="sh-tile" style="box-shadow: var(--shadow-glass);">Glass</div><div class="caption" style="margin-top:8px;">--shadow-glass</div></div>
+            </div>
+            <div class="grid g-2" style="margin-top: 18px;">
+              <div><div class="sh-tile" style="height: 180px; aspect-ratio: auto; box-shadow: var(--shadow-window); border-radius: var(--r-window);">Window</div><div class="caption" style="margin-top:8px;">--shadow-window · 0 16 48 / .32</div></div>
+              <div><div class="sh-tile" style="height: 180px; aspect-ratio: auto; box-shadow: var(--shadow-field-inset); border-radius: var(--r-field);">Inset field</div><div class="caption" style="margin-top:8px;">--shadow-field-inset</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SPACING -->
+        <section class="pane" data-pane="spacing">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Foundations · Layout</div>
+              <h1>Spacing Scale</h1>
+            </div>
+            <p>4 / 8 / 12 / 16 / 22 / 24 / 28 pt. Used everywhere from chip padding to window edge margins.</p>
+          </div>
+          <div class="section">
+            <div class="stack">
+              <div class="sp-row"><span class="sp-token">4 pt</span><div class="sp-bar" style="width: 4px;"></div><span class="caption">chip · icon-to-label</span></div>
+              <div class="sp-row"><span class="sp-token">8 pt</span><div class="sp-bar" style="width: 8px;"></div><span class="caption">default gap between controls</span></div>
+              <div class="sp-row"><span class="sp-token">12 pt</span><div class="sp-bar" style="width: 12px;"></div><span class="caption">label → control · form row gap</span></div>
+              <div class="sp-row"><span class="sp-token">16 pt</span><div class="sp-bar" style="width: 16px;"></div><span class="caption">group margin</span></div>
+              <div class="sp-row"><span class="sp-token">22 pt</span><div class="sp-bar" style="width: 22px;"></div><span class="caption">section header → first row · card padding</span></div>
+              <div class="sp-row"><span class="sp-token">24 pt</span><div class="sp-bar" style="width: 24px;"></div><span class="caption">window edge padding</span></div>
+              <div class="sp-row"><span class="sp-token">28 pt</span><div class="sp-bar" style="width: 28px;"></div><span class="caption">toolbar-to-content · major section</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MOTION -->
+        <section class="pane" data-pane="motion">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Foundations · Motion</div>
+              <h1>Easing &amp; Duration</h1>
+            </div>
+            <p>Four curves carry every transition in macOS 26. Hover over a card to see it loop. Durations: popovers ~150 ms, sheets ~250 ms, large transitions ~400 ms.</p>
+          </div>
+          <div class="section">
+            <div class="grid g-2">
+              <div class="ease-card standard">
+                <div class="nm">Standard</div>
+                <div class="mt">cubic-bezier(0.4, 0, 0.2, 1)</div>
+                <div class="ease-track" style="margin-top:10px"><div class="ease-ball"></div></div>
+              </div>
+              <div class="ease-card decel">
+                <div class="nm">Decelerate · enter</div>
+                <div class="mt">cubic-bezier(0, 0, 0.2, 1)</div>
+                <div class="ease-track" style="margin-top:10px"><div class="ease-ball"></div></div>
+              </div>
+              <div class="ease-card accel">
+                <div class="nm">Accelerate · exit</div>
+                <div class="mt">cubic-bezier(0.4, 0, 1, 1)</div>
+                <div class="ease-track" style="margin-top:10px"><div class="ease-ball"></div></div>
+              </div>
+              <div class="ease-card spring">
+                <div class="nm">Spring · symbol effect</div>
+                <div class="mt">cubic-bezier(0.5, 1.5, 0.5, 1)</div>
+                <div class="ease-track" style="margin-top:10px"><div class="ease-ball"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Durations</h2>
+            <div class="row" style="gap:10px;">
+              <span class="token">150 ms · popover / tooltip</span>
+              <span class="token">220 ms · default</span>
+              <span class="token">250 ms · sheet / window</span>
+              <span class="token">400 ms · mission control</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- APP ICONS -->
+        <section class="pane" data-pane="appicons">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Foundations · Iconography</div>
+              <h1>App Icons</h1>
+            </div>
+            <p>Every macOS app icon is a squircle with a 22 % corner radius. These are placeholder squircles tuned to feel adjacent to the system without recreating the real artwork.</p>
+          </div>
+          <div class="section">
+            <div class="app-grid">
+              <div class="app-icon" style="background: linear-gradient(180deg,#7ec0ff,#3b8fff);">F</div>
+              <div class="app-icon" style="background: linear-gradient(180deg,#fff,#dadbe1);color:#0a84ff;">S</div>
+              <div class="app-icon" style="background: linear-gradient(180deg,#cdf0ff,#5ec2f5);">@</div>
+              <div class="app-icon" style="background: linear-gradient(180deg,#5fe46a,#1fa934);">M</div>
+              <div class="app-icon" style="background: linear-gradient(180deg,#ffe06a,#f5a623);">P</div>
+              <div class="app-icon" style="background: linear-gradient(180deg,#a3e3ff,#3b8fff);">A</div>
+              <div class="app-icon" style="background: linear-gradient(180deg,#cdcdd1,#7d7d83);">TV</div>
+              <div class="app-icon" style="background: linear-gradient(180deg,#cdf0e8,#3aa78a);">M</div>
+              <div class="app-icon" style="background: linear-gradient(180deg,#fff,#dadbe1);color:#ff3b30;">C</div>
+              <div class="app-icon" style="background: linear-gradient(180deg,#ff5f7d,#d8214a);">♪</div>
+              <div class="app-icon" style="background: linear-gradient(180deg,#fff4a3,#f0c93f);color:#5b4500">N</div>
+              <div class="app-icon" style="background: linear-gradient(180deg,#3a3a3c,#1c1c1e);">⚙</div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Scale · 16 → 128 pt</h2>
+            <div class="row" style="align-items: flex-end; gap: 18px;">
+              <div class="app-icon" style="width:16px;height:16px;font-size:10px;background: linear-gradient(180deg,#7ec0ff,#3b8fff);">F</div>
+              <div class="app-icon" style="width:24px;height:24px;font-size:14px;background: linear-gradient(180deg,#7ec0ff,#3b8fff);">F</div>
+              <div class="app-icon" style="width:32px;height:32px;font-size:18px;background: linear-gradient(180deg,#7ec0ff,#3b8fff);">F</div>
+              <div class="app-icon" style="width:48px;height:48px;font-size:24px;background: linear-gradient(180deg,#7ec0ff,#3b8fff);">F</div>
+              <div class="app-icon" style="width:64px;height:64px;font-size:32px;background: linear-gradient(180deg,#7ec0ff,#3b8fff);">F</div>
+              <div class="app-icon" style="width:96px;height:96px;font-size:46px;background: linear-gradient(180deg,#7ec0ff,#3b8fff);">F</div>
+              <div class="app-icon" style="width:128px;height:128px;font-size:60px;background: linear-gradient(180deg,#7ec0ff,#3b8fff);">F</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== CONTROLS ===================== -->
+
+        <!-- BUTTONS -->
+        <section class="pane" data-pane="buttons">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Controls · Buttons</div>
+              <h1>Push Buttons</h1>
+            </div>
+            <p>Six flavors × four sizes × five states. Hover any button to see its hover state.</p>
+          </div>
+
+          <div class="section">
+            <h2>Default · light</h2>
+            <div class="row">
+              <button class="btn">Cancel</button>
+              <button class="btn primary">Save</button>
+              <button class="btn destruct">Move to Trash</button>
+              <button class="btn primary destruct">Delete</button>
+              <button class="btn borderless">Learn More</button>
+              <button class="btn disabled">Disabled</button>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>Sizes</h2>
+            <div class="row">
+              <button class="btn mini">Mini</button>
+              <button class="btn small">Small</button>
+              <button class="btn">Regular</button>
+              <button class="btn large">Large</button>
+              <button class="btn primary mini">Mini</button>
+              <button class="btn primary small">Small</button>
+              <button class="btn primary">Regular</button>
+              <button class="btn primary large">Large</button>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>States · primary</h2>
+            <div class="grid g-4">
+              <div class="card"><div class="lbl" style="margin-bottom:8px;">Idle</div><button class="btn primary">Continue</button></div>
+              <div class="card"><div class="lbl" style="margin-bottom:8px;">Hover</div><button class="btn primary hover">Continue</button></div>
+              <div class="card"><div class="lbl" style="margin-bottom:8px;">Pressed</div><button class="btn primary pressed">Continue</button></div>
+              <div class="card"><div class="lbl" style="margin-bottom:8px;">Disabled</div><button class="btn primary disabled">Continue</button></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>Icon &amp; toolbar buttons</h2>
+            <div class="row">
+              <div class="pill">
+                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="14,6 8,12 14,18"/></svg></span>
+                <span class="divider"></span>
+                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="10,6 16,12 10,18"/></svg></span>
+              </div>
+              <div class="pill">
+                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+              </div>
+              <div class="pill">
+                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5l4 4-11 11H5.5v-4l11-11z"/></svg></span>
+                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1.2 13.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 6"/></svg></span>
+                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TEXT FIELDS -->
+        <section class="pane" data-pane="fields">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Controls · Inputs</div>
+              <h1>Text Fields</h1>
+            </div>
+            <p>Inset rectangles with a focus ring in the active accent. Type into them — the focus ring appears.</p>
+          </div>
+          <div class="section">
+            <h2>Sizes</h2>
+            <div class="stack" style="gap: 14px;">
+              <div class="row"><span class="lbl">Regular</span><input class="field" placeholder="Document name" style="width: 240px;"></div>
+              <div class="row"><span class="lbl">Large</span><input class="field lg" placeholder="username@icloud.com" style="width: 280px;"></div>
+              <div class="row"><span class="lbl">Pre-filled</span><input class="field" value="Untitled — Notes" style="width: 240px;"></div>
+              <div class="row"><span class="lbl">Disabled</span><input class="field" value="Read only" disabled style="width: 240px; opacity: .45;"></div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Validation</h2>
+            <div class="stack">
+              <div class="row">
+                <input class="field" value="rosa@gmail" style="width: 240px; box-shadow: inset 0 0 0 1.5px var(--sys-red);">
+                <span style="color: var(--sys-red); font: 400 12px/16px var(--font-system);">Enter a valid email address.</span>
+              </div>
+              <div class="row">
+                <input class="field" value="●●●●●●●●●●" style="width: 240px;">
+                <span style="color: var(--sys-green); font: 600 12px/16px var(--font-system);">Strong password</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEARCH -->
+        <section class="pane" data-pane="search">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Controls · Inputs</div>
+              <h1>Search Fields</h1>
+            </div>
+            <p>Three flavors: idle, scoped with token, and the rounded toolbar style used in Finder.</p>
+          </div>
+          <div class="section">
+            <div class="stack">
+              <div class="row">
+                <span class="lbl">Idle</span>
+                <label class="search-field">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+                  <input placeholder="Search">
+                </label>
+              </div>
+              <div class="row">
+                <span class="lbl">With value</span>
+                <label class="search-field">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+                  <input value="aurora wallpaper">
+                  <svg viewBox="0 0 24 24" fill="currentColor" style="opacity:.5"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+                </label>
+              </div>
+              <div class="row">
+                <span class="lbl">Toolbar style</span>
+                <label class="search" style="width: 240px;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+                  <input placeholder="This Mac">
+                </label>
+              </div>
+              <div class="row">
+                <span class="lbl">Scoped</span>
+                <label class="search-field" style="width: 280px;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+                  <span style="display:inline-flex;align-items:center;gap:4px; padding: 1px 6px; border-radius:4px; background: var(--accent); color:#fff; font: 500 11px/14px var(--font-system);">Kind: PDF<span>×</span></span>
+                  <input placeholder="" style="min-width: 40px;">
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TOGGLES -->
+        <section class="pane" data-pane="toggles">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Controls · Switches</div>
+              <h1>Toggles</h1>
+            </div>
+            <p>Click any switch to toggle it. macOS toggles always show the "on" color, even when filling with accent.</p>
+          </div>
+          <div class="section">
+            <h2>Sizes &amp; colors</h2>
+            <div class="stack">
+              <div class="row"><span class="lbl">Default · green</span><div class="sw toggle on"></div><div class="sw toggle"></div></div>
+              <div class="row"><span class="lbl">Accent</span><div class="sw toggle accent on"></div><div class="sw toggle accent"></div></div>
+              <div class="row"><span class="lbl">Large</span><div class="sw toggle lg on"></div><div class="sw toggle lg"></div></div>
+              <div class="row"><span class="lbl">Small</span><div class="sw toggle sm on"></div><div class="sw toggle sm"></div></div>
+              <div class="row"><span class="lbl">Disabled</span><div class="sw on" style="opacity:.45"></div><div class="sw" style="opacity:.45"></div></div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>In context</h2>
+            <div class="card stack" style="gap: 0;">
+              <div class="form-row" style="grid-template-columns: 1fr auto;"><span>Show Hidden Files</span><div class="sw toggle on"></div></div>
+              <div class="form-row" style="grid-template-columns: 1fr auto; border-top: 0.5px solid var(--separator);"><span>Open at Login</span><div class="sw toggle"></div></div>
+              <div class="form-row" style="grid-template-columns: 1fr auto; border-top: 0.5px solid var(--separator);"><span>Use Animated Wallpaper on Battery</span><div class="sw toggle"></div></div>
+              <div class="form-row" style="grid-template-columns: 1fr auto; border-top: 0.5px solid var(--separator);"><span>Allow Notifications</span><div class="sw toggle on"></div></div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Checkboxes &amp; Radio buttons</h2>
+            <div class="grid g-2">
+              <div class="card stack" style="gap: 8px;">
+                <div class="lbl" style="margin-bottom: 4px;">Checkbox states</div>
+                <label style="display:flex;gap:8px;align-items:center;font:400 13px var(--font-system);"><span class="cb on toggle"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,8 7,12 13,4"/></svg></span> Sync calendar</label>
+                <label style="display:flex;gap:8px;align-items:center;font:400 13px var(--font-system);"><span class="cb mixed"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="4" y1="8" x2="12" y2="8"/></svg></span> Sync some albums (3 of 12)</label>
+                <label style="display:flex;gap:8px;align-items:center;font:400 13px var(--font-system);"><span class="cb toggle"></span> Sync contacts</label>
+                <label style="display:flex;gap:8px;align-items:center;font:400 13px var(--font-system);opacity:.45;"><span class="cb"></span> Sync wallet (locked)</label>
+              </div>
+              <div class="card stack" style="gap: 8px;">
+                <div class="lbl" style="margin-bottom: 4px;">Radio group · Appearance</div>
+                <label style="display:flex;gap:8px;align-items:center;font:400 13px var(--font-system);"><span class="radio appearance on"></span> Light</label>
+                <label style="display:flex;gap:8px;align-items:center;font:400 13px var(--font-system);"><span class="radio appearance"></span> Dark</label>
+                <label style="display:flex;gap:8px;align-items:center;font:400 13px var(--font-system);"><span class="radio appearance"></span> Auto</label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEGMENTED -->
+        <section class="pane" data-pane="segmented">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Controls · Selection</div>
+              <h1>Segmented Controls &amp; Tabs</h1>
+            </div>
+            <p>Pill-shaped selectors. Click a segment to switch — it's wired up.</p>
+          </div>
+          <div class="section">
+            <h2>Default</h2>
+            <div class="stack">
+              <div class="row"><span class="lbl">View</span><span class="seg js-seg"><span class="sel">Icons</span><span>List</span><span>Columns</span></span></div>
+              <div class="row"><span class="lbl">Range</span><span class="seg js-seg"><span class="sel">Today</span><span>Week</span><span>Month</span><span>Year</span></span></div>
+              <div class="row"><span class="lbl">Filter</span><span class="seg js-seg"><span class="sel">All</span><span>Unread</span><span>Flagged</span></span></div>
+              <div class="row"><span class="lbl">Tabs</span><span class="tabs"><span class="tab sel js-tab">General</span><span class="tab js-tab">Privacy</span><span class="tab js-tab">Advanced</span></span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SLIDERS -->
+        <section class="pane" data-pane="sliders">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Controls · Continuous</div>
+              <h1>Sliders &amp; Dials</h1>
+            </div>
+            <p>Click anywhere on a track to set the value; drag the thumb to slide.</p>
+          </div>
+          <div class="section">
+            <h2>Sliders</h2>
+            <div class="stack">
+              <div class="row"><span class="lbl">Volume</span><div class="slider js-slider"><div class="track"><div class="fill" style="width: 40%"></div></div><div class="thumb" style="left: 40%"></div></div><span class="caption" data-bind="value">40</span></div>
+              <div class="row"><span class="lbl">Brightness</span><div class="slider js-slider"><div class="track"><div class="fill" style="width: 75%"></div></div><div class="thumb" style="left: 75%"></div></div><span class="caption" data-bind="value">75</span></div>
+              <div class="row"><span class="lbl">Tracking</span><div class="slider js-slider"><div class="track"><div class="fill" style="width: 25%"></div></div><div class="thumb" style="left: 25%"></div></div><span class="caption" data-bind="value">25</span></div>
+              <div class="row"><span class="lbl">Disabled</span><div class="slider" style="opacity:.45"><div class="track"><div class="fill" style="width: 30%"></div></div><div class="thumb" style="left: 30%"></div></div></div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Dials · drag horizontally</h2>
+            <div class="row" style="gap: 18px;">
+              <div style="text-align:center"><div class="dial js-dial" style="--rot: 0deg"></div><div class="caption" style="margin-top:6px;" data-bind="rot">0°</div></div>
+              <div style="text-align:center"><div class="dial js-dial" style="--rot: 45deg"></div><div class="caption" style="margin-top:6px;" data-bind="rot">45°</div></div>
+              <div style="text-align:center"><div class="dial js-dial" style="--rot: 135deg"></div><div class="caption" style="margin-top:6px;" data-bind="rot">135°</div></div>
+              <div style="text-align:center"><div class="dial js-dial" style="--rot: 225deg"></div><div class="caption" style="margin-top:6px;" data-bind="rot">225°</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEPPERS / WELLS -->
+        <section class="pane" data-pane="steppers">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Controls · Numeric &amp; color</div>
+              <h1>Steppers, Color Wells &amp; Combos</h1>
+            </div>
+            <p>Click ▲ / ▼ on the steppers to change the value. Color wells are linked to the accent.</p>
+          </div>
+          <div class="section">
+            <h2>Steppers</h2>
+            <div class="stack">
+              <div class="row"><span class="lbl">Quantity</span>
+                <div class="stepper js-stepper" data-min="0" data-max="999">
+                  <input class="num" value="12">
+                  <div class="steps"><span class="up">▲</span><span class="dn">▼</span></div>
+                </div>
+              </div>
+              <div class="row"><span class="lbl">Padding</span>
+                <div class="stepper js-stepper" data-min="0" data-max="120">
+                  <input class="num" value="24">
+                  <div class="steps"><span class="up">▲</span><span class="dn">▼</span></div>
+                </div>
+                <span class="caption">pt</span>
+              </div>
+              <div class="row"><span class="lbl">Quantity (–/+)</span>
+                <span class="row" style="gap: 4px;">
+                  <button class="btn small" style="padding: 0 8px;">−</button>
+                  <span class="caption" style="min-width: 28px; text-align: center;">3</span>
+                  <button class="btn small" style="padding: 0 8px;">+</button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Color wells</h2>
+            <div class="row">
+              <div class="well sm"></div>
+              <div class="well"></div>
+              <div class="well lg"></div>
+              <div class="well circular"></div>
+              <div class="well lg" style="background: linear-gradient(135deg, #ff5f7d, #ffb55a, #ffd060, #5fe46a, #5ec2f5, #af52de);"></div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Combos / Popup buttons</h2>
+            <div class="row">
+              <div class="combo">English (US) <span class="caret"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2,4 5,7 8,4"/></svg></span></div>
+              <div class="combo">Light <span class="caret"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2,4 5,7 8,4"/></svg></span></div>
+              <div class="combo" style="min-width: 200px;">Every 15 minutes <span class="caret"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2,4 5,7 8,4"/></svg></span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROGRESS -->
+        <section class="pane" data-pane="progress">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Controls · Progress</div>
+              <h1>Progress &amp; Spinners</h1>
+            </div>
+            <p>Bars for known durations, spinners for unknown ones. All in the active accent.</p>
+          </div>
+          <div class="section">
+            <h2>Determinate</h2>
+            <div class="stack">
+              <div class="row"><div style="height: 8px; width: 240px; background: var(--fill-secondary); border-radius: 100px; overflow: hidden;"><div style="height: 100%; width: 25%; background: var(--accent); border-radius: 100px;"></div></div><span class="caption">25 %</span></div>
+              <div class="row"><div style="height: 8px; width: 240px; background: var(--fill-secondary); border-radius: 100px; overflow: hidden;"><div style="height: 100%; width: 50%; background: var(--accent); border-radius: 100px;"></div></div><span class="caption">50 %</span></div>
+              <div class="row"><div style="height: 8px; width: 240px; background: var(--fill-secondary); border-radius: 100px; overflow: hidden;"><div style="height: 100%; width: 80%; background: var(--accent); border-radius: 100px;"></div></div><span class="caption">80 %</span></div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Indeterminate</h2>
+            <div class="row" style="gap: 24px; align-items: center;">
+              <div style="height: 8px; width: 240px; background: var(--fill-secondary); border-radius: 100px; overflow: hidden; position:relative;">
+                <div style="position:absolute; inset: 0; width: 32%; background: var(--accent); border-radius: 100px; animation: indSlide 1.6s ease-in-out infinite;"></div>
+              </div>
+              <style>@keyframes indSlide { 0% { transform: translateX(-100%);} 100% { transform: translateX(320%);} }</style>
+              <div style="width: 20px; height: 20px; border-radius: 50%; border: 2.5px solid var(--fill-secondary); border-top-color: var(--accent); animation: spinrot 0.9s linear infinite;"></div>
+              <div style="width: 28px; height: 28px; border-radius: 50%; border: 3px solid var(--fill-secondary); border-top-color: var(--accent); animation: spinrot 0.9s linear infinite;"></div>
+              <style>@keyframes spinrot { to { transform: rotate(360deg);} }</style>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Gauge · circular</h2>
+            <div class="row" style="gap: 24px;">
+              <div class="ring-gauge" data-value="65"></div>
+              <div class="ring-gauge" data-value="82"></div>
+              <div class="ring-gauge" data-value="33"></div>
+            </div>
+            <style>
+              .ring-gauge {
+                width: 64px; height: 64px; border-radius: 50%;
+                background: conic-gradient(var(--accent) calc(var(--p,0)*1%), var(--fill-secondary) 0);
+                display: grid; place-items: center;
+                position: relative;
+              }
+              .ring-gauge::before {
+                content: ""; position: absolute; inset: 6px; border-radius: 50%; background: var(--card-bg, #fff);
+              }
+              [data-theme="dark"] .ring-gauge::before { background: #2a2a2c; }
+              .ring-gauge::after {
+                content: attr(data-value) "%"; position: relative; z-index: 1;
+                font: 600 13px var(--font-system); color: var(--label-primary);
+              }
+            </style>
+          </div>
+        </section>
+
+        <!-- DISCLOSURE -->
+        <section class="pane" data-pane="disclosure">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Controls · Disclosure</div>
+              <h1>Disclosure</h1>
+            </div>
+            <p>Click rows to open / close.</p>
+          </div>
+          <div class="section">
+            <div class="card">
+              <div class="disc-row js-disc open"><span class="tri"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,2 7,5 3,8"/></svg></span> Documents</div>
+              <div class="disc-kids">
+                <div class="disc-row js-disc"><span class="tri"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,2 7,5 3,8"/></svg></span> Reports</div>
+                <div class="disc-kids">
+                  <div class="disc-row">📄 Q1.pdf</div>
+                  <div class="disc-row">📄 Q2.pdf</div>
+                </div>
+                <div class="disc-row">📄 Style Guide.pdf</div>
+              </div>
+              <div class="disc-row js-disc"><span class="tri"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,2 7,5 3,8"/></svg></span> Pictures</div>
+              <div class="disc-kids">
+                <div class="disc-row">🖼 Aurora.png</div>
+                <div class="disc-row">🖼 Sequoia.png</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- LISTS / TABLES -->
+        <section class="pane" data-pane="lists">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Controls · Lists</div>
+              <h1>Lists &amp; Tables</h1>
+            </div>
+            <p>Click rows to select.</p>
+          </div>
+          <div class="section">
+            <div class="card" style="padding: 0; overflow: hidden;">
+              <table class="table">
+                <thead><tr><th>Name</th><th>Kind</th><th>Date Modified</th><th>Size</th></tr></thead>
+                <tbody class="js-list">
+                  <tr class="sel"><td>📁 Projects</td><td>Folder</td><td>Today, 9:41 AM</td><td>—</td></tr>
+                  <tr><td>📁 Design System</td><td>Folder</td><td>Yesterday</td><td>—</td></tr>
+                  <tr><td>📄 Style Guide.pdf</td><td>PDF</td><td>Jun 8</td><td>2.4 MB</td></tr>
+                  <tr><td>🖼 Aurora.png</td><td>Image</td><td>Jun 6</td><td>11.2 MB</td></tr>
+                  <tr><td>🎬 Demo.mp4</td><td>Movie</td><td>May 30</td><td>184 MB</td></tr>
+                  <tr><td>📄 Notes.md</td><td>Markdown</td><td>May 27</td><td>32 KB</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SURFACES ===================== -->
+
+        <!-- POPOVERS -->
+        <section class="pane" data-pane="popovers">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Surfaces · Floating</div>
+              <h1>Popovers</h1>
+            </div>
+            <p>Anchored translucent panels with arrows on any side.</p>
+          </div>
+          <div class="section">
+            <div class="card" style="background-image: var(--wallpaper); background-size: cover; min-height: 280px; padding: 32px; display: grid; grid-template-columns: repeat(2,1fr); gap: 22px; align-items: start;">
+              <div class="popover" style="padding: 14px 16px;">
+                <div style="font: 600 13px var(--font-system); margin-bottom: 4px;">AirDrop Files</div>
+                <div style="font: 400 12px var(--font-system); color: var(--label-secondary); max-width: 220px; margin-bottom: 10px;">Send 3 photos to nearby devices.</div>
+                <div class="row" style="gap: 6px;">
+                  <button class="btn small">Cancel</button>
+                  <button class="btn primary small">Send</button>
+                </div>
+              </div>
+              <div class="popover" style="padding: 12px;">
+                <div style="font: 600 12px var(--font-system); margin-bottom: 8px;">Quick Look</div>
+                <div style="width: 200px; height: 130px; border-radius: 8px; background-image: var(--wallpaper); background-size: cover; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.10);"></div>
+              </div>
+              <div class="popover" style="padding: 10px; min-width: 220px;">
+                <div class="row" style="gap: 6px;">
+                  <span class="well circular"></span>
+                  <span class="well circular" style="background: var(--sys-red);"></span>
+                  <span class="well circular" style="background: var(--sys-orange);"></span>
+                  <span class="well circular" style="background: var(--sys-yellow);"></span>
+                  <span class="well circular" style="background: var(--sys-green);"></span>
+                  <span class="well circular" style="background: var(--sys-purple);"></span>
+                </div>
+              </div>
+              <div class="popover" style="padding: 12px;">
+                <div class="row" style="gap: 10px;">
+                  <div class="ind-cap" style="width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--fill-secondary); border-top-color: var(--accent); animation: spinrot 0.9s linear infinite;"></div>
+                  <div>
+                    <div style="font: 600 12px var(--font-system);">Backing up to iCloud</div>
+                    <div style="font: 400 11px var(--font-system); color: var(--label-secondary);">2 of 124 items</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TOOLTIPS -->
+        <section class="pane" data-pane="tooltips">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Surfaces · Floating</div>
+              <h1>Tooltips</h1>
+            </div>
+            <p>Light, dark, and anchored — small floating bits of help.</p>
+          </div>
+          <div class="section">
+            <div class="row" style="gap: 22px;">
+              <div class="tip">Save</div>
+              <div class="tip">⌘ S to save</div>
+              <div class="tip">Photos taken in this location · Mon 9:41 AM</div>
+              <div class="tip" style="background: rgba(245,245,245,0.95); color: var(--label-primary); border: 0.5px solid var(--separator);">Light variant</div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Anchored</h2>
+            <div class="row" style="gap: 60px;">
+              <div style="position: relative;"><button class="btn">Save</button><div class="tip" style="position: absolute; top: -28px; left: 50%; transform: translateX(-50%);">Save changes</div></div>
+              <div style="position: relative;"><div class="well lg"></div><div class="tip" style="position: absolute; top: -28px; left: 50%; transform: translateX(-50%);">Accent color</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MENUS -->
+        <section class="pane" data-pane="menus">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Surfaces · Menus</div>
+              <h1>Menus</h1>
+            </div>
+            <p>Translucent menus with kbd hints, separators, and the accent-color hover.</p>
+          </div>
+          <div class="section">
+            <div class="card" style="background-image: var(--wallpaper); background-size: cover; padding: 32px; display: grid; grid-template-columns: repeat(2,1fr); gap: 22px;">
+              <div class="menu" style="width: 240px;">
+                <div class="mi">New Window<span class="kbd">⌘N</span></div>
+                <div class="mi">New Tab<span class="kbd">⌘T</span></div>
+                <div class="mi">New Folder<span class="kbd">⇧⌘N</span></div>
+                <div class="sep"></div>
+                <div class="mi">Open<span class="kbd">⌘O</span></div>
+                <div class="mi">Open With ▸</div>
+                <div class="mi dis">Close All Tabs</div>
+                <div class="sep"></div>
+                <div class="mi">Save As…<span class="kbd">⇧⌘S</span></div>
+                <div class="mi">Move to Trash<span class="kbd">⌘⌫</span></div>
+              </div>
+              <div class="menu" style="width: 220px;">
+                <div class="mi checked">As Icons</div>
+                <div class="mi">As List</div>
+                <div class="mi">As Columns</div>
+                <div class="mi">As Gallery</div>
+                <div class="sep"></div>
+                <div class="mi">Use Stacks<span class="kbd">⌃⌘0</span></div>
+                <div class="mi">Sort By ▸</div>
+                <div class="sep"></div>
+                <div class="mi">Show Path Bar<span class="kbd">⌥⌘P</span></div>
+                <div class="mi">Show Status Bar<span class="kbd">⌘/</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ALERTS / DIALOGS -->
+        <section class="pane" data-pane="alerts">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Surfaces · Modals</div>
+              <h1>Alerts &amp; Dialogs</h1>
+            </div>
+            <p>The two canonical confirmation patterns.</p>
+          </div>
+          <div class="section">
+            <div class="card" style="background-image: var(--wallpaper); background-size: cover; padding: 32px; display: grid; grid-template-columns: repeat(2,1fr); gap: 22px; justify-items: center;">
+              <div class="alert-shell">
+                <div class="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="1" fill="currentColor"/></svg></div>
+                <div class="at">Do you want to save the changes you made to "Untitled"?</div>
+                <div class="ab">Your changes will be lost if you don't save them.</div>
+                <div class="ax">
+                  <button class="btn">Don't Save</button>
+                  <button class="btn primary">Save</button>
+                </div>
+                <div style="margin-top: 8px;"><button class="btn borderless" style="font-size: 12px;">Cancel</button></div>
+              </div>
+              <div class="alert-shell">
+                <div class="ai" style="background: var(--sys-red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1.2 13.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 6"/></svg></div>
+                <div class="at">Move "Aurora.png" to the Trash?</div>
+                <div class="ab">You can put it back later. This action is reversible from Finder.</div>
+                <div class="ax">
+                  <button class="btn">Cancel</button>
+                  <button class="btn primary destruct">Move to Trash</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- NOTIFICATIONS -->
+        <section class="pane" data-pane="notifications">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Surfaces · Banner</div>
+              <h1>Notifications</h1>
+            </div>
+            <p>Translucent banners that float over the desktop in the top-right corner.</p>
+          </div>
+          <div class="section">
+            <div class="card" style="background-image: var(--wallpaper); background-size: cover; padding: 26px; display: grid; gap: 12px; justify-items: end;">
+              <div class="notif">
+                <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5A8 8 0 1 1 12 3a8 8 0 0 1 9 8.5z"/><path d="M22 2L11 13"/></svg></div>
+                <div>
+                  <div class="ttl">Messages · Alex</div>
+                  <div class="sub">Bringing two coffees ☕</div>
+                </div>
+                <div class="ts">9:41 AM</div>
+              </div>
+              <div class="notif">
+                <div class="icn" style="background: var(--sys-green);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg></div>
+                <div>
+                  <div class="ttl">Download complete</div>
+                  <div class="sub">macOS 26.1 update is ready to install.</div>
+                </div>
+                <div class="ts">now</div>
+              </div>
+              <div class="notif">
+                <div class="icn" style="background: var(--sys-orange);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></div>
+                <div>
+                  <div class="ttl">Calendar · Standup</div>
+                  <div class="sub">In 10 minutes · Room 1.4</div>
+                </div>
+                <div class="ts">9:30 AM</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WINDOW CONTROLS -->
+        <section class="pane" data-pane="windowctl">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Surfaces · Chrome</div>
+              <h1>Window Controls</h1>
+            </div>
+            <p>The "traffic lights" — close, minimize, zoom.</p>
+          </div>
+          <div class="section">
+            <h2>States</h2>
+            <div class="grid g-4">
+              <div class="wc-cell"><div class="ttl">Idle</div>
+                <div class="lights-big"><span class="l close"></span><span class="l min"></span><span class="l zoom"></span></div>
+              </div>
+              <div class="wc-cell"><div class="ttl">Hover</div>
+                <div class="lights-big">
+                  <span class="l close" style="background: #ff5f57;">
+                    <svg viewBox="0 0 14 14" style="width:100%;height:100%;color: #6b0d0d;"><path d="M4.2 4.2L9.8 9.8 M9.8 4.2L4.2 9.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                  </span>
+                  <span class="l min" style="background:#febc2e;">
+                    <svg viewBox="0 0 14 14" style="width:100%;height:100%;color: #6b4a0d;"><line x1="3.5" y1="7" x2="10.5" y2="7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                  </span>
+                  <span class="l zoom" style="background:#28c840;">
+                    <svg viewBox="0 0 14 14" style="width:100%;height:100%;color: #094c0a;"><polygon points="5,3 11,3 11,9" fill="currentColor"/><polygon points="9,11 3,11 3,5" fill="currentColor"/></svg>
+                  </span>
+                </div>
+              </div>
+              <div class="wc-cell"><div class="ttl">Inactive</div>
+                <div class="lights-big">
+                  <span class="l" style="background: #cccccf;"></span>
+                  <span class="l" style="background: #cccccf;"></span>
+                  <span class="l" style="background: #cccccf;"></span>
+                </div>
+              </div>
+              <div class="wc-cell"><div class="ttl">Big · large</div>
+                <div class="lights-big" style="gap: 12px;">
+                  <span class="l close" style="width: 20px; height: 20px;"></span>
+                  <span class="l min" style="width: 20px; height: 20px;"></span>
+                  <span class="l zoom" style="width: 20px; height: 20px;"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>In a window</h2>
+            <div class="miniwin">
+              <div class="mw-tb"><div class="lights"><span class="l close"></span><span class="l min"></span><span class="l zoom"></span></div><span style="margin-left:6px;">Untitled.txt</span></div>
+              <div style="padding: 22px; font: 400 13px var(--font-system); color: var(--label-secondary);">Plain text window chrome.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FORM PATTERN -->
+        <section class="pane" data-pane="form">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Patterns</div>
+              <h1>Form Pattern</h1>
+            </div>
+            <p>The canonical macOS settings form: ~130 pt right-aligned label column, controls left-aligned, grouped in cards.</p>
+          </div>
+          <div class="section">
+            <div class="form-section">
+              <h3>General</h3>
+              <div class="form-row"><span class="lbl-r">Appearance</span>
+                <span class="row" style="gap: 14px;">
+                  <label style="display:flex;gap:6px;align-items:center;font:400 13px var(--font-system);"><span class="radio appearance2 on"></span> Light</label>
+                  <label style="display:flex;gap:6px;align-items:center;font:400 13px var(--font-system);"><span class="radio appearance2"></span> Dark</label>
+                  <label style="display:flex;gap:6px;align-items:center;font:400 13px var(--font-system);"><span class="radio appearance2"></span> Auto</label>
+                </span>
+              </div>
+              <div class="form-row"><span class="lbl-r">Accent color</span>
+                <div class="row" style="gap: 6px;" id="formAccent">
+                  <span class="sw-dot" style="background: var(--sys-blue);"   data-color="--sys-blue"></span>
+                  <span class="sw-dot" style="background: var(--sys-purple);" data-color="--sys-purple"></span>
+                  <span class="sw-dot" style="background: var(--sys-pink);"   data-color="--sys-pink"></span>
+                  <span class="sw-dot" style="background: var(--sys-red);"    data-color="--sys-red"></span>
+                  <span class="sw-dot" style="background: var(--sys-orange);" data-color="--sys-orange"></span>
+                  <span class="sw-dot" style="background: var(--sys-yellow);" data-color="--sys-yellow"></span>
+                  <span class="sw-dot" style="background: var(--sys-green);"  data-color="--sys-green"></span>
+                  <span class="sw-dot" style="background: var(--sys-gray);"   data-color="--sys-gray"></span>
+                </div>
+              </div>
+              <div class="form-row"><span class="lbl-r">Highlight color</span>
+                <div class="combo">Multicolor <span class="caret"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2,4 5,7 8,4"/></svg></span></div>
+              </div>
+              <div class="form-row"><span class="lbl-r">Sidebar icon size</span>
+                <span class="seg js-seg"><span class="sel">Small</span><span>Medium</span><span>Large</span></span>
+              </div>
+              <div class="form-row"><span class="lbl-r">Show scroll bars</span>
+                <span class="row" style="gap: 14px;">
+                  <label style="display:flex;gap:6px;align-items:center;font:400 13px var(--font-system);"><span class="radio sb-r on"></span> Automatic</label>
+                  <label style="display:flex;gap:6px;align-items:center;font:400 13px var(--font-system);"><span class="radio sb-r"></span> When scrolling</label>
+                  <label style="display:flex;gap:6px;align-items:center;font:400 13px var(--font-system);"><span class="radio sb-r"></span> Always</label>
+                </span>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>Default web browser</h3>
+              <div class="form-row"><span class="lbl-r">Browser</span>
+                <div class="combo" style="min-width: 200px;">Safari <span class="caret"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2,4 5,7 8,4"/></svg></span></div>
+              </div>
+              <div class="form-row"><span class="lbl-r"></span>
+                <label style="display:flex;gap:6px;align-items:center;font:400 13px var(--font-system);"><span class="cb on toggle"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,8 7,12 13,4"/></svg></span> Ask to keep changes when closing documents</label>
+              </div>
+              <div class="form-row"><span class="lbl-r"></span>
+                <label style="display:flex;gap:6px;align-items:center;font:400 13px var(--font-system);"><span class="cb toggle"></span> Close windows when quitting an app</label>
+              </div>
+            </div>
+            <div class="row" style="justify-content: flex-end; padding-right: 22px;">
+              <button class="btn">Revert</button>
+              <button class="btn primary">Done</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- TOOLBARS -->
+        <section class="pane" data-pane="toolbars">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Surfaces · Chrome</div>
+              <h1>Toolbars</h1>
+            </div>
+            <p>Floating capsule toolbars stacked into pills.</p>
+          </div>
+          <div class="section">
+            <h2>Mail-style</h2>
+            <div class="card" style="background-image: var(--wallpaper); background-size: cover; padding: 22px;">
+              <div class="miniwin">
+                <div class="mw-tb" style="padding: 10px 14px; gap: 14px;">
+                  <div class="lights"><span class="l close"></span><span class="l min"></span><span class="l zoom"></span></div>
+                  <div class="pill" style="margin-left: 8px;">
+                    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="14,6 8,12 14,18"/></svg></span>
+                    <span class="divider"></span>
+                    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="10,6 16,12 10,18"/></svg></span>
+                  </div>
+                  <span style="font: 700 14px var(--font-display); letter-spacing: -0.01em;">Inbox</span>
+                  <span style="flex:1;"></span>
+                  <div class="pill">
+                    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 8l8 6 8-6"/></svg></span>
+                    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1.2 13.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 6"/></svg></span>
+                    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="22 2 11 13 2 9"/><polyline points="22 2 15 22 11 13"/></svg></span>
+                  </div>
+                  <label class="search-field" style="width: 180px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+                    <input placeholder="Search Mail">
+                  </label>
+                </div>
+                <div style="height: 120px; padding: 16px; font: 400 12px var(--font-system); color: var(--label-secondary);">Message list goes here…</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SIDEBARS / LAYOUT -->
+        <section class="pane" data-pane="sidebars">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Surfaces · Layout</div>
+              <h1>Sidebars &amp; Layout</h1>
+            </div>
+            <p>Liquid Glass split-view with sidebar bleeding the wallpaper.</p>
+          </div>
+          <div class="section">
+            <div class="card" style="background-image: var(--wallpaper); background-size: cover; padding: 22px;">
+              <div class="miniwin" style="height: 280px;">
+                <div style="display: grid; grid-template-columns: 200px 1fr; height: 100%;">
+                  <aside style="background: rgba(140,140,150,0.30); backdrop-filter: var(--glass-blur); padding: 32px 8px 10px; display: flex; flex-direction: column; gap: 1px;">
+                    <div class="lights" style="position: absolute; top: 12px; left: 14px;"><span class="l close"></span><span class="l min"></span><span class="l zoom"></span></div>
+                    <div class="sb-section" style="padding: 4px 12px; color: rgba(0,0,0,.5); font: 600 11px var(--font-system);">Favorites</div>
+                    <div class="sb-item">📁 Recents</div>
+                    <div class="sb-item active">📁 Documents</div>
+                    <div class="sb-item">📁 Downloads</div>
+                    <div class="sb-item">📁 Pictures</div>
+                    <div class="sb-section" style="padding: 8px 12px 4px; color: rgba(0,0,0,.5); font: 600 11px var(--font-system);">iCloud</div>
+                    <div class="sb-item">☁ iCloud Drive</div>
+                    <div class="sb-item">🤝 Shared</div>
+                  </aside>
+                  <div style="padding: 14px 18px; font: 400 12px var(--font-system); color: var(--label-secondary);">Content area · 400 pt min</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Widths</h2>
+            <div class="row" style="gap: 18px;">
+              <span class="token">Sidebar · 180 – 240 pt</span>
+              <span class="token">Inspector · 260 – 320 pt</span>
+              <span class="token">Content · ≥ 400 pt</span>
+              <span class="token">Window edge · 24 pt</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- DOCK SHOWCASE -->
+        <section class="pane" data-pane="dock">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">Surfaces · System</div>
+              <h1>Menu Bar &amp; Dock</h1>
+            </div>
+            <p>Both the menu bar and the Dock are Liquid Glass thick surfaces. Hover the Dock at the bottom of this window to see the magnification.</p>
+          </div>
+          <div class="section">
+            <h2>Menu Bar</h2>
+            <div class="card" style="padding: 0; overflow: hidden;">
+              <div style="background-image: var(--wallpaper); background-size: cover; padding: 14px 14px 60px;">
+                <div style="background: rgba(255,255,255,0.30); backdrop-filter: var(--glass-blur); border-radius: 8px; padding: 6px 14px; color: #fff; font: 400 13px var(--font-system); display: flex; gap: 18px; text-shadow: 0 1px 1px rgba(0,0,0,.18);">
+                  <span style="font-weight: 600;">Finder</span>
+                  <span>File</span><span>Edit</span><span>View</span><span>Go</span><span>Window</span><span>Help</span>
+                  <span style="flex: 1;"></span>
+                  <span>Mon Jun 10 · 9:41 AM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <h2>Dock anatomy</h2>
+            <p class="caption" style="margin-bottom: 8px;">Floats at the bottom-center with a 16 pt margin. Apps are squircles, grouped into running / favorites / system zones by dividers.</p>
+            <div class="card" style="background-image: var(--wallpaper); background-size: cover; padding: 26px; display: grid; place-items: center;">
+              <div class="dock" style="position: static;">
+                <div class="app running" style="background: linear-gradient(180deg,#7ec0ff,#3b8fff);">F</div>
+                <div class="app running" style="background: linear-gradient(180deg,#fff,#dadbe1);color:#0a84ff;">S</div>
+                <div class="app" style="background: linear-gradient(180deg,#cdf0ff,#5ec2f5);">@</div>
+                <div class="app" style="background: linear-gradient(180deg,#5fe46a,#1fa934);">M</div>
+                <div class="divider"></div>
+                <div class="app" style="background: linear-gradient(180deg,#ffe06a,#f5a623);">P</div>
+                <div class="app" style="background: linear-gradient(180deg,#ff5f7d,#d8214a);">♪</div>
+                <div class="app" style="background: linear-gradient(180deg,#fff,#dadbe1);color:#ff3b30;">C</div>
+                <div class="divider"></div>
+                <div class="app" style="background: linear-gradient(180deg,#3a3a3c,#1c1c1e);">⚙</div>
+                <div class="app" style="background: linear-gradient(180deg,#5e5e63,#1d1d1f);">🗑</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- OVERVIEW HOME -->
+        <section class="pane active" data-pane="home">
+          <div class="pane-h">
+            <div class="pane-head-wrap">
+              <div class="breadcrumbs">macOS 26 · Liquid Glass</div>
+              <h1>Design System</h1>
+            </div>
+            <p>53 specimens, sourced from Apple's Design Resources Figma. Browse the sidebar, search above, or jump to a foundation below. Switch theme, accent, and wallpaper from Tweaks (bottom-right).</p>
+          </div>
+
+          <div class="section">
+            <h2>Foundations</h2>
+            <div class="grid g-3" id="homeFoundations"></div>
+          </div>
+          <div class="section">
+            <h2>Controls</h2>
+            <div class="grid g-3" id="homeControls"></div>
+          </div>
+          <div class="section">
+            <h2>Surfaces &amp; Patterns</h2>
+            <div class="grid g-3" id="homeSurfaces"></div>
+          </div>
+
+          <div class="section">
+            <h2>About this kit</h2>
+            <div class="card" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+              <div>
+                <div class="lbl">Source</div>
+                <p style="margin: 4px 0 0; font: 400 12px/16px var(--font-system); color: var(--label-secondary);">Apple Design Resources — macOS 26 (Community) Figma file. 38 pages, ~13k nodes.</p>
+              </div>
+              <div>
+                <div class="lbl">Substitutions</div>
+                <p style="margin: 4px 0 0; font: 400 12px/16px var(--font-system); color: var(--label-secondary);">SF Pro is not bundled — system font fallback chain. SF Symbols are recreated as Lucide-style strokes.</p>
+              </div>
+              <div>
+                <div class="lbl">Imagery</div>
+                <p style="margin: 4px 0 0; font: 400 12px/16px var(--font-system); color: var(--label-secondary);">4 system wallpapers shipped with the kit (Aurora, Sequoia, Ventura, Monterey + cover).</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ── Tweaks ── -->
+  <aside class="tweaks" id="tweaks">
+    <h3>Tweaks</h3>
+    <div class="tw-row">
+      <span>Theme</span>
+      <span class="seg js-theme">
+        <span class="sel" data-theme-set="light">Light</span>
+        <span data-theme-set="dark">Dark</span>
+      </span>
+    </div>
+    <div class="tw-row" style="flex-direction:column;align-items:flex-start;gap:6px;">
+      <span style="width:100%">Accent</span>
+      <div class="swatches" id="tweakAccent">
+        <span class="sw-dot active" style="background: var(--sys-blue);"   data-color="--sys-blue"></span>
+        <span class="sw-dot" style="background: var(--sys-purple);" data-color="--sys-purple"></span>
+        <span class="sw-dot" style="background: var(--sys-pink);"   data-color="--sys-pink"></span>
+        <span class="sw-dot" style="background: var(--sys-red);"    data-color="--sys-red"></span>
+        <span class="sw-dot" style="background: var(--sys-orange);" data-color="--sys-orange"></span>
+        <span class="sw-dot" style="background: var(--sys-yellow);" data-color="--sys-yellow"></span>
+        <span class="sw-dot" style="background: var(--sys-green);"  data-color="--sys-green"></span>
+        <span class="sw-dot" style="background: var(--sys-mint);"   data-color="--sys-mint"></span>
+        <span class="sw-dot" style="background: var(--sys-teal);"   data-color="--sys-teal"></span>
+        <span class="sw-dot" style="background: var(--sys-gray);"   data-color="--sys-gray"></span>
+      </div>
+    </div>
+    <div class="tw-row" style="flex-direction:column;align-items:flex-start;gap:6px;">
+      <span style="width:100%">Wallpaper</span>
+      <div class="wp-list" id="tweakWallpaper">
+        <div class="wp-thumb active" data-wp="assets/cover-bg.png" style="background-image: url('assets/cover-bg.png');"></div>
+        <div class="wp-thumb" data-wp="assets/wallpaper-aurora.png" style="background-image: url('assets/wallpaper-aurora.png');"></div>
+        <div class="wp-thumb" data-wp="assets/wallpaper-sequoia.png" style="background-image: url('assets/wallpaper-sequoia.png');"></div>
+        <div class="wp-thumb" data-wp="assets/wallpaper-ventura.png" style="background-image: url('assets/wallpaper-ventura.png');"></div>
+        <div class="wp-thumb" data-wp="assets/wallpaper-monterey.png" style="background-image: url('assets/wallpaper-monterey.png');"></div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Dock removed per request — the Dock anatomy specimen lives inside the window under Surfaces. -->
+
+<script>
+  /* ─────────────────────────────────────────────
+     Specimen catalogue
+     ───────────────────────────────────────────── */
+  const SPECIMENS = [
+    { section: "Foundations", items: [
+      { id: "home",         name: "Overview",        icon: "home",    count: 53 },
+      { id: "type",         name: "Type Ramp",       icon: "type",    count: 11 },
+      { id: "accent",       name: "Accent Colors",   icon: "palette", count: 13 },
+      { id: "labels",       name: "Labels & Fills",  icon: "layers",  count: 10 },
+      { id: "materials",    name: "Materials",       icon: "blur",    count: 6 },
+      { id: "radii",        name: "Radii",           icon: "corner",  count: 7 },
+      { id: "shadows",      name: "Shadows",         icon: "shadow",  count: 5 },
+      { id: "spacing",      name: "Spacing",         icon: "ruler",   count: 7 },
+      { id: "motion",       name: "Motion",          icon: "play",    count: 4 },
+      { id: "appicons",     name: "App Icons",       icon: "grid",    count: 12 },
+    ]},
+    { section: "Controls", items: [
+      { id: "buttons",      name: "Buttons",         icon: "button",  count: 24 },
+      { id: "fields",       name: "Text Fields",     icon: "field",   count: 6 },
+      { id: "search",       name: "Search Fields",   icon: "search",  count: 4 },
+      { id: "toggles",      name: "Toggles & Checks",icon: "toggle",  count: 8 },
+      { id: "segmented",    name: "Segmented & Tabs",icon: "segment", count: 4 },
+      { id: "sliders",      name: "Sliders & Dials", icon: "slider",  count: 8 },
+      { id: "steppers",     name: "Steppers & Wells",icon: "stepper", count: 10 },
+      { id: "progress",     name: "Progress",        icon: "progress",count: 7 },
+      { id: "disclosure",   name: "Disclosure",      icon: "tri",     count: 4 },
+      { id: "lists",        name: "Lists & Tables",  icon: "list",    count: 6 },
+    ]},
+    { section: "Surfaces & Patterns", items: [
+      { id: "popovers",     name: "Popovers",        icon: "popover", count: 4 },
+      { id: "tooltips",     name: "Tooltips",        icon: "tip",     count: 4 },
+      { id: "menus",        name: "Menus",           icon: "menu",    count: 2 },
+      { id: "alerts",       name: "Alerts & Dialogs",icon: "alert",   count: 2 },
+      { id: "notifications",name: "Notifications",   icon: "bell",    count: 3 },
+      { id: "windowctl",    name: "Window Controls", icon: "lights",  count: 4 },
+      { id: "toolbars",     name: "Toolbars",        icon: "tools",   count: 1 },
+      { id: "sidebars",     name: "Sidebars & Layout",icon:"sidebar", count: 4 },
+      { id: "dock",         name: "Menu Bar & Dock", icon: "dock",    count: 2 },
+      { id: "form",         name: "Form Pattern",    icon: "form",    count: 3 },
+    ]},
+  ];
+
+  /* SVG icon set */
+  const ICONS = {
+    home:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>`,
+    type:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5h14"/><path d="M12 5v15"/><path d="M8 20h8"/></svg>`,
+    palette: `<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="9" r="2"/><circle cx="11" cy="6" r="2"/><circle cx="17" cy="8" r="2"/><circle cx="18" cy="14" r="2"/><path d="M12 21a9 9 0 1 1 6.5-2.7c-.7.7-1.5 0-1.5-1.3 0-.9-1-2-2-2h-2c-1 0-1 1 0 2v1c0 1 0 3-1 3z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>`,
+    layers:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,3 22,8 12,13 2,8"/><polyline points="2,13 12,18 22,13"/><polyline points="2,18 12,22 22,18"/></svg>`,
+    blur:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="2"/><circle cx="16" cy="8" r="2" opacity=".6"/><circle cx="8" cy="16" r="2" opacity=".6"/><circle cx="16" cy="16" r="2"/></svg>`,
+    corner:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 20V8a4 4 0 0 1 4-4h12"/></svg>`,
+    shadow:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="12" height="12" rx="2"/><rect x="9" y="9" width="12" height="12" rx="2" opacity=".4"/></svg>`,
+    ruler:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="9" width="18" height="6" rx="1"/><path d="M7 9v2M11 9v3M15 9v2M19 9v3"/></svg>`,
+    play:    `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="7,5 19,12 7,19"/></svg>`,
+    grid:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>`,
+    button:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="8" width="16" height="8" rx="3"/></svg>`,
+    field:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="9" width="18" height="6" rx="1.5"/><line x1="6" y1="12" x2="12" y2="12" stroke-width="1.6"/></svg>`,
+    search:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>`,
+    toggle:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="8" width="18" height="8" rx="4"/><circle cx="16" cy="12" r="2.5" fill="currentColor"/></svg>`,
+    segment: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="8" width="18" height="8" rx="2"/><line x1="9" y1="8" x2="9" y2="16"/><line x1="15" y1="8" x2="15" y2="16"/></svg>`,
+    slider:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="14" cy="12" r="3" fill="currentColor"/></svg>`,
+    stepper: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="7,9 12,5 17,9"/><polyline points="7,15 12,19 17,15"/></svg>`,
+    progress:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="10" height="4" rx="2" fill="currentColor"/></svg>`,
+    tri:     `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="9,6 17,12 9,18"/></svg>`,
+    list:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>`,
+    popover: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="5" width="16" height="10" rx="2"/><polygon points="10,15 12,19 14,15" fill="currentColor" stroke="none"/></svg>`,
+    tip:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="8" rx="3"/><polygon points="10,14 12,17 14,14"/></svg>`,
+    menu:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="6" y="3" width="12" height="18" rx="2"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></svg>`,
+    alert:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="13"/><circle cx="12" cy="16.5" r="1" fill="currentColor"/></svg>`,
+    bell:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 8a6 6 0 1 1 12 0v4l2 3H4l2-3z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>`,
+    lights:  `<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="12" r="2.6"/><circle cx="12" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/></svg>`,
+    tools:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="8" width="18" height="8" rx="2"/><circle cx="8" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/></svg>`,
+    sidebar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="9" y1="5" x2="9" y2="19"/></svg>`,
+    dock:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="13" width="18" height="6" rx="3"/><circle cx="7" cy="16" r="1.2" fill="currentColor"/><circle cx="12" cy="16" r="1.2" fill="currentColor"/><circle cx="17" cy="16" r="1.2" fill="currentColor"/></svg>`,
+    form:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>`,
+  };
+
+  /* ─────────────────────────────────────────────
+     Sidebar render
+     ───────────────────────────────────────────── */
+  const sidebar = document.getElementById("sidebar");
+  function renderSidebar(filter) {
+    const q = (filter || "").toLowerCase().trim();
+    sidebar.querySelectorAll(".sb-section, .sb-item").forEach(n => n.remove());
+    SPECIMENS.forEach(group => {
+      const items = group.items.filter(it => !q || it.name.toLowerCase().includes(q));
+      if (!items.length) return;
+      const h = document.createElement("div");
+      h.className = "sb-section";
+      h.textContent = group.section;
+      sidebar.appendChild(h);
+      items.forEach(it => {
+        const el = document.createElement("div");
+        el.className = "sb-item";
+        el.dataset.id = it.id;
+        el.innerHTML = `<span class="ico">${ICONS[it.icon] || ICONS.home}</span>${it.name}<span class="count">${it.count}</span>`;
+        el.addEventListener("click", () => activate(it.id));
+        sidebar.appendChild(el);
+      });
+    });
+    syncActive();
+  }
+  function flatItems() { return SPECIMENS.flatMap(g => g.items); }
+  function getItem(id) { return flatItems().find(i => i.id === id); }
+  let activeId = "home";
+  let history = ["home"]; let hIdx = 0;
+  function activate(id, fromHistory) {
+    if (id === activeId) return;
+    activeId = id;
+    document.querySelectorAll(".pane").forEach(p => p.classList.toggle("active", p.dataset.pane === id));
+    const it = getItem(id);
+    document.getElementById("tbTitle").textContent = it ? it.name : "—";
+    document.getElementById("tbSub").textContent = it ? `${it.count} items` : "";
+    syncActive();
+    const c = document.getElementById("content");
+    c.scrollTop = 0;
+    if (!fromHistory) {
+      history = history.slice(0, hIdx + 1);
+      history.push(id);
+      hIdx = history.length - 1;
+    }
+    updateNav();
+  }
+  function syncActive() {
+    document.querySelectorAll(".sb-item").forEach(el => el.classList.toggle("active", el.dataset.id === activeId));
+  }
+  function updateNav() {
+    document.getElementById("navBack").classList.toggle("disabled", hIdx <= 0);
+    document.getElementById("navFwd").classList.toggle("disabled", hIdx >= history.length - 1);
+  }
+  document.getElementById("navBack").addEventListener("click", () => { if (hIdx > 0) { hIdx--; activate(history[hIdx], true); }});
+  document.getElementById("navFwd").addEventListener("click", () => { if (hIdx < history.length - 1) { hIdx++; activate(history[hIdx], true); }});
+
+  /* Sidebar search */
+  document.getElementById("sbSearch").addEventListener("input", e => renderSidebar(e.target.value));
+
+  /* ─────────────────────────────────────────────
+     Home overview cards
+     ───────────────────────────────────────────── */
+  function homeCard(it) {
+    const el = document.createElement("div");
+    el.className = "card";
+    el.style.cssText = "cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 14px 16px;";
+    el.innerHTML = `
+      <span style="width: 32px; height: 32px; border-radius: 8px; background: var(--accent); color: #fff; display: grid; place-items: center;">${ICONS[it.icon] || ICONS.home}</span>
+      <div style="flex:1; min-width: 0;">
+        <div style="font: 600 13px/16px var(--font-system);">${it.name}</div>
+        <div style="font: 400 11px/14px var(--font-system); color: var(--label-secondary);">${it.count} items</div>
+      </div>
+      <span style="color: var(--label-tertiary);"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,6 15,12 9,18"/></svg></span>`;
+    el.addEventListener("click", () => activate(it.id));
+    return el;
+  }
+  const groups = [["homeFoundations","Foundations"],["homeControls","Controls"],["homeSurfaces","Surfaces & Patterns"]];
+  groups.forEach(([containerId, secName]) => {
+    const c = document.getElementById(containerId);
+    const grp = SPECIMENS.find(g => g.section === secName);
+    if (!grp || !c) return;
+    grp.items.filter(it => it.id !== "home").forEach(it => c.appendChild(homeCard(it)));
+  });
+
+  /* ─────────────────────────────────────────────
+     Theme + accent + wallpaper
+     ───────────────────────────────────────────── */
+  function setTheme(t) {
+    document.body.dataset.theme = t;
+    document.querySelectorAll(".js-theme span").forEach(s => s.classList.toggle("sel", s.dataset.themeSet === t));
+  }
+  document.querySelectorAll(".js-theme span").forEach(s => s.addEventListener("click", () => setTheme(s.dataset.themeSet)));
+  document.getElementById("themeBtn").addEventListener("click", () => setTheme(document.body.dataset.theme === "dark" ? "light" : "dark"));
+
+  function setAccent(varName) {
+    document.documentElement.style.setProperty("--accent", `var(${varName})`);
+    document.querySelectorAll(".sw-dot").forEach(d => d.classList.toggle("active", d.dataset.color === varName));
+    document.querySelectorAll("#accentGrid .swatch").forEach(s => s.classList.toggle("active", s.dataset.color === varName));
+  }
+  document.querySelectorAll(".sw-dot").forEach(dot => dot.addEventListener("click", () => setAccent(dot.dataset.color)));
+
+  function setWallpaper(url) {
+    document.body.style.setProperty("--wallpaper", `url('${url}')`);
+    document.querySelectorAll(".wp-thumb").forEach(t => t.classList.toggle("active", t.dataset.wp === url));
+  }
+  document.querySelectorAll(".wp-thumb").forEach(t => t.addEventListener("click", () => setWallpaper(t.dataset.wp)));
+
+  /* ─────────────────────────────────────────────
+     Accent grid (pane)
+     ───────────────────────────────────────────── */
+  const colors = [
+    ["Red","--sys-red","FF3B30"],["Orange","--sys-orange","FF9500"],["Yellow","--sys-yellow","FFCC00"],
+    ["Green","--sys-green","28CD41"],["Mint","--sys-mint","00C7BE"],["Teal","--sys-teal","30B0C7"],
+    ["Cyan","--sys-cyan","00C0E8"],["Blue","--sys-blue","007AFF"],["Indigo","--sys-indigo","5856D6"],
+    ["Purple","--sys-purple","AF52DE"],["Pink","--sys-pink","FF2D55"],["Brown","--sys-brown","AC7F5E"],
+    ["Gray","--sys-gray","8E8E93"],
+  ];
+  const ag = document.getElementById("accentGrid");
+  colors.forEach(([name, varN, hex]) => {
+    const s = document.createElement("div");
+    s.className = "swatch"; s.dataset.color = varN;
+    s.innerHTML = `<div class="chip" style="background: var(${varN});"></div><div class="nm">${name}</div><div class="hx">#${hex}</div>`;
+    s.addEventListener("click", () => setAccent(varN));
+    ag.appendChild(s);
+  });
+
+  /* ─────────────────────────────────────────────
+     Interactivity: toggles, segmented, sliders, dial, stepper, disclosure, list, radio, tabs
+     ───────────────────────────────────────────── */
+
+  // Toggles
+  document.querySelectorAll(".sw.toggle, .cb.toggle").forEach(el => {
+    el.addEventListener("click", () => el.classList.toggle("on"));
+  });
+
+  // Radio groups
+  function bindRadioGroup(cls) {
+    const radios = document.querySelectorAll(`.radio.${cls}`);
+    radios.forEach(r => r.addEventListener("click", () => {
+      radios.forEach(x => x.classList.remove("on"));
+      r.classList.add("on");
+    }));
+  }
+  ["appearance","appearance2","sb-r"].forEach(bindRadioGroup);
+
+  // Segmented (one per group)
+  document.querySelectorAll(".seg.js-seg").forEach(seg => {
+    seg.querySelectorAll("span").forEach(s => s.addEventListener("click", () => {
+      seg.querySelectorAll("span").forEach(x => x.classList.remove("sel"));
+      s.classList.add("sel");
+    }));
+  });
+
+  // Tabs
+  document.querySelectorAll(".tab.js-tab").forEach(t => t.addEventListener("click", () => {
+    t.parentElement.querySelectorAll(".tab").forEach(x => x.classList.remove("sel"));
+    t.classList.add("sel");
+  }));
+
+  // Sliders
+  function bindSlider(s) {
+    const fill  = s.querySelector(".fill");
+    const thumb = s.querySelector(".thumb");
+    let dragging = false;
+    function move(clientX) {
+      const r = s.getBoundingClientRect();
+      let pct = ((clientX - r.left) / r.width) * 100;
+      pct = Math.max(0, Math.min(100, pct));
+      fill.style.width = pct + "%";
+      thumb.style.left = pct + "%";
+      const row = s.closest(".row");
+      if (row) {
+        const v = row.querySelector('[data-bind="value"]');
+        if (v) v.textContent = Math.round(pct);
+      }
+    }
+    s.addEventListener("mousedown", e => { dragging = true; move(e.clientX); });
+    window.addEventListener("mousemove", e => { if (dragging) move(e.clientX); });
+    window.addEventListener("mouseup", () => dragging = false);
+  }
+  document.querySelectorAll(".js-slider").forEach(bindSlider);
+
+  // Dials — drag horizontally to rotate
+  (function injectDialRot() {
+    const st = document.createElement("style");
+    st.textContent = `.js-dial::after { transform: translateX(-50%) rotate(var(--rot, 0deg)) !important; transition: transform .12s var(--ease) !important; transform-origin: 50% 22px !important; }`;
+    document.head.appendChild(st);
+  })();
+  document.querySelectorAll(".js-dial").forEach(dial => {
+    let dragging = false, startX = 0, startR = 0;
+    let rot = parseFloat((dial.style.getPropertyValue("--rot") || "0deg").replace("deg",""));
+    const label = dial.parentElement.querySelector('[data-bind="rot"]');
+    function apply(r) {
+      rot = ((r % 360) + 360) % 360;
+      dial.style.setProperty("--rot", rot + "deg");
+      if (label) label.textContent = Math.round(rot) + "°";
+    }
+    dial.addEventListener("mousedown", e => { dragging = true; startX = e.clientX; startR = rot; e.preventDefault(); });
+    window.addEventListener("mousemove", e => { if (dragging) apply(startR + (e.clientX - startX) * 1.5); });
+    window.addEventListener("mouseup", () => dragging = false);
+    apply(rot);
+  });
+
+  // Steppers
+  document.querySelectorAll(".js-stepper").forEach(sp => {
+    const input = sp.querySelector(".num");
+    const min = parseFloat(sp.dataset.min ?? "-Infinity");
+    const max = parseFloat(sp.dataset.max ??  "Infinity");
+    function set(v) { input.value = Math.max(min, Math.min(max, v)); }
+    sp.querySelector(".up").addEventListener("click", () => set((+input.value || 0) + 1));
+    sp.querySelector(".dn").addEventListener("click", () => set((+input.value || 0) - 1));
+  });
+
+  // Disclosure
+  document.querySelectorAll(".js-disc").forEach(r => r.addEventListener("click", () => r.classList.toggle("open")));
+
+  // Lists
+  document.querySelectorAll(".js-list tr").forEach(tr => tr.addEventListener("click", e => {
+    const rows = tr.parentElement.querySelectorAll("tr");
+    if (!e.shiftKey && !e.metaKey) rows.forEach(r => r.classList.remove("sel"));
+    tr.classList.toggle("sel");
+  }));
+
+  // Ring gauges
+  document.querySelectorAll(".ring-gauge").forEach(g => g.style.setProperty("--p", g.dataset.value || 0));
+
+  /* ─────────────────────────────────────────────
+     Init
+     ───────────────────────────────────────────── */
+  renderSidebar();
+  activate("home", true);
+  history = ["home"]; hIdx = 0; updateNav();
+  setAccent("--sys-blue");
+</script>
+</body>
+</html>

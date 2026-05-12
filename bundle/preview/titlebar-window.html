@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Titlebar-Only Window</title>
+<link rel="stylesheet" href="../colors_and_type.css"></head>
+<body style="margin:0;padding:50px;background:url('../assets/wallpaper-ventura.png') center/cover fixed,#222;min-height:520px;font-family:var(--font-system);display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
+<style>
+  .window {
+    width: 420px; border-radius: 16px; overflow: hidden;
+    background: #fff;
+    box-shadow: 0 22px 60px rgba(0,0,0,0.30), 0 0 0 0.5px rgba(0,0,0,0.30);
+  }
+  .tb {
+    position: relative; height: 38px;
+    background: rgba(245,245,245,0.85);
+    backdrop-filter: var(--glass-blur);
+    border-bottom: 0.5px solid rgba(0,0,0,0.10);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tb .lights { position: absolute; left: 14px; top: 13px; display: flex; gap: 8px; }
+  .tb .l { width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.18); }
+  .close { background: #ff5f57; } .min { background: #febc2e; } .zoom { background: #28c840; }
+  .tb .title { font: 600 13px/16px var(--font-system); color: rgba(0,0,0,0.85); }
+  .body { padding: 22px 24px; }
+  .body h2 { margin: 0 0 6px; font: 700 17px/22px var(--font-display); letter-spacing: -0.01em; color: rgba(0,0,0,0.88); }
+  .body p { margin: 0 0 14px; font: 400 13px/18px var(--font-system); color: rgba(0,0,0,0.65); }
+  .footer { display: flex; justify-content: flex-end; gap: 8px; }
+  .btn {
+    height: 24px; padding: 0 14px;
+    border-radius: 6px;
+    font: 500 13px/24px var(--font-system); color: rgba(0,0,0,0.88);
+    background: #fff;
+    box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.55), 0 0.5px 1px rgba(0,0,0,0.18), 0 0 0 0.5px rgba(0,0,0,0.18);
+    border: 0;
+  }
+  .btn.primary { background: var(--accent); color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.18); }
+
+  .login {
+    width: 320px; padding: 28px 26px 22px;
+  }
+  .login .avatar {
+    width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 12px;
+    background: radial-gradient(circle at 30% 30%, #c0c4d4 0%, #8b94ab 60%, #5b6079 100%);
+  }
+  .login h2 { text-align: center; }
+  .login .sub { text-align: center; color: rgba(0,0,0,0.55); margin-bottom: 16px; }
+  .field {
+    width: 100%; height: 26px; padding: 0 8px;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.20), inset 0 1px 1px rgba(0,0,0,0.05);
+    font: 400 13px/26px var(--font-system); color: rgba(0,0,0,0.85);
+    border: 0; outline: 0; margin-bottom: 8px;
+  }
+
+  .caption {
+    color: rgba(255,255,255,0.85); font: 400 12px/16px var(--font-system);
+    margin-top: 8px;
+  }
+</style>
+
+<div>
+  <div class="window">
+    <div class="tb">
+      <div class="lights"><span class="l close"></span><span class="l min"></span><span class="l zoom"></span></div>
+      <div class="title">About This Mac</div>
+    </div>
+    <div class="body">
+      <h2>MacBook Pro</h2>
+      <p style="margin-bottom:4px">14-inch, M5 Pro · 2026<br>Memory&nbsp; 36 GB<br>Startup Disk&nbsp; Macintosh HD<br>macOS&nbsp; 26.2 (Liquid Glass)</p>
+      <div class="footer" style="margin-top:18px;">
+        <button class="btn">More Info…</button>
+      </div>
+    </div>
+  </div>
+  <div class="caption">Titlebar only · for About / utility panels</div>
+</div>
+
+<div>
+  <div class="window login">
+    <div class="tb" style="position:absolute;top:0;left:0;right:0;background:transparent;border:0;">
+      <div class="lights"><span class="l close"></span><span class="l min" style="opacity:.45"></span><span class="l zoom" style="opacity:.45"></span></div>
+    </div>
+    <div class="avatar"></div>
+    <h2>Sign In</h2>
+    <p class="sub">Enter your Apple Account password.</p>
+    <input class="field" placeholder="Apple Account">
+    <input class="field" placeholder="Password" type="password">
+    <div class="footer" style="margin-top:8px;">
+      <button class="btn">Cancel</button>
+      <button class="btn primary">Sign In</button>
+    </div>
+  </div>
+  <div class="caption">Chromeless titlebar variant</div>
+</div>
+
+</body></html>

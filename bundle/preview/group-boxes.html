@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Group Boxes</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head>
+<body class="tinted">
+<style>
+  .gb { background: rgba(0,0,0,0.03); border-radius: 12px; padding: 14px 16px; max-width: 360px; }
+  .gb + .gb { margin-top: 14px; }
+  .gb h3 { margin: 0 0 8px; font: 700 13px/16px var(--font-system); color: var(--label-primary); }
+  .gb .row-line { display: flex; justify-content: space-between; padding: 6px 0; font: 400 13px/16px var(--font-system); color: var(--label-primary); border-bottom: 0.5px solid var(--separator); }
+  .gb .row-line:last-child { border-bottom: 0; }
+  .gb .row-line span:last-child { color: var(--label-secondary); }
+  .gb-inset { background: rgba(0,0,0,0.04); border-radius: 10px; padding: 10px 12px; font: 400 12px/16px var(--font-system); color: var(--label-secondary); }
+  .gb-title { font: 600 11px/14px var(--font-system); color: var(--label-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 6px; }
+</style>
+
+<div class="gb">
+  <h3>General</h3>
+  <div class="row-line"><span>Show desktop icons</span><span>On</span></div>
+  <div class="row-line"><span>Show hidden files</span><span>Off</span></div>
+  <div class="row-line"><span>Default new window</span><span>Recents</span></div>
+</div>
+
+<div class="gb">
+  <div class="gb-title">Note</div>
+  <div class="gb-inset">A group box visually groups related controls with a subtle fill and rounded corners. Used in System Settings and inspector panes.</div>
+</div>
+</body></html>

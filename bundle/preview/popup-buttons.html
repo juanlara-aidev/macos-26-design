@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Popup Buttons</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head>
+<body>
+<style>
+  .stack-v { display: flex; flex-direction: column; gap: 22px; max-width: 760px; }
+  .lbl { font: 700 10px/14px var(--font-system); color: var(--label-tertiary); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+
+  /* Popup button — shows currently selected value with up/down chevrons */
+  .pop {
+    display: inline-flex; align-items: center;
+    height: 22px; padding: 0 0 0 10px;
+    background: #fff; border-radius: 5px;
+    box-shadow:
+      inset 0 0.5px 0 rgba(255,255,255,0.55),
+      0 0.5px 1px rgba(0,0,0,0.15),
+      0 0 0 0.5px rgba(0,0,0,0.18);
+    font: 400 13px/22px var(--font-system); color: rgba(0,0,0,0.88);
+    cursor: default;
+    min-width: 100px; justify-content: space-between;
+    gap: 4px;
+  }
+  .pop .chev {
+    width: 18px; height: 18px; margin: 2px;
+    background: var(--accent); color: #fff;
+    border-radius: 3px;
+    display: grid; place-items: center;
+  }
+  .pop .chev svg { width: 10px; height: 10px; }
+
+  .pop.lg { height: 26px; font-size: 14px; padding-left: 12px; }
+  .pop.lg .chev { width: 20px; height: 20px; }
+  .pop.sm { height: 18px; font-size: 11px; padding-left: 8px; }
+  .pop.sm .chev { width: 14px; height: 14px; }
+
+  /* Hover */
+  .pop:hover {
+    box-shadow:
+      inset 0 0.5px 0 rgba(255,255,255,0.55),
+      0 1px 2px rgba(0,0,0,0.20),
+      0 0 0 0.5px rgba(0,0,0,0.22);
+  }
+  /* Pressed */
+  .pop.pressed { background: rgba(0,0,0,0.06); }
+  /* Focused */
+  .pop.focus {
+    box-shadow:
+      inset 0 0.5px 0 rgba(255,255,255,0.55),
+      0 0.5px 1px rgba(0,0,0,0.15),
+      0 0 0 0.5px rgba(0,0,0,0.18),
+      0 0 0 3px rgba(0,122,255,0.40);
+  }
+  /* Disabled */
+  .pop.dis { opacity: 0.42; }
+
+  /* Borderless (in toolbars) */
+  .pop.bd0 {
+    background: transparent;
+    box-shadow: none;
+  }
+  .pop.bd0 .chev { background: rgba(0,0,0,0.08); color: rgba(0,0,0,0.65); }
+  .pop.bd0:hover { background: rgba(0,0,0,0.06); }
+
+  /* Pull-down compare */
+  .pull {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 22px; padding: 0 10px;
+    background: #fff; border-radius: 5px;
+    box-shadow:
+      inset 0 0.5px 0 rgba(255,255,255,0.55),
+      0 0.5px 1px rgba(0,0,0,0.15),
+      0 0 0 0.5px rgba(0,0,0,0.18);
+    font: 400 13px/22px var(--font-system); color: rgba(0,0,0,0.88);
+  }
+  .pull svg { width: 8px; height: 6px; opacity: 0.55; margin-left: 4px; }
+
+  /* Opened menu */
+  .open-wrap { position: relative; display: inline-block; }
+  .menu {
+    position: absolute; top: 22px; left: 0;
+    min-width: 180px;
+    background: rgba(245,245,245,0.92);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 8px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.20), 0 0 0 0.5px rgba(0,0,0,0.16);
+    padding: 4px;
+    font: 400 13px/22px var(--font-system);
+    z-index: 4;
+  }
+  .menu .item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 2px 8px 2px 22px;
+    border-radius: 4px; color: rgba(0,0,0,0.85);
+    position: relative;
+  }
+  .menu .item .ck {
+    position: absolute; left: 6px; top: 5px;
+    width: 12px; height: 12px;
+  }
+  .menu .item.sel { background: var(--accent); color: #fff; }
+  .menu .item:hover:not(.sel) { background: rgba(0,0,0,0.06); }
+  .menu .sep { height: 0.5px; background: rgba(0,0,0,0.12); margin: 4px 6px; }
+
+  /* Bezel-less (sidebar) */
+  .form-card {
+    background: #fff; padding: 14px 16px; border-radius: 10px;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.10), 0 4px 14px rgba(0,0,0,0.06);
+    display: grid; grid-template-columns: 96px 1fr; column-gap: 12px; row-gap: 8px;
+    max-width: 380px;
+    align-items: center;
+  }
+  .form-card .l { font: 400 13px/22px var(--font-system); color: rgba(0,0,0,0.55); text-align: right; }
+
+  /* Diff table */
+  .diff {
+    background: #fff; padding: 14px 18px; border-radius: 10px;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.10), 0 4px 14px rgba(0,0,0,0.06);
+    max-width: 760px;
+  }
+  .diff h3 { margin: 0 0 8px; font: 700 11px/14px var(--font-system); color: var(--label-secondary); text-transform: uppercase; letter-spacing: .06em; }
+  .diff table { width: 100%; border-collapse: collapse; font: 400 13px/22px var(--font-system); }
+  .diff th { text-align: left; color: var(--label-tertiary); font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; border-bottom: 0.5px solid rgba(0,0,0,0.10); padding: 6px 4px; }
+  .diff td { padding: 6px 4px; border-bottom: 0.5px solid rgba(0,0,0,0.06); vertical-align: top; }
+  .diff td:first-child { font-weight: 600; width: 110px; }
+</style>
+
+<div class="stack-v">
+
+  <div>
+    <div class="lbl">Sizes</div>
+    <div class="row">
+      <span class="pop sm">Day <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+      <span class="pop">Inbox <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+      <span class="pop lg">SF Pro Display <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">States — idle / hover / pressed / focused / disabled</div>
+    <div class="row">
+      <span class="pop">All Mailboxes <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+      <span class="pop" style="background:#f5f5f7;">All Mailboxes <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+      <span class="pop pressed">All Mailboxes <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+      <span class="pop focus">All Mailboxes <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+      <span class="pop dis">All Mailboxes <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">Open · with menu</div>
+    <div class="open-wrap">
+      <span class="pop focus" style="min-width:160px;">SF Pro Display <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+      <div class="menu">
+        <div class="item">SF Pro</div>
+        <div class="item sel"><svg class="ck" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2.5,6.5 5,9 9.5,3.5"/></svg>SF Pro Display</div>
+        <div class="item">SF Mono</div>
+        <div class="item">New York</div>
+        <div class="sep"></div>
+        <div class="item">Helvetica Neue</div>
+        <div class="item">Charter</div>
+        <div class="sep"></div>
+        <div class="item">Custom Fonts…</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">Borderless (toolbar / sidebar)</div>
+    <div class="row">
+      <span class="pop bd0">All Inboxes <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+      <span class="pop bd0">Today <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">In a form</div>
+    <div class="form-card">
+      <span class="l">Paper</span>
+      <span class="pop" style="min-width:130px;">US Letter <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+      <span class="l">Layout</span>
+      <span class="pop" style="min-width:130px;">2 pages per sheet <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+      <span class="l">Color</span>
+      <span class="pop" style="min-width:130px;">
+        <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:3px;background:#FF3B30;box-shadow:inset 0 0 0 0.5px rgba(0,0,0,0.18);"></span>Red</span>
+        <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span>
+      </span>
+    </div>
+  </div>
+
+  <div class="diff">
+    <h3>Popup vs Pull-Down</h3>
+    <table>
+      <tr><th>Aspect</th><th>Popup button</th><th>Pull-down button</th></tr>
+      <tr><td>Purpose</td><td>Pick a value</td><td>Pick an action</td></tr>
+      <tr><td>Label shows</td><td>Currently selected value</td><td>Fixed label or icon</td></tr>
+      <tr><td>Indicator</td><td>Up/down chevron in tinted square</td><td>Single down chevron, opacity 55%</td></tr>
+      <tr><td>Behaviour</td><td>Menu opens centered on the selected row</td><td>Menu opens below the button</td></tr>
+      <tr><td>Example</td><td>Font picker, paper size, time zone</td><td>"Share", "More…", action overflow</td></tr>
+    </table>
+    <div style="display:flex;gap:18px;margin-top:14px;align-items:center;">
+      <span style="font:600 11px var(--font-system);color:var(--label-secondary);min-width:90px;">Popup</span>
+      <span class="pop">US Letter <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,4 5,1.5 8,4"/><polyline points="2,6 5,8.5 8,6"/></svg></span></span>
+    </div>
+    <div style="display:flex;gap:18px;margin-top:8px;align-items:center;">
+      <span style="font:600 11px var(--font-system);color:var(--label-secondary);min-width:90px;">Pull-down</span>
+      <span class="pull">Share <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="2,2 5,5 8,2"/></svg></span>
+    </div>
+  </div>
+
+</div>
+</body></html>

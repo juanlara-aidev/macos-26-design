@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Accent Colors</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 18px 20px; background: #fff; font-family: var(--font-system); }
+  .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px 14px; }
+  .swatch { display: flex; flex-direction: column; gap: 6px; }
+  .chip { aspect-ratio: 1.6 / 1; border-radius: 10px; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05); }
+  .name { font: 500 11px/14px var(--font-system); color: var(--label-primary); }
+  .hex  { font: 400 10px/12px var(--font-mono); color: var(--label-tertiary); }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="swatch"><div class="chip" style="background:var(--sys-red)"></div><div class="name">Red</div><div class="hex">FF383C</div></div>
+  <div class="swatch"><div class="chip" style="background:var(--sys-orange)"></div><div class="name">Orange</div><div class="hex">FF9500</div></div>
+  <div class="swatch"><div class="chip" style="background:var(--sys-yellow)"></div><div class="name">Yellow</div><div class="hex">FFCC00</div></div>
+  <div class="swatch"><div class="chip" style="background:var(--sys-green)"></div><div class="name">Green</div><div class="hex">28CD41</div></div>
+  <div class="swatch"><div class="chip" style="background:var(--sys-mint)"></div><div class="name">Mint</div><div class="hex">00C7BE</div></div>
+  <div class="swatch"><div class="chip" style="background:var(--sys-teal)"></div><div class="name">Teal</div><div class="hex">30B0C7</div></div>
+  <div class="swatch"><div class="chip" style="background:var(--sys-cyan)"></div><div class="name">Cyan</div><div class="hex">00C0E8</div></div>
+  <div class="swatch"><div class="chip" style="background:var(--sys-blue)"></div><div class="name">Blue</div><div class="hex">007AFF</div></div>
+  <div class="swatch"><div class="chip" style="background:var(--sys-indigo)"></div><div class="name">Indigo</div><div class="hex">5856D6</div></div>
+  <div class="swatch"><div class="chip" style="background:var(--sys-purple)"></div><div class="name">Purple</div><div class="hex">AF52DE</div></div>
+  <div class="swatch"><div class="chip" style="background:var(--sys-pink)"></div><div class="name">Pink</div><div class="hex">FF2D55</div></div>
+  <div class="swatch"><div class="chip" style="background:var(--sys-brown)"></div><div class="name">Brown</div><div class="hex">AC7F5E</div></div>
+  <div class="swatch"><div class="chip" style="background:var(--sys-gray)"></div><div class="name">Gray</div><div class="hex">8E8E93</div></div>
+</div>
+</body>
+</html>

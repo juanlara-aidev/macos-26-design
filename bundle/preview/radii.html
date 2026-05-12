@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Radii</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 22px 20px; background: #fff; font-family: var(--font-system); }
+  .row { display: flex; gap: 14px; align-items: flex-end; justify-content: space-between; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .box { width: 72px; height: 72px; background: #f0f0f3; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08); }
+  .name { font: 500 10px/12px var(--font-system); color: var(--label-secondary); }
+  .val  { font: 500 10px/12px var(--font-mono); color: var(--label-tertiary); }
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="item"><div class="box" style="border-radius:5px"></div><div class="name">Field</div><div class="val">5</div></div>
+  <div class="item"><div class="box" style="border-radius:6px"></div><div class="name">Control</div><div class="val">6</div></div>
+  <div class="item"><div class="box" style="border-radius:8px"></div><div class="name">Card</div><div class="val">8</div></div>
+  <div class="item"><div class="box" style="border-radius:12px"></div><div class="name">Window</div><div class="val">12</div></div>
+  <div class="item"><div class="box" style="border-radius:16px"></div><div class="name">Sheet</div><div class="val">16</div></div>
+  <div class="item"><div class="box" style="border-radius:22px"></div><div class="name">Tile</div><div class="val">22</div></div>
+  <div class="item"><div class="box" style="border-radius:26px"></div><div class="name">Window Lg</div><div class="val">26</div></div>
+  <div class="item"><div class="box" style="border-radius:9999px"></div><div class="name">Pill</div><div class="val">∞</div></div>
+</div>
+</body>
+</html>

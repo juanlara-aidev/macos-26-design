@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>App Icons</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head>
+<body style="background:#f4f4f6;">
+<style>
+  .icon-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 22px; max-width: 760px; }
+  .ic { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  /* macOS 26 icon shape: superellipse approximated with 22% radius squircle */
+  .squircle {
+    width: 92px; height: 92px;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.40),
+      inset 0 -1px 0 rgba(0,0,0,0.10),
+      0 1px 1px rgba(0,0,0,0.06),
+      0 6px 14px rgba(0,0,0,0.18);
+    position: relative;
+    display: grid; place-items: center;
+  }
+  .squircle::after {
+    content:""; position:absolute; inset:0; border-radius:22px;
+    box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.10);
+    pointer-events: none;
+  }
+  .name { font: 400 11px/14px var(--font-system); color: var(--label-secondary); }
+  .squircle svg { width: 56px; height: 56px; }
+
+  /* Finder */
+  .finder { background: linear-gradient(135deg, #2a8eff 0%, #0a5ad4 100%); }
+  .finder .face {
+    width: 48px; height: 56px;
+    background:
+      radial-gradient(circle at 35% 35%, #ffffff 14%, transparent 16%),
+      radial-gradient(circle at 65% 35%, #ffffff 14%, transparent 16%),
+      linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.92));
+    -webkit-mask: radial-gradient(ellipse 60% 70% at center 60%, #000 60%, transparent 62%);
+            mask: radial-gradient(ellipse 60% 70% at center 60%, #000 60%, transparent 62%);
+  }
+  /* Safari */
+  .safari { background: radial-gradient(circle at 50% 50%, #f0f5ff 0%, #c3d4ea 100%); }
+  .safari .compass {
+    width: 68px; height: 68px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, #4ca8ff 0%, #1469d6 70%, #0b4795 100%);
+    box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 5px rgba(0,0,0,0.20);
+    position: relative;
+  }
+  .safari .compass::after {
+    content:""; position: absolute; inset: 12px;
+    background:
+      linear-gradient(45deg, transparent 45%, #ff3b30 45%, #ff3b30 55%, #ffd1cc 55%);
+    clip-path: polygon(50% 8%, 58% 50%, 50% 92%, 42% 50%);
+  }
+  /* Mail */
+  .mail { background: linear-gradient(135deg, #5dc1ff 0%, #2479ff 100%); }
+  .mail .env {
+    width: 64px; height: 44px; border-radius: 6px; background: #fff;
+    position: relative; overflow: hidden;
+    box-shadow: inset 0 -1px 2px rgba(0,0,0,0.10);
+  }
+  .mail .env::before {
+    content:""; position:absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 0, transparent 14px, #e9e9ee 14px);
+    clip-path: polygon(0 0, 100% 0, 50% 60%);
+  }
+  /* Messages */
+  .messages { background: linear-gradient(180deg, #4be05a 0%, #1aa53a 100%); }
+  .messages .bubble {
+    width: 58px; height: 50px; background: #fff;
+    border-radius: 18px 18px 18px 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.10);
+    position: relative;
+  }
+  .messages .bubble::after {
+    content:""; position: absolute; left: -2px; bottom: -2px;
+    width: 12px; height: 12px; background: #fff;
+    border-radius: 0 6px 0 6px; transform: rotate(45deg);
+  }
+  /* Photos */
+  .photos {
+    background:
+      conic-gradient(from 45deg at 50% 50%,
+        #ff3b30 0deg 60deg, #ff9500 60deg 120deg, #ffcc00 120deg 180deg,
+        #34c759 180deg 240deg, #007aff 240deg 300deg, #af52de 300deg 360deg);
+  }
+  .photos::before {
+    content:""; position: absolute; inset: 22px; border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+  }
+  /* App Store */
+  .appstore { background: linear-gradient(135deg, #4cc6ff 0%, #0a84ff 100%); }
+  .appstore .as {
+    width: 48px; height: 50px; position: relative;
+  }
+  .appstore .as::before {
+    content:""; position:absolute; inset: 0;
+    background:
+      linear-gradient(45deg, transparent 47%, #fff 47%, #fff 53%, transparent 53%),
+      linear-gradient(-45deg, transparent 47%, #fff 47%, #fff 53%, transparent 53%),
+      linear-gradient(90deg, transparent 47%, #fff 47%, #fff 53%, transparent 53%);
+  }
+  /* Apple TV */
+  .tv { background: linear-gradient(180deg, #1a1a1f 0%, #050505 100%); }
+  .tv .tv-text {
+    font: 800 34px/1 var(--font-display); color: #fff;
+    letter-spacing: -0.04em;
+  }
+  /* Maps */
+  .maps {
+    background:
+      linear-gradient(135deg, #d8e2ed 0%, #b6c6d4 100%);
+    position: relative;
+  }
+  .maps::before {
+    content:""; position: absolute; left: 18%; top: 22%; right: 22%; bottom: 18%;
+    background:
+      linear-gradient(120deg, transparent 30%, #a8b6c4 30%, #a8b6c4 32%, transparent 32%),
+      linear-gradient(-45deg, transparent 50%, #c5d3df 50%, #c5d3df 52%, transparent 52%);
+  }
+  .maps::after {
+    content:""; position: absolute; left: 50%; top: 32%; width: 18px; height: 26px;
+    background: #ff3b30;
+    transform: translateX(-50%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.20);
+  }
+  .maps::after { clip-path: path('M9,0 C13.97,0 18,4.03 18,9 C18,16 9,26 9,26 C9,26 0,16 0,9 C0,4.03 4.03,0 9,0 Z'); }
+  /* Calendar */
+  .calendar { background: #fff; }
+  .calendar .day {
+    font: 700 38px/1 var(--font-display); color: rgba(0,0,0,0.88);
+  }
+  .calendar .top {
+    position: absolute; top: 6px; left: 0; right: 0;
+    text-align: center; font: 700 11px/1 var(--font-system); color: var(--sys-red);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  /* Music */
+  .music { background: linear-gradient(180deg, #ff5e88 0%, #ff2952 100%); }
+  .music .note {
+    width: 0; height: 0; border-left: 28px solid #fff; border-top: 18px solid transparent; border-bottom: 18px solid transparent;
+    position: relative;
+  }
+  .music .note::after {
+    content:""; position: absolute; left: -28px; top: -22px; width: 18px; height: 18px;
+    border-radius: 50%; background: #fff;
+  }
+  /* Notes */
+  .notes { background: linear-gradient(180deg, #fff2c4 0%, #f3c54b 100%); position: relative; }
+  .notes::before {
+    content:""; position: absolute; inset: 14px 14px 14px 14px;
+    background:
+      repeating-linear-gradient(180deg, transparent 0 9px, rgba(0,0,0,0.16) 9px 9.5px);
+  }
+  /* Settings */
+  .settings { background: linear-gradient(180deg, #a8b1bf 0%, #5f6573 100%); }
+  .settings .gear {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, #fff 28%, transparent 30%);
+    position: relative;
+  }
+  .settings .gear::before, .settings .gear::after {
+    content:""; position: absolute; inset: 0;
+    background:
+      conic-gradient(from 0deg at 50% 50%,
+        #fff 0deg 18deg, transparent 18deg 42deg, #fff 42deg 60deg, transparent 60deg 84deg,
+        #fff 84deg 102deg, transparent 102deg 126deg, #fff 126deg 144deg, transparent 144deg 168deg,
+        #fff 168deg 186deg, transparent 186deg 210deg, #fff 210deg 228deg, transparent 228deg 252deg,
+        #fff 252deg 270deg, transparent 270deg 294deg, #fff 294deg 312deg, transparent 312deg 336deg,
+        #fff 336deg 354deg, transparent 354deg 360deg);
+    -webkit-mask: radial-gradient(circle at 50% 50%, transparent 28%, #000 28%, #000 42%, transparent 42%);
+            mask: radial-gradient(circle at 50% 50%, transparent 28%, #000 28%, #000 42%, transparent 42%);
+  }
+  /* Terminal */
+  .terminal { background: #1d1d1f; }
+  .terminal .prompt { font: 600 26px/1 var(--font-mono); color: #fff; }
+
+  /* Caption */
+  .group h2 { color: var(--label-secondary); font: 700 10px/14px var(--font-system); text-transform: uppercase; letter-spacing: .06em; margin: 6px 0 14px; }
+</style>
+
+<h2>App Icons · macOS 26 squircle (22% radius)</h2>
+
+<div class="icon-grid">
+  <div class="ic"><div class="squircle finder"><div class="face"></div></div><span class="name">Finder</span></div>
+  <div class="ic"><div class="squircle safari"><div class="compass"></div></div><span class="name">Safari</span></div>
+  <div class="ic"><div class="squircle mail"><div class="env"></div></div><span class="name">Mail</span></div>
+  <div class="ic"><div class="squircle messages"><div class="bubble"></div></div><span class="name">Messages</span></div>
+  <div class="ic"><div class="squircle photos"></div><span class="name">Photos</span></div>
+  <div class="ic"><div class="squircle appstore"><div class="as"></div></div><span class="name">App Store</span></div>
+
+  <div class="ic"><div class="squircle tv"><span class="tv-text">tv</span></div><span class="name">Apple TV</span></div>
+  <div class="ic"><div class="squircle maps"></div><span class="name">Maps</span></div>
+  <div class="ic"><div class="squircle calendar"><span class="top">Jun</span><span class="day">10</span></div><span class="name">Calendar</span></div>
+  <div class="ic"><div class="squircle music"><div class="note"></div></div><span class="name">Music</span></div>
+  <div class="ic"><div class="squircle notes"></div><span class="name">Notes</span></div>
+  <div class="ic"><div class="squircle settings"><div class="gear"></div></div><span class="name">Settings</span></div>
+</div>
+
+<h2 style="margin-top:36px">Sizing scale (Dock + Finder list)</h2>
+<div class="row" style="gap:20px;align-items:end;">
+  <div class="ic"><div class="squircle finder" style="width:128px;height:128px;border-radius:30px;"><div class="face"></div></div><span class="name">128 pt · Dock hover</span></div>
+  <div class="ic"><div class="squircle finder" style="width:92px;height:92px;"><div class="face"></div></div><span class="name">92 pt · Dock</span></div>
+  <div class="ic"><div class="squircle finder" style="width:48px;height:48px;border-radius:11px;"><div class="face" style="width:26px;height:30px;"></div></div><span class="name">48 pt · Launchpad</span></div>
+  <div class="ic"><div class="squircle finder" style="width:32px;height:32px;border-radius:7px;"><div class="face" style="width:18px;height:20px;"></div></div><span class="name">32 pt · Sidebar</span></div>
+  <div class="ic"><div class="squircle finder" style="width:16px;height:16px;border-radius:4px;"><div class="face" style="width:10px;height:11px;"></div></div><span class="name">16 pt · Inline</span></div>
+</div>
+
+</body></html>

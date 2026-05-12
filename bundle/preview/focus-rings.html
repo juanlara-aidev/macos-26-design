@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Focus Rings</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head>
+<body>
+<style>
+  .stack-v { display: flex; flex-direction: column; gap: 22px; max-width: 760px; }
+  .lbl { font: 700 10px/14px var(--font-system); color: var(--label-tertiary); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .row { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+  .note { font: 400 11px/14px var(--font-system); color: var(--label-secondary); }
+
+  /* The ring token */
+  :root {
+    --focus-ring: 0 0 0 3px rgba(0,122,255,0.40);
+    --focus-ring-tight: 0 0 0 2px rgba(0,122,255,0.45);
+    --focus-ring-key: 0 0 0 4px rgba(0,122,255,0.30);
+  }
+
+  /* Sample controls */
+  .field {
+    height: 24px; padding: 0 10px; border-radius: 5px;
+    background: #fff;
+    box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.20), inset 0 1px 1px rgba(0,0,0,0.05);
+    font: 400 13px/24px var(--font-system); color: rgba(0,0,0,0.85);
+    border: 0; outline: 0; width: 180px;
+  }
+  .field.focus {
+    box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.20), var(--focus-ring);
+  }
+  .btn {
+    height: 24px; padding: 0 14px; border-radius: 6px;
+    background: #fff; font: 500 13px/24px var(--font-system); color: rgba(0,0,0,0.88);
+    box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.55), 0 0.5px 1px rgba(0,0,0,0.18), 0 0 0 0.5px rgba(0,0,0,0.18);
+    border: 0;
+  }
+  .btn.focus {
+    box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.55), 0 0.5px 1px rgba(0,0,0,0.18), 0 0 0 0.5px rgba(0,0,0,0.18), var(--focus-ring);
+  }
+  .btn.pri {
+    background: var(--accent); color: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.20);
+  }
+  .btn.pri.focus {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.20), var(--focus-ring-key);
+  }
+  .check {
+    display: inline-grid; place-items: center;
+    width: 13px; height: 13px; border-radius: 3px;
+    background: var(--accent);
+  }
+  .check svg { width: 8px; height: 8px; stroke: #fff; }
+  .check.focus { box-shadow: var(--focus-ring); }
+
+  .toggle {
+    width: 32px; height: 20px; border-radius: 12px;
+    background: var(--sys-green); position: relative;
+    display: inline-block;
+  }
+  .toggle::after { content:""; position: absolute; top: 1px; left: 13px; width: 18px; height: 18px; background: #fff; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.25); }
+  .toggle.focus { box-shadow: var(--focus-ring); }
+
+  .seg {
+    display: inline-flex; padding: 2px; background: rgba(0,0,0,0.06); border-radius: 7px;
+  }
+  .seg span { padding: 0 14px; font: 500 13px/22px var(--font-system); color: rgba(0,0,0,0.65); border-radius: 5px; }
+  .seg span.sel { background: #fff; color: rgba(0,0,0,0.85); box-shadow: 0 1px 2px rgba(0,0,0,0.10); }
+  .seg.focus { box-shadow: var(--focus-ring); }
+
+  .menu-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 2px 8px; border-radius: 4px; font: 400 13px/22px var(--font-system); color: rgba(0,0,0,0.85);
+    background: #fff;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.06);
+  }
+  .menu-item.focus { background: var(--accent); color: #fff; box-shadow: none; }
+
+  /* Tokens specimen */
+  .tokens { display: grid; grid-template-columns: 220px 1fr; gap: 10px 16px; max-width: 720px; align-items: center; }
+  .tokens .tok { font: 600 12px/16px var(--font-mono); color: rgba(0,0,0,0.85); }
+  .tokens .val { font: 400 12px/16px var(--font-mono); color: var(--label-secondary); }
+  .tokens .swatch {
+    height: 26px; border-radius: 6px;
+    box-shadow: var(--focus-ring);
+    background: #fff;
+    width: 80px;
+  }
+  .tokens .sw-tight { box-shadow: var(--focus-ring-tight); }
+  .tokens .sw-key { box-shadow: var(--focus-ring-key); }
+
+  /* Dark sample */
+  .darkbox {
+    background: #1d1d1f; padding: 18px; border-radius: 10px;
+    display: inline-flex; gap: 14px; align-items: center;
+  }
+  .darkbox .field {
+    background: rgba(255,255,255,0.08);
+    box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.85);
+  }
+  .darkbox .field.focus {
+    box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.10), 0 0 0 3px rgba(10,132,255,0.45);
+  }
+  .darkbox .btn {
+    background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.95);
+    box-shadow: 0 0.5px 1px rgba(0,0,0,0.30);
+  }
+  .darkbox .btn.focus {
+    box-shadow: 0 0.5px 1px rgba(0,0,0,0.30), 0 0 0 3px rgba(10,132,255,0.45);
+  }
+
+  .rules-card { max-width: 760px; background: #fff; padding: 16px 18px;
+                border-radius: 10px; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.10), 0 4px 14px rgba(0,0,0,0.06); }
+  .rules-card h3 { margin: 0 0 10px; font: 700 11px/14px var(--font-system); color: var(--label-secondary); text-transform: uppercase; letter-spacing: .06em; }
+  .rules-card ul { margin: 0; padding-left: 18px; font: 400 13px/22px var(--font-system); color: rgba(0,0,0,0.78); }
+  .rules-card code { font: 500 12px var(--font-mono); background: rgba(0,0,0,0.05); padding: 1px 5px; border-radius: 3px; }
+</style>
+
+<div class="stack-v">
+
+  <div>
+    <div class="lbl">Tokens</div>
+    <div class="tokens">
+      <span class="tok">--focus-ring</span>
+      <span class="val">0 0 0 3px rgba(0,122,255,0.40)</span>
+      <span class="val" style="grid-column:1;">Default · fields, secondary buttons</span>
+      <div class="swatch"></div>
+
+      <span class="tok">--focus-ring-tight</span>
+      <span class="val">0 0 0 2px rgba(0,122,255,0.45)</span>
+      <span class="val" style="grid-column:1;">Small controls · checkboxes, swatches, chips</span>
+      <div class="swatch sw-tight"></div>
+
+      <span class="tok">--focus-ring-key</span>
+      <span class="val">0 0 0 4px rgba(0,122,255,0.30)</span>
+      <span class="val" style="grid-column:1;">Primary key-equivalent action (Default button)</span>
+      <div class="swatch sw-key"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">On controls — idle vs focused</div>
+    <div class="row">
+      <input class="field" value="Type here"><input class="field focus" value="Focused field">
+    </div>
+    <div class="row" style="margin-top:10px;">
+      <button class="btn">Cancel</button>
+      <button class="btn focus">Focused</button>
+      <button class="btn pri">Save</button>
+      <button class="btn pri focus">Default · key</button>
+    </div>
+    <div class="row" style="margin-top:10px;">
+      <span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2.5,6.5 5,9 9.5,3.5"/></svg></span>
+      <span class="check focus"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2.5,6.5 5,9 9.5,3.5"/></svg></span>
+      <span class="toggle"></span>
+      <span class="toggle focus"></span>
+    </div>
+    <div class="row" style="margin-top:10px;">
+      <span class="seg"><span class="sel">Day</span><span>Week</span><span>Month</span></span>
+      <span class="seg focus"><span class="sel">Day</span><span>Week</span><span>Month</span></span>
+    </div>
+    <div class="row" style="margin-top:10px;">
+      <span class="menu-item">Save…</span>
+      <span class="menu-item focus">Save As…</span>
+      <span class="menu-item">Export</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">Dark mode</div>
+    <div class="darkbox">
+      <input class="field" placeholder="Type here">
+      <input class="field focus" placeholder="Focused field">
+      <button class="btn">Idle</button>
+      <button class="btn focus">Focused</button>
+    </div>
+  </div>
+
+  <div class="rules-card">
+    <h3>Rules</h3>
+    <ul>
+      <li>Only the keyboard-focused element shows the ring — <code>:focus-visible</code>, not <code>:focus</code>. Pointer clicks never paint a ring.</li>
+      <li>The default ("key-equivalent") button shows <code>--focus-ring-key</code> from the moment the window is key; tabbing moves the ring (and key equivalence) to whatever element is focused.</li>
+      <li>Rings always inherit the system accent (blue by default; matches user's accent if changed).</li>
+      <li>Outside a window's content (toolbars, sidebars), rings are drawn at <code>2 px</code> tight to avoid bleeding across hairlines.</li>
+      <li>Never combine focus with hover/pressed styling — focus state takes precedence on the outer shadow.</li>
+      <li>Respect <code>prefers-reduced-motion</code>: skip the 120 ms fade-in on appearance.</li>
+    </ul>
+  </div>
+
+</div>
+</body></html>

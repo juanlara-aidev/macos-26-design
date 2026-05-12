@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Iconography</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head>
+<body>
+<style>
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; max-width: 820px; }
+  .ic {
+    background: #fff; padding: 10px 14px; border-radius: 8px;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.10);
+    display: grid; grid-template-columns: 36px 1fr 1fr; align-items: center; column-gap: 12px;
+  }
+  .ic .glyph {
+    width: 28px; height: 28px; display: grid; place-items: center;
+    background: rgba(0,0,0,0.04); border-radius: 6px; color: rgba(0,0,0,0.78);
+  }
+  .ic svg { width: 18px; height: 18px; }
+  .ic .sf  { font: 500 12px/16px var(--font-mono); color: rgba(0,0,0,0.85); }
+  .ic .lu  { font: 500 12px/16px var(--font-mono); color: var(--label-secondary); }
+  .ic .ctx { grid-column: 2 / span 2; margin-top: 2px; font: 400 11px/14px var(--font-system); color: var(--label-tertiary); }
+  .meta { background: #fff; max-width: 820px; padding: 16px 18px; margin-top: 22px;
+          border-radius: 10px; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.10), 0 4px 14px rgba(0,0,0,0.06); }
+  .meta h3 { margin: 0 0 10px; font: 700 11px/14px var(--font-system); color: var(--label-secondary); text-transform: uppercase; letter-spacing: .06em; }
+  .meta ul { margin: 0; padding-left: 18px; font: 400 13px/22px var(--font-system); color: rgba(0,0,0,0.78); }
+  .meta code { font: 500 12px var(--font-mono); background: rgba(0,0,0,0.05); padding: 1px 5px; border-radius: 3px; }
+</style>
+
+<h2>SF Symbols → Lucide substitutes</h2>
+<p style="font:400 13px/18px var(--font-system);color:var(--label-secondary);max-width:760px;margin:-6px 0 14px;">
+  This kit's previews use <strong>Lucide</strong> as a substitute for Apple's proprietary SF Symbols.
+  At 1.5 – 1.8 px stroke and 16 / 18 / 20 / 24 pt sizes, the visual weight matches SF Symbols Regular.
+  When implementing for real macOS apps, replace each Lucide name with the SF Symbol on the right.
+</p>
+
+<div class="grid">
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+    <div class="sf">magnifyingglass</div><div class="lu">Search</div>
+    <div class="ctx">Search fields, toolbar search, sidebar filters.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg></div>
+    <div class="sf">line.3.horizontal</div><div class="lu">Menu</div>
+    <div class="ctx">Sidebar toggle, overflow menus.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+    <div class="sf">gearshape</div><div class="lu">Settings</div>
+    <div class="ctx">Settings menus, preferences shortcut.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+    <div class="sf">bubble.left</div><div class="lu">MessageCircle</div>
+    <div class="ctx">Messages, chat threads, comments.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+    <div class="sf">envelope</div><div class="lu">Mail</div>
+    <div class="ctx">Mail app sidebar, message lists.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></div>
+    <div class="sf">doc</div><div class="lu">FileText</div>
+    <div class="ctx">Documents, files, drafts.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+    <div class="sf">folder</div><div class="lu">Folder</div>
+    <div class="ctx">Finder sidebar, file navigation.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+    <div class="sf">calendar</div><div class="lu">Calendar</div>
+    <div class="ctx">Date pickers, event lists.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+    <div class="sf">clock</div><div class="lu">Clock</div>
+    <div class="ctx">Time pickers, recents.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+    <div class="sf">bookmark</div><div class="lu">Bookmark</div>
+    <div class="ctx">Favorites, saved items.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+    <div class="sf">exclamationmark.circle</div><div class="lu">AlertCircle</div>
+    <div class="ctx">Alerts, validation, warnings.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg></div>
+    <div class="sf">checkmark.circle</div><div class="lu">CheckCircle</div>
+    <div class="ctx">Success, completed states.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="sf">chevron.down</div><div class="lu">ChevronDown</div>
+    <div class="ctx">Disclosure, popup buttons.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+    <div class="sf">plus</div><div class="lu">Plus</div>
+    <div class="ctx">Add, create, new item.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></div>
+    <div class="sf">trash</div><div class="lu">Trash2</div>
+    <div class="ctx">Delete, remove, move-to-trash.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v6h6"/><path d="M20 20v-6h-6"/><path d="M20 4l-7 7"/><path d="M4 20l7-7"/></svg></div>
+    <div class="sf">arrow.up.arrow.down</div><div class="lu">ArrowUpDown</div>
+    <div class="ctx">Sort, reorder.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+    <div class="sf">square.and.arrow.down</div><div class="lu">Download</div>
+    <div class="ctx">Save, export, install.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+    <div class="sf">square.and.arrow.up</div><div class="lu">Share2</div>
+    <div class="ctx">Share, send, AirDrop.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+    <div class="sf">star</div><div class="lu">Star</div>
+    <div class="ctx">Favorites, ratings.</div>
+  </div>
+
+  <div class="ic">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+    <div class="sf">heart</div><div class="lu">Heart</div>
+    <div class="ctx">Likes, favorites in Music / Photos.</div>
+  </div>
+
+</div>
+
+<div class="meta">
+  <h3>Sizing &amp; stroke</h3>
+  <ul>
+    <li>Sidebar / list rows: <code>16 pt</code> @ 1.8 px stroke.</li>
+    <li>Toolbar &amp; menu items: <code>18 pt</code> @ 1.8 px stroke.</li>
+    <li>Inline next to label: <code>14 pt</code> @ 1.6 px stroke.</li>
+    <li>Tab bar / large controls: <code>20 pt</code> @ 1.8 px stroke.</li>
+    <li>App icon glyph (centered in squircle): <code>56 pt</code> on a 92 pt tile.</li>
+    <li>Always set <code>stroke-linecap="round"</code> and <code>stroke-linejoin="round"</code> to match SF Symbols' Regular weight.</li>
+  </ul>
+</div>
+
+</body></html>

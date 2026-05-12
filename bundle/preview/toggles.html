@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Toggles & Switches</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+.sw { width:32px; height:20px; border-radius:12px; background:rgba(120,120,128,0.20); position:relative; box-shadow:inset 0 0 0 0.5px rgba(0,0,0,0.06); transition:.2s; }
+.sw::after { content:""; position:absolute; top:1.5px; left:1.5px; width:17px; height:17px; border-radius:50%; background:#fff; box-shadow:0 0 0 0.5px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.18); transition:.2s; }
+.sw.on { background:var(--sys-green); }
+.sw.on::after { transform:translateX(12px); }
+.sw.blue.on { background:var(--accent); }
+.sw.lg { width:44px; height:26px; border-radius:14px; }
+.sw.lg::after { width:23px; height:23px; }
+.sw.lg.on::after { transform:translateX(18px); }
+.sw.sm { width:24px; height:14px; border-radius:8px; }
+.sw.sm::after { width:11px; height:11px; }
+.sw.sm.on::after { transform:translateX(10px); }
+.sw.dis { opacity:.45; }
+.row { display:flex; align-items:center; gap:14px; }
+.lbl { font:600 10px/14px var(--font-system); color:var(--label-secondary); text-transform:uppercase; letter-spacing:.06em; min-width:110px; }
+.opt { display:inline-flex; align-items:center; gap:8px; font:400 13px var(--font-system); }
+</style>
+<div class="stack">
+<div class="row"><span class="lbl">Default (green)</span><div class="sw on"></div><div class="sw"></div></div>
+<div class="row"><span class="lbl">Accent</span><div class="sw blue on"></div><div class="sw blue"></div></div>
+<div class="row"><span class="lbl">Large</span><div class="sw lg on"></div><div class="sw lg"></div></div>
+<div class="row"><span class="lbl">Small (mini)</span><div class="sw sm on"></div><div class="sw sm"></div></div>
+<div class="row"><span class="lbl">Disabled</span><div class="sw dis on"></div><div class="sw dis"></div></div>
+<div class="row" style="gap:24px"><span class="lbl">In context</span>
+  <span class="opt"><div class="sw on"></div>Show Hidden Files</span>
+  <span class="opt"><div class="sw"></div>Open at Login</span>
+</div>
+</div></body></html>

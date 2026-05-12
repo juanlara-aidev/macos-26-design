@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shadows</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 26px 24px 36px; background: #f4f4f5; font-family: var(--font-system); }
+  .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .box { width: 100%; aspect-ratio: 1.4 / 1; background: #fff; border-radius: 12px; }
+  .name { font: 600 11px/14px var(--font-system); color: var(--label-primary); }
+  .meta { font: 500 9px/11px var(--font-mono); color: var(--label-tertiary); text-align: center; }
+  .b-win  { box-shadow: var(--shadow-window); }
+  .b-pop  { box-shadow: var(--shadow-popover); }
+  .b-tip  { box-shadow: var(--shadow-tooltip); }
+  .b-ctl  { box-shadow: var(--shadow-control); background: #fafafa; }
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="item"><div class="box b-win"></div><div class="name">Window</div><div class="meta">0 16 48 .35<br>+ 0 0 0 1 .23</div></div>
+  <div class="item"><div class="box b-pop"></div><div class="name">Popover</div><div class="meta">0 8 24 .20<br>+ 0 0 0 .5 .20</div></div>
+  <div class="item"><div class="box b-tip"></div><div class="name">Tooltip</div><div class="meta">0 4 12 .18</div></div>
+  <div class="item"><div class="box b-ctl"></div><div class="name">Control</div><div class="meta">inset .5 white<br>+ 0 .5 1 .10</div></div>
+</div>
+</body>
+</html>

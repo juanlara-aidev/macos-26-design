@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Wallpapers</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head>
+<body>
+<style>
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; max-width: 820px; }
+  .wp {
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.18), 0 6px 18px rgba(0,0,0,0.12);
+    background: #222;
+  }
+  .wp .img { aspect-ratio: 16 / 10; background-size: cover; background-position: center; position: relative; }
+  .wp .preview-glass {
+    position: absolute; left: 12%; right: 12%; bottom: 14%; height: 38px;
+    border-radius: 12px;
+    background: rgba(245,245,245,0.55);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: var(--shadow-glass);
+    display: flex; align-items: center; justify-content: center;
+    font: 600 12px/16px var(--font-system); color: rgba(0,0,0,0.78);
+  }
+  .wp .label {
+    padding: 12px 16px; background: #fff;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .wp .name { font: 600 13px/16px var(--font-system); color: rgba(0,0,0,0.88); }
+  .wp .meta { font: 400 11px/16px var(--font-mono); color: var(--label-secondary); }
+</style>
+
+<h2>System wallpapers · 1920 × 1080</h2>
+<p style="font:400 13px/18px var(--font-system);color:var(--label-secondary);max-width:760px;margin:-6px 0 14px;">
+  Each composition is balanced warm-to-cool so floating Liquid Glass surfaces always have something to pick up.
+  The glass overlay below each tile previews how a toolbar reads against the wallpaper at 0.55 alpha + 20 px blur.
+</p>
+
+<div class="grid">
+  <div class="wp">
+    <div class="img" style="background-image:url('../assets/wallpaper-aurora.png');">
+      <div class="preview-glass">Aurora · sidebar over wallpaper</div>
+    </div>
+    <div class="label"><span class="name">Aurora</span><span class="meta">deep navy → coral</span></div>
+  </div>
+  <div class="wp">
+    <div class="img" style="background-image:url('../assets/wallpaper-sequoia.png');">
+      <div class="preview-glass">Sequoia · warm sunset</div>
+    </div>
+    <div class="label"><span class="name">Sequoia</span><span class="meta">amber → mulberry</span></div>
+  </div>
+  <div class="wp">
+    <div class="img" style="background-image:url('../assets/wallpaper-ventura.png');">
+      <div class="preview-glass">Ventura · cool dawn</div>
+    </div>
+    <div class="label"><span class="name">Ventura</span><span class="meta">indigo → blush</span></div>
+  </div>
+  <div class="wp">
+    <div class="img" style="background-image:url('../assets/wallpaper-monterey.png');">
+      <div class="preview-glass">Monterey · violet horizon</div>
+    </div>
+    <div class="label"><span class="name">Monterey</span><span class="meta">rose → midnight</span></div>
+  </div>
+</div>
+
+<h2 style="margin-top:28px">Usage rules</h2>
+<div style="background:#fff;padding:16px 18px;border-radius:10px;box-shadow:0 0 0 0.5px rgba(0,0,0,0.10), 0 4px 14px rgba(0,0,0,0.06);max-width:820px;">
+  <ul style="margin:0;padding-left:18px;font:400 13px/22px var(--font-system);color:rgba(0,0,0,0.78);">
+    <li>Use wallpapers as the desktop / lockscreen background — never as a control fill.</li>
+    <li>Don't tile, crop tightly, or apply additional gradients; the compositions are tuned end-to-end.</li>
+    <li>When pulling colors for chrome, sample from the wallpaper's <em>opposite</em> tonal end so Liquid Glass picks up contrast.</li>
+    <li>For light mode prefer <strong>Sequoia</strong> / <strong>Ventura</strong>; for dark prefer <strong>Aurora</strong> / <strong>Monterey</strong>.</li>
+  </ul>
+</div>
+</body></html>

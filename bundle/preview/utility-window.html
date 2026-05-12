@@ -1,0 +1,43 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Utility Window</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+.win { width:280px; background:#fff; border-radius:14px; box-shadow:var(--shadow-window); overflow:hidden; }
+.titlebar { height:28px; padding:0 10px; display:flex; align-items:center; gap:6px; background:rgba(240,240,242,0.7); backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur); border-bottom:0.5px solid rgba(0,0,0,0.10); }
+.lights { display:flex; gap:6px; }
+.l { width:10px; height:10px; border-radius:50%; box-shadow:inset 0 0 0 0.5px rgba(0,0,0,0.18); }
+.close { background:#ff5f57; } .min { background:#febc2e; } .zoom { background:#28c840; }
+.title { flex:1; text-align:center; font:600 11px var(--font-system); color:var(--label-secondary); }
+.body { padding:14px; font:400 13px/17px var(--font-system); }
+.body .row { display:flex; align-items:center; gap:8px; padding:5px 0; }
+.body .row .lbl { flex:0 0 80px; color:var(--label-secondary); font-size:11px; text-align:right; }
+.body input { border:0; outline:0; background:#fff; box-shadow:var(--shadow-field-inset); height:20px; padding:0 6px; border-radius:4px; font:400 12px var(--font-system); flex:1; min-width:0; }
+.body .sw { width:28px; height:18px; border-radius:10px; background:var(--sys-green); position:relative; }
+.body .sw::after { content:""; position:absolute; top:1.5px; right:1.5px; width:15px; height:15px; background:#fff; border-radius:50%; box-shadow:0 1px 2px rgba(0,0,0,0.15); }
+.row-lbl { font:600 10px/14px var(--font-system); color:var(--label-secondary); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+.win.inactive .titlebar { background:rgba(246,246,246,0.7); }
+.win.inactive .l { background:#d4d4d4; box-shadow:none; }
+</style>
+<div class="stack">
+<div><div class="row-lbl">Inspector (active)</div>
+<div class="win">
+  <div class="titlebar"><div class="lights"><span class="l close"></span><span class="l min"></span><span class="l zoom"></span></div><span class="title">Inspector</span></div>
+  <div class="body">
+    <div class="row"><span class="lbl">Name</span><input value="Untitled Document"></div>
+    <div class="row"><span class="lbl">Size</span><input value="2.4 MB" style="flex:0 0 90px"></div>
+    <div class="row"><span class="lbl">Locked</span><div class="sw"></div></div>
+    <div class="row"><span class="lbl">Tags</span><input value="design, q3" style="flex:1"></div>
+  </div>
+</div>
+</div>
+
+<div><div class="row-lbl">Utility (inactive)</div>
+<div class="win inactive">
+  <div class="titlebar"><div class="lights"><span class="l"></span><span class="l"></span><span class="l"></span></div><span class="title">Color</span></div>
+  <div class="body" style="text-align:center; padding:18px;">
+    <div style="width:80px;height:80px;border-radius:50%; background:conic-gradient(red,orange,yellow,green,cyan,blue,magenta,red); margin:0 auto; box-shadow:inset 0 0 0 4px #fff, inset 0 0 0 4.5px rgba(0,0,0,0.10);"></div>
+    <div style="margin-top:10px; font:400 11px var(--font-system); color:var(--label-secondary)">RGB · 10 · 132 · 255</div>
+  </div>
+</div>
+</div>
+</div></body></html>

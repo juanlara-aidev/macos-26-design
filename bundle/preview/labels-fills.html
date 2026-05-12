@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Labels & Fills</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 18px 20px; background: #fff; font-family: var(--font-system); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .group h4 { margin: 0 0 10px; font: 700 10px/13px var(--font-system); letter-spacing: .04em; text-transform: uppercase; color: var(--label-tertiary); }
+  .row { display: grid; grid-template-columns: 110px 32px 1fr; gap: 10px; align-items: center; padding: 5px 0; }
+  .a { font-size: 22px; line-height: 1; font-weight: 700; }
+  .lbl { font-size: 11px; color: var(--label-secondary); }
+  .chip { width: 100%; height: 18px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06); }
+  .meta { font: 500 10px/12px var(--font-mono); color: var(--label-tertiary); text-align: right; }
+</style>
+</head>
+<body>
+<div class="pair">
+  <div class="group">
+    <h4>Label (text on light)</h4>
+    <div class="row"><div class="lbl">Primary</div><div class="a" style="color:var(--label-primary)">A</div><div class="meta">rgba(0,0,0,.85)</div></div>
+    <div class="row"><div class="lbl">Secondary</div><div class="a" style="color:var(--label-secondary)">A</div><div class="meta">rgba(0,0,0,.50)</div></div>
+    <div class="row"><div class="lbl">Tertiary</div><div class="a" style="color:var(--label-tertiary)">A</div><div class="meta">rgba(0,0,0,.25)</div></div>
+    <div class="row"><div class="lbl">Quaternary</div><div class="a" style="color:var(--label-quaternary)">A</div><div class="meta">rgba(0,0,0,.10)</div></div>
+  </div>
+  <div class="group">
+    <h4>Fill</h4>
+    <div class="row"><div class="lbl">Primary</div><div class="chip" style="background:var(--fill-primary)"></div><div class="meta">rgba(0,0,0,.10)</div></div>
+    <div class="row"><div class="lbl">Secondary</div><div class="chip" style="background:var(--fill-secondary)"></div><div class="meta">rgba(0,0,0,.08)</div></div>
+    <div class="row"><div class="lbl">Tertiary</div><div class="chip" style="background:var(--fill-tertiary)"></div><div class="meta">rgba(0,0,0,.05)</div></div>
+    <div class="row"><div class="lbl">Quaternary</div><div class="chip" style="background:var(--fill-quaternary)"></div><div class="meta">rgba(0,0,0,.03)</div></div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Motion</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head>
+<body>
+<style>
+  .curves { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 780px; }
+  .curve {
+    background: #fff; padding: 14px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.10), 0 4px 14px rgba(0,0,0,0.06);
+  }
+  .curve h3 {
+    margin: 0 0 4px;
+    font: 700 11px/14px var(--font-system);
+    color: rgba(0,0,0,0.85);
+  }
+  .curve .v {
+    font: 400 11px/14px var(--font-mono); color: var(--label-secondary); margin-bottom: 8px;
+  }
+  .curve svg { width: 100%; height: 80px; display: block; }
+
+  .durations { margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 780px; }
+  .dur-card {
+    background: #fff; padding: 14px 16px; border-radius: 10px;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.10), 0 4px 14px rgba(0,0,0,0.06);
+  }
+  .dur-card h3 { margin: 0 0 4px; font: 700 11px/14px var(--font-system); }
+  .dur-card .meta { font: 400 11px/14px var(--font-mono); color: var(--label-secondary); margin-bottom: 12px; }
+  .dur-card .demo {
+    height: 30px; position: relative;
+    background: rgba(0,0,0,0.04); border-radius: 6px;
+    overflow: hidden;
+  }
+  .dur-card .pill {
+    position: absolute; left: 6px; top: 5px; width: 20px; height: 20px;
+    border-radius: 50%; background: var(--accent);
+  }
+  .pill-fast { animation: slide var(--dur-fast) var(--ease) infinite alternate; }
+  .pill-base { animation: slide var(--dur) var(--ease) infinite alternate; }
+  .pill-slow { animation: slide var(--dur-slow) var(--ease) infinite alternate; }
+  @keyframes slide {
+    from { left: 6px; }
+    to { left: calc(100% - 26px); }
+  }
+  .pill-stagger {
+    position: absolute; top: 5px; width: 20px; height: 20px;
+    border-radius: 50%; background: var(--accent);
+    animation: pop 1.2s var(--ease) infinite;
+  }
+  .pill-stagger:nth-child(1) { left: 8%; animation-delay: 0s; }
+  .pill-stagger:nth-child(2) { left: 32%; animation-delay: 80ms; }
+  .pill-stagger:nth-child(3) { left: 56%; animation-delay: 160ms; }
+  .pill-stagger:nth-child(4) { left: 80%; animation-delay: 240ms; }
+  @keyframes pop {
+    0%, 100% { transform: translateY(0) scale(1); }
+    30%      { transform: translateY(-6px) scale(1.15); }
+  }
+
+  .rules { margin-top: 22px; max-width: 780px; background: #fff; padding: 16px 18px;
+           border-radius: 10px; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.10), 0 4px 14px rgba(0,0,0,0.06); }
+  .rules h3 { margin: 0 0 10px; font: 700 11px/14px var(--font-system); text-transform: uppercase; letter-spacing: .06em; color: var(--label-secondary); }
+  .rules ul { margin: 0; padding-left: 18px; font: 400 13px/22px var(--font-system); color: rgba(0,0,0,0.78); }
+  .rules code { font: 500 12px var(--font-mono); background: rgba(0,0,0,0.05); padding: 1px 5px; border-radius: 3px; }
+</style>
+
+<h2>Easing curves</h2>
+<div class="curves">
+  <div class="curve">
+    <h3>Standard</h3>
+    <div class="v">cubic-bezier(.4, 0, .2, 1)</div>
+    <svg viewBox="0 0 100 80"><path d="M 4,76 C 44,76 60,4 96,4" fill="none" stroke="var(--accent)" stroke-width="2"/>
+      <circle cx="4" cy="76" r="2.5" fill="rgba(0,0,0,0.4)"/><circle cx="96" cy="4" r="2.5" fill="rgba(0,0,0,0.4)"/>
+    </svg>
+  </div>
+  <div class="curve">
+    <h3>Decelerate</h3>
+    <div class="v">cubic-bezier(0, 0, .2, 1)</div>
+    <svg viewBox="0 0 100 80"><path d="M 4,76 C 4,76 60,4 96,4" fill="none" stroke="var(--accent)" stroke-width="2"/></svg>
+  </div>
+  <div class="curve">
+    <h3>Accelerate</h3>
+    <div class="v">cubic-bezier(.4, 0, 1, 1)</div>
+    <svg viewBox="0 0 100 80"><path d="M 4,76 C 44,76 96,76 96,4" fill="none" stroke="var(--accent)" stroke-width="2"/></svg>
+  </div>
+  <div class="curve">
+    <h3>Spring</h3>
+    <div class="v">cubic-bezier(.5,1.5,.4,1)</div>
+    <svg viewBox="0 0 100 80"><path d="M 4,76 C 54,-12 60,16 96,4" fill="none" stroke="var(--accent)" stroke-width="2"/></svg>
+  </div>
+</div>
+
+<h2 style="margin-top:26px">Durations</h2>
+<div class="durations">
+  <div class="dur-card">
+    <h3>Fast · 120 ms</h3>
+    <div class="meta">--dur-fast · hover, tap, micro-state flips</div>
+    <div class="demo"><div class="pill pill-fast"></div></div>
+  </div>
+  <div class="dur-card">
+    <h3>Base · 220 ms</h3>
+    <div class="meta">--dur · popovers, menus, drawer reveal</div>
+    <div class="demo"><div class="pill pill-base"></div></div>
+  </div>
+  <div class="dur-card">
+    <h3>Slow · 320 ms</h3>
+    <div class="meta">--dur-slow · windows, sheets, view transitions</div>
+    <div class="demo"><div class="pill pill-slow"></div></div>
+  </div>
+  <div class="dur-card">
+    <h3>Symbol-effect stagger</h3>
+    <div class="meta">80 ms delay · bounce on each item</div>
+    <div class="demo">
+      <div class="pill-stagger"></div><div class="pill-stagger"></div><div class="pill-stagger"></div><div class="pill-stagger"></div>
+    </div>
+  </div>
+</div>
+
+<div class="rules">
+  <h3>Rules</h3>
+  <ul>
+    <li>Default to <code>--ease</code> (standard). Use <em>decelerate</em> for entering elements (popovers, menus) and <em>accelerate</em> for dismissals.</li>
+    <li>Use <em>spring</em> only on user-initiated, direct-manipulation feedback (toggle thumbs, dock magnification).</li>
+    <li>Hover/press states must complete inside <code>--dur-fast</code> (≤ 150 ms).</li>
+    <li>SF Symbol effects: <code>.bounce</code> 600 ms / <code>.pulse</code> 1 s / <code>.variableColor</code> 1.2 s — never chain more than two on a single icon.</li>
+    <li>Respect <code>prefers-reduced-motion</code>: collapse durations to ≤ 100 ms and disable spring overshoot.</li>
+  </ul>
+</div>
+</body></html>

@@ -1,0 +1,34 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Combo Boxes</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+.combo { display:inline-flex; align-items:stretch; height:22px; width:200px; border-radius:5px; background:#fff; box-shadow:var(--shadow-field-inset); overflow:hidden; }
+.combo input { border:0; outline:0; background:transparent; flex:1; min-width:0; padding:0 8px; font:400 13px/22px var(--font-system); color:var(--label-primary); }
+.combo .chev { width:20px; display:grid; place-items:center; color:var(--label-secondary); border-left:0.5px solid var(--separator); }
+.combo.open { border-radius:5px 5px 0 0; }
+.list { width:200px; background:#fff; border-radius:0 0 8px 8px; box-shadow:var(--shadow-popover); padding:3px; margin-top:0; }
+.list .opt { padding:3px 8px; font:400 13px var(--font-system); border-radius:4px; display:flex; align-items:center; gap:8px; }
+.list .opt:hover { background:var(--accent); color:#fff; }
+.list .opt .check { width:12px; opacity:0; }
+.list .opt.sel .check { opacity:1; }
+.row { display:flex; align-items:center; gap:14px; }
+.lbl { font:600 10px/14px var(--font-system); color:var(--label-secondary); text-transform:uppercase; letter-spacing:.06em; min-width:110px; }
+</style>
+<div class="stack">
+<div class="row"><span class="lbl">Default</span>
+  <span class="combo"><input value="Helvetica Neue"><span class="chev"><svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg></span></span>
+</div>
+<div class="row"><span class="lbl">Empty</span>
+  <span class="combo"><input placeholder="Choose or type…"><span class="chev"><svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg></span></span>
+</div>
+<div><div class="lbl" style="margin-bottom:6px">Open (popover)</div>
+  <span class="combo open"><input value="SF Pro"><span class="chev"><svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg></span></span>
+  <div class="list">
+    <div class="opt"><span class="check">✓</span>SF Pro Display</div>
+    <div class="opt sel" style="background:var(--accent); color:#fff"><span class="check">✓</span>SF Pro Text</div>
+    <div class="opt"><span class="check">✓</span>SF Mono</div>
+    <div class="opt"><span class="check">✓</span>New York</div>
+    <div class="opt"><span class="check">✓</span>Helvetica Neue</div>
+  </div>
+</div>
+</div></body></html>

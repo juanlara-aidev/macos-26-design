@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Sliders & Dials</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+  .slider {
+    position: relative;
+    width: 240px; height: 16px;
+    display: flex; align-items: center;
+  }
+  .track {
+    position: absolute; left: 0; right: 0;
+    height: 4px; border-radius: 100px;
+    background: var(--fill-secondary);
+    top: 50%; transform: translateY(-50%);
+  }
+  .track .fill {
+    position: absolute; top: 0; bottom: 0; left: 0;
+    background: var(--accent); border-radius: 100px;
+  }
+  .thumb {
+    position: absolute; width: 16px; height: 16px; border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0.5px 0 rgba(0,0,0,0.20), 0 2px 4px rgba(0,0,0,0.18);
+    top: 50%; transform: translate(-50%, -50%);
+  }
+  .thumb.pressed { background: var(--accent); }
+  .ticks { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; justify-content: space-between; }
+  .ticks .t { width: 1px; height: 8px; background: var(--label-tertiary); }
+
+  .slider.disabled { opacity: 0.45; }
+  .slider.center .fill {
+    left: 50%;
+    width: 25%;
+  }
+
+  .row.col { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .lbl { font: 600 10px/14px var(--font-system); color: var(--label-secondary); text-transform: uppercase; letter-spacing: 0.06em; min-width: 110px; }
+
+  /* Dial */
+  .dial {
+    width: 56px; height: 56px; border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 30%, #fff 0%, #e6e6ea 60%, #d3d3d8 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.6),
+      inset 0 -1px 1px rgba(0,0,0,0.1),
+      0 1px 2px rgba(0,0,0,0.15);
+    position: relative;
+  }
+  .dial::after {
+    content: ""; position: absolute; left: 50%; top: 6px; width: 2px; height: 12px;
+    background: var(--accent); border-radius: 1px; transform-origin: 50% 22px;
+    transform: translateX(-50%);
+  }
+  .dial.r45::after { transform: translateX(-50%) rotate(45deg); }
+  .dial.r135::after { transform: translateX(-50%) rotate(135deg); }
+  .dial.r225::after { transform: translateX(-50%) rotate(225deg); }
+  .dial.disabled { opacity: 0.45; }
+</style>
+
+<h2>Sliders</h2>
+<div class="row col">
+  <div class="row"><span class="lbl">Idle</span>
+    <div class="slider">
+      <div class="track"><div class="fill" style="width: 40%"></div></div>
+      <div class="thumb" style="left: 40%"></div>
+    </div>
+  </div>
+  <div class="row"><span class="lbl">Pressed</span>
+    <div class="slider">
+      <div class="track"><div class="fill" style="width: 60%"></div></div>
+      <div class="thumb pressed" style="left: 60%"></div>
+    </div>
+  </div>
+  <div class="row"><span class="lbl">With ticks</span>
+    <div class="slider">
+      <div class="track"><div class="fill" style="width: 50%"></div></div>
+      <div class="ticks"><span class="t"></span><span class="t"></span><span class="t"></span><span class="t"></span><span class="t"></span><span class="t"></span></div>
+      <div class="thumb" style="left: 50%"></div>
+    </div>
+  </div>
+  <div class="row"><span class="lbl">Center‑biased</span>
+    <div class="slider center">
+      <div class="track"><div class="fill"></div></div>
+      <div class="thumb" style="left: 75%"></div>
+    </div>
+  </div>
+  <div class="row"><span class="lbl">Disabled</span>
+    <div class="slider disabled">
+      <div class="track"><div class="fill" style="width: 30%"></div></div>
+      <div class="thumb" style="left: 30%"></div>
+    </div>
+  </div>
+</div>
+
+<h2 style="margin-top: 22px;">Dials</h2>
+<div class="row" style="gap: 18px;">
+  <div style="text-align: center;"><div class="dial"></div><div class="lbl" style="min-width:0;margin-top:6px;">0°</div></div>
+  <div style="text-align: center;"><div class="dial r45"></div><div class="lbl" style="min-width:0;margin-top:6px;">45°</div></div>
+  <div style="text-align: center;"><div class="dial r135"></div><div class="lbl" style="min-width:0;margin-top:6px;">135°</div></div>
+  <div style="text-align: center;"><div class="dial r225"></div><div class="lbl" style="min-width:0;margin-top:6px;">225°</div></div>
+  <div style="text-align: center;"><div class="dial disabled"></div><div class="lbl" style="min-width:0;margin-top:6px;">Disabled</div></div>
+</div>
+</body></html>

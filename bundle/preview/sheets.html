@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Sheets & Dialogs</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+.host { width: 540px; height: 380px; background: linear-gradient(180deg,#fafafa,#eaeaea); border-radius: 16px; box-shadow: var(--shadow-window); position: relative; overflow: hidden; }
+.host .tb { height: 36px; border-bottom: 0.5px solid var(--separator); display: flex; align-items: center; gap: 8px; padding: 0 12px; font: 700 13px var(--font-system); }
+.host .tl { width: 10px; height: 10px; border-radius: 50%; }
+.scrim { position: absolute; inset: 0; background: rgba(0,0,0,0.18); }
+.sheet { position: absolute; left: 50%; top: 36px; transform: translateX(-50%); width: 380px; background: rgba(252,252,252,0.98); border-radius: 0 0 16px 16px; padding: 22px 22px 18px; box-shadow: var(--shadow-popover); display: flex; flex-direction: column; gap: 8px; }
+.sheet.centered { top: 50%; transform: translate(-50%, -50%); border-radius: 16px; }
+.sheet h3 { margin: 0; font: 700 13px/16px var(--font-system); }
+.sheet p { margin: 0; font: 400 11px/14px var(--font-system); color: var(--label-secondary); }
+.row { gap: 22px; align-items: flex-start; }
+.btnrow { display:flex; gap: 8px; margin-top: 14px; justify-content: flex-end; }
+.btn { padding: 4px 12px; border-radius: 7px; border: 0; font: 500 13px var(--font-system); cursor: default; box-shadow: var(--shadow-control); background: #fff; }
+.btn.primary { background: var(--accent); color: #fff; }
+.field { padding: 5px 8px; border-radius: 5px; box-shadow: var(--shadow-field-inset); background: #fff; font: 400 13px var(--font-system); }
+</style>
+<div class="row">
+  <div class="host">
+    <div class="tb"><span class="tl" style="background:#FF5F57"></span><span class="tl" style="background:#FEBC2E"></span><span class="tl" style="background:#28C840"></span><span style="margin-left:8px;color:var(--label-secondary);font-weight:600">Untitled — Pages</span></div>
+    <div class="scrim"></div>
+    <div class="sheet">
+      <h3>Save As:</h3>
+      <input class="field" value="Untitled.pages" />
+      <h3 style="margin-top:6px">Where:</h3>
+      <select class="field"><option>Documents</option></select>
+      <div class="btnrow"><button class="btn">Cancel</button><button class="btn primary">Save</button></div>
+    </div>
+  </div>
+  <div class="host">
+    <div class="tb"><span class="tl" style="background:#FF5F57"></span><span class="tl" style="background:#FEBC2E"></span><span class="tl" style="background:#28C840"></span></div>
+    <div class="scrim"></div>
+    <div class="sheet centered" style="width:300px">
+      <h3>Sign in to iCloud</h3>
+      <p>Enter the password for "you@icloud.com" to continue.</p>
+      <input class="field" type="password" placeholder="Apple ID Password" />
+      <div class="btnrow"><button class="btn">Cancel</button><button class="btn primary">Sign In</button></div>
+    </div>
+  </div>
+</div></body></html>

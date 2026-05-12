@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Vibrant Text Styles</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body style="padding:0;background:#1d1d1f">
+<style>
+  body { margin: 0; padding: 0; font-family: var(--font-system); }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+  .panel { padding: 24px 26px; min-height: 540px; position: relative; }
+  .panel.light { background:
+    linear-gradient(135deg, rgba(245,200,180,0.85) 0%, rgba(220,200,235,0.85) 50%, rgba(180,210,235,0.85) 100%),
+    #f4f4f6; }
+  .panel.dark  { background:
+    linear-gradient(135deg, rgba(28,40,90,0.92) 0%, rgba(80,40,110,0.92) 50%, rgba(140,55,90,0.92) 100%),
+    #1d1d1f; }
+  .glass {
+    position: relative; padding: 22px 22px 24px; border-radius: 18px;
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  }
+  .glass.light { background: rgba(245,245,245,0.55); box-shadow: var(--shadow-glass); }
+  .glass.dark  { background: rgba(38,38,38,0.55); box-shadow: var(--shadow-glass); }
+  .glass h3 {
+    margin: 0 0 14px; font: 700 10px/13px var(--font-system); letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .glass.light h3 { color: rgba(0,0,0,0.50); }
+  .glass.dark  h3 { color: rgba(255,255,255,0.55); }
+  .row { display: grid; grid-template-columns: 96px 1fr; align-items: baseline; gap: 12px; padding: 4px 0; }
+  .name { font: 600 10px/14px var(--font-system); letter-spacing: 0.04em; text-transform: uppercase; }
+  .light .name { color: rgba(0,0,0,0.50); }
+  .dark .name  { color: rgba(255,255,255,0.55); }
+
+  /* Opaque text colors */
+  .opaque.light .lp { color: rgba(0,0,0,0.85); }
+  .opaque.light .ls { color: rgba(0,0,0,0.50); }
+  .opaque.light .lt { color: rgba(0,0,0,0.25); }
+  .opaque.dark  .lp { color: rgba(255,255,255,0.85); }
+  .opaque.dark  .ls { color: rgba(255,255,255,0.55); }
+  .opaque.dark  .lt { color: rgba(255,255,255,0.25); }
+
+  /* Vibrant text colors — slightly lighter / desaturated so they read through glass */
+  .vibrant.light .lp { color: rgba(0,0,0,0.78); }
+  .vibrant.light .ls { color: rgba(0,0,0,0.42); }
+  .vibrant.light .lt { color: rgba(0,0,0,0.20); }
+  .vibrant.dark  .lp { color: rgba(255,255,255,0.95); text-shadow: 0 0 0.5px rgba(255,255,255,0.4); }
+  .vibrant.dark  .ls { color: rgba(255,255,255,0.70); }
+  .vibrant.dark  .lt { color: rgba(255,255,255,0.40); }
+
+  .sample { display: flex; flex-direction: column; gap: 2px; }
+  .t-headline { font: 700 13px/16px var(--font-system); }
+  .t-body     { font: 400 13px/16px var(--font-system); }
+  .t-footnote { font: 400 10px/13px var(--font-system); }
+
+  .caption {
+    margin-top: 14px; font: 400 11px/15px var(--font-system);
+    text-align: center;
+  }
+  .light .caption { color: rgba(0,0,0,0.50); }
+  .dark  .caption { color: rgba(255,255,255,0.55); }
+</style>
+
+<div class="grid">
+
+  <div class="panel light">
+    <div class="glass light opaque">
+      <h3>Light · Opaque</h3>
+      <div class="row"><span class="name">Primary</span><span class="lp t-headline">Aa Bb Cc 123</span></div>
+      <div class="row"><span class="name">Secondary</span><span class="ls t-body">Aa Bb Cc 123</span></div>
+      <div class="row"><span class="name">Tertiary</span><span class="lt t-footnote">Aa Bb Cc 123</span></div>
+      <div class="row"><span class="name">Body</span><span class="lp t-body">Apple's Liquid Glass material picks up the wallpaper underneath.</span></div>
+    </div>
+    <div class="caption">Use over solid backgrounds (window content, sheets).</div>
+  </div>
+
+  <div class="panel light">
+    <div class="glass light vibrant">
+      <h3>Light · Vibrant</h3>
+      <div class="row"><span class="name">Primary</span><span class="lp t-headline">Aa Bb Cc 123</span></div>
+      <div class="row"><span class="name">Secondary</span><span class="ls t-body">Aa Bb Cc 123</span></div>
+      <div class="row"><span class="name">Tertiary</span><span class="lt t-footnote">Aa Bb Cc 123</span></div>
+      <div class="row"><span class="name">Body</span><span class="lp t-body">Apple's Liquid Glass material picks up the wallpaper underneath.</span></div>
+    </div>
+    <div class="caption">Use over Liquid Glass (sidebar, toolbar, menu).</div>
+  </div>
+
+  <div class="panel dark">
+    <div class="glass dark opaque">
+      <h3>Dark · Opaque</h3>
+      <div class="row"><span class="name">Primary</span><span class="lp t-headline">Aa Bb Cc 123</span></div>
+      <div class="row"><span class="name">Secondary</span><span class="ls t-body">Aa Bb Cc 123</span></div>
+      <div class="row"><span class="name">Tertiary</span><span class="lt t-footnote">Aa Bb Cc 123</span></div>
+      <div class="row"><span class="name">Body</span><span class="lp t-body">Apple's Liquid Glass material picks up the wallpaper underneath.</span></div>
+    </div>
+    <div class="caption">Use over solid dark backgrounds.</div>
+  </div>
+
+  <div class="panel dark">
+    <div class="glass dark vibrant">
+      <h3>Dark · Vibrant</h3>
+      <div class="row"><span class="name">Primary</span><span class="lp t-headline">Aa Bb Cc 123</span></div>
+      <div class="row"><span class="name">Secondary</span><span class="ls t-body">Aa Bb Cc 123</span></div>
+      <div class="row"><span class="name">Tertiary</span><span class="lt t-footnote">Aa Bb Cc 123</span></div>
+      <div class="row"><span class="name">Body</span><span class="lp t-body">Apple's Liquid Glass material picks up the wallpaper underneath.</span></div>
+    </div>
+    <div class="caption">Use over Liquid Glass in dark mode.</div>
+  </div>
+
+</div>
+</body></html>

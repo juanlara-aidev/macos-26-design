@@ -1,0 +1,174 @@
+/* ─────────────────────────────────────────────────────────────
+   macOS 26 — figma-accurate token set
+   Values calibrated to the Apple Design Resources Figma file.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* ─── Typography ─── */
+  --font-system: -apple-system, "SF Pro", "SF Pro Text", BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: -apple-system, "SF Pro Display", "SF Pro", BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* HIG text styles */
+  --text-largetitle: 700 26px/32px var(--font-display);
+  --text-title1:     700 22px/26px var(--font-display);
+  --text-title2:     700 17px/22px var(--font-display);
+  --text-title3:     600 15px/20px var(--font-display);
+  --text-headline:   700 13px/16px var(--font-system);
+  --text-body:       400 13px/16px var(--font-system);
+  --text-callout:    400 12px/15px var(--font-system);
+  --text-subheadline:400 11px/14px var(--font-system);
+  --text-footnote:   400 10px/13px var(--font-system);
+  --text-caption1:   400 10px/13px var(--font-system);
+  --text-caption2:   700 10px/13px var(--font-system);
+
+  /* ─── Color — opacity hierarchy (light) ─── */
+  --label-primary:    rgba(0,0,0,0.85);
+  --label-secondary:  rgba(0,0,0,0.50);
+  --label-tertiary:   rgba(0,0,0,0.25);
+  --label-quaternary: rgba(0,0,0,0.10);
+  --label-quinary:    rgba(0,0,0,0.05);
+
+  --fill-primary:    rgba(0,0,0,0.10);
+  --fill-secondary:  rgba(0,0,0,0.08);
+  --fill-tertiary:   rgba(0,0,0,0.05);
+  --fill-quaternary: rgba(0,0,0,0.03);
+
+  --separator: rgba(0,0,0,0.10);
+  --separator-opaque: #d4d4d4;
+
+  /* ─── System accent colors ─── */
+  --sys-red:    #FF3B30;
+  --sys-orange: #FF9500;
+  --sys-yellow: #FFCC00;
+  --sys-green:  #28CD41;
+  --sys-mint:   #00C7BE;
+  --sys-teal:   #30B0C7;
+  --sys-cyan:   #00C0E8;
+  --sys-blue:   #007AFF;
+  --sys-indigo: #5856D6;
+  --sys-purple: #AF52DE;
+  --sys-pink:   #FF2D55;
+  --sys-brown:  #AC7F5E;
+  --sys-gray:   #8E8E93;
+
+  --accent: var(--sys-blue);
+  --accent-pressed: #0061cc;
+
+  /* ─── Liquid Glass (verified from Figma) ─── */
+  /* Small UI (chips, tooltips) ~57% white */
+  --material-thin-light:    rgba(245,245,245,0.57);
+  /* Medium UI (sidebars, segmented, popovers) ~67% white  */
+  --material-regular-light: rgba(245,245,245,0.67);
+  /* Large UI (sheets, control center, dock) ~85% white */
+  --material-thick-light:   rgba(245,245,245,0.85);
+
+  --material-thin-dark:    rgba(38,38,38,0.57);
+  --material-regular-dark: rgba(38,38,38,0.67);
+  --material-thick-dark:   rgba(38,38,38,0.85);
+
+  --glass-blur:        saturate(180%) blur(20px);
+  --glass-blur-strong: saturate(200%) blur(40px);
+
+  /* ─── Radii — verified from Figma ─── */
+  --r-field:      5px;   /* text fields, search */
+  --r-control:    6px;   /* push buttons, segmented */
+  --r-control-lg: 7px;   /* toolbar XL controls */
+  --r-card:       8px;
+  --r-window-sm: 16px;   /* titlebar-only window */
+  --r-tile:      22px;   /* dock app squircle */
+  --r-window:    26px;   /* standard window with toolbar */
+  --r-sheet:     34px;   /* large glass / sheet */
+
+  /* ─── Shadows (calibrated to figma) ─── */
+  --shadow-window:   0 16px 48px rgba(0,0,0,0.32), 0 0 0 1px rgba(0,0,0,0.20);
+  --shadow-glass:    0 8px 40px rgba(0,0,0,0.12);
+  --shadow-popover:  0 8px 24px rgba(0,0,0,0.20), 0 0 0 0.5px rgba(0,0,0,0.20);
+  --shadow-tooltip:  0 4px 12px rgba(0,0,0,0.18);
+  --shadow-control:  inset 0 0.5px 0 rgba(255,255,255,0.55), 0 0.5px 1px rgba(0,0,0,0.10);
+  --shadow-field-inset: inset 0 0 0 0.5px rgba(0,0,0,0.15), inset 0 1px 1px rgba(0,0,0,0.06);
+  --shadow-toolbtn:  inset 0 0.5px 0 rgba(255,255,255,0.45), 0 1px 0 rgba(0,0,0,0.05);
+
+  /* Push-button label colors from figma */
+  --btn-label-idle:    #1A1A1A;
+  --btn-label-hover:   #1A1A1A;
+  --btn-label-pressed: #ffffff;
+  --btn-label-disabled:#BFBFBF;
+  --btn-fill-idle:     rgba(0,0,0,0.06);
+  --btn-fill-hover:    rgba(0,0,0,0.10);
+
+  /* SF Symbols (private-use placeholder) — substituted with Lucide strokes */
+
+  /* Default Apple-aesthetic transitions */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur: 220ms;
+  --dur-slow: 320ms;
+}
+
+/* ─── Dark mode overrides ─── */
+[data-theme="dark"] {
+  --label-primary:    rgba(255,255,255,0.85);
+  --label-secondary:  rgba(255,255,255,0.55);
+  --label-tertiary:   rgba(255,255,255,0.25);
+  --label-quaternary: rgba(255,255,255,0.10);
+  --label-quinary:    rgba(255,255,255,0.05);
+
+  --fill-primary:    rgba(255,255,255,0.14);
+  --fill-secondary:  rgba(255,255,255,0.10);
+  --fill-tertiary:   rgba(255,255,255,0.06);
+  --fill-quaternary: rgba(255,255,255,0.04);
+
+  --separator: rgba(255,255,255,0.15);
+  --separator-opaque: #3a3a3a;
+
+  /* Vibrant accents read lighter through dark glass */
+  --sys-red:    #FF453A;
+  --sys-orange: #FF9F0A;
+  --sys-yellow: #FFD60A;
+  --sys-green:  #32D74B;
+  --sys-mint:   #66D4CF;
+  --sys-teal:   #6AC4DC;
+  --sys-cyan:   #5AC8F5;
+  --sys-blue:   #0A84FF;
+  --sys-indigo: #5E5CE6;
+  --sys-purple: #BF5AF2;
+  --sys-pink:   #FF375F;
+  --sys-brown:  #B59469;
+  --sys-gray:   #98989D;
+
+  --accent: var(--sys-blue);
+  --accent-pressed: #006fdb;
+
+  --material-thin-light:    var(--material-thin-dark);
+  --material-regular-light: var(--material-regular-dark);
+  --material-thick-light:   var(--material-thick-dark);
+
+  --shadow-window:  0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.55);
+  --shadow-glass:   0 8px 40px rgba(0,0,0,0.45);
+  --shadow-popover: 0 8px 24px rgba(0,0,0,0.45), 0 0 0 0.5px rgba(0,0,0,0.50);
+  --shadow-tooltip: 0 4px 12px rgba(0,0,0,0.45);
+  --shadow-control: inset 0 0.5px 0 rgba(255,255,255,0.15), 0 0.5px 1px rgba(0,0,0,0.45);
+  --shadow-field-inset: inset 0 0 0 0.5px rgba(255,255,255,0.10), inset 0 1px 1px rgba(0,0,0,0.40);
+  --shadow-toolbtn: inset 0 0.5px 0 rgba(255,255,255,0.10), 0 1px 0 rgba(0,0,0,0.30);
+
+  --btn-label-idle:     rgba(255,255,255,0.95);
+  --btn-label-hover:    rgba(255,255,255,1);
+  --btn-label-pressed:  #ffffff;
+  --btn-label-disabled: rgba(255,255,255,0.30);
+  --btn-fill-idle:      rgba(255,255,255,0.12);
+  --btn-fill-hover:     rgba(255,255,255,0.18);
+}
+
+/* ─── Type style classes ─── */
+.macos-largetitle { font: var(--text-largetitle); letter-spacing: -0.02em; }
+.macos-title1     { font: var(--text-title1);     letter-spacing: -0.01em; }
+.macos-title2     { font: var(--text-title2); }
+.macos-title3     { font: var(--text-title3); }
+.macos-headline   { font: var(--text-headline); }
+.macos-body       { font: var(--text-body); }
+.macos-callout    { font: var(--text-callout); }
+.macos-subheadline{ font: var(--text-subheadline); }
+.macos-footnote   { font: var(--text-footnote);   color: var(--label-secondary); }
+.macos-caption1   { font: var(--text-caption1);   color: var(--label-secondary); }
+.macos-caption2   { font: var(--text-caption2);   letter-spacing: 0.04em; text-transform: uppercase; color: var(--label-secondary); }

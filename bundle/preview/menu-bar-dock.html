@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Menu Bar & Dock</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+body.tinted { background: linear-gradient(135deg,#cfd6e4,#aabbd6 35%,#f1c6c0 70%,#ffd9a8); padding: 0; min-height: 100vh; }
+.menubar { height: 28px; background: rgba(255,255,255,0.18); backdrop-filter: var(--glass-blur); color: #fff; display: flex; align-items: center; padding: 0 14px; font: 600 13.5px var(--font-system); gap: 16px; }
+.menubar .right { margin-left: auto; display: flex; gap: 14px; align-items: center; }
+.dock { margin: 240px auto 0; width: max-content; padding: 8px 12px; background: rgba(255,255,255,0.42); backdrop-filter: var(--glass-blur-strong); border-radius: 22px; display: flex; gap: 8px; box-shadow: 0 8px 28px rgba(0,0,0,0.28); }
+.app { width: 56px; height: 56px; border-radius: 13px; box-shadow: 0 4px 10px rgba(0,0,0,0.18); }
+.sep { width: 1px; height: 40px; background: rgba(0,0,0,0.15); margin: 0 4px; align-self: center; }
+</style>
+<body class="tinted">
+<div class="menubar">
+  <span style="font-weight:700">●</span><span style="font-weight:700">Finder</span><span>File</span><span>Edit</span><span>View</span><span>Go</span><span>Window</span><span>Help</span>
+  <span class="right"><span>WiFi</span><span>🔍</span><span>👤</span><span>Mon Jun 10  9:41 AM</span></span>
+</div>
+<div class="dock">
+  <div class="app" style="background:linear-gradient(180deg,#6FB7FF,#1976D2)"></div>
+  <div class="app" style="background:linear-gradient(180deg,#7CC4FF,#1565C0)"></div>
+  <div class="app" style="background:linear-gradient(180deg,#A0E5FF,#0288D1)"></div>
+  <div class="app" style="background:linear-gradient(180deg,#FF6B6B,#C62828)"></div>
+  <div class="app" style="background:linear-gradient(180deg,#FFCD3C,#F9A825)"></div>
+  <div class="app" style="background:linear-gradient(180deg,#FF7575,#D32F2F)"></div>
+  <div class="sep"></div>
+  <div class="app" style="background:linear-gradient(180deg,#9E9E9E,#424242)"></div>
+</div>
+</body></html>

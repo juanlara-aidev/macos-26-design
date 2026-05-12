@@ -1,0 +1,68 @@
+{
+  "skill_name": "macos-26-design",
+  "evals": [
+    {
+      "id": 1,
+      "name": "ventana macOS 26 con sidebar Liquid Glass desde cero",
+      "prompt": "Quiero que mi app web se vea como una ventana de macOS 26, con sidebar Liquid Glass a la izquierda, toolbar floating arriba y contenido principal opaco. Empieza desde cero.",
+      "files": [],
+      "expected_behavior": [
+        "Detecta los triggers 'macOS 26' + 'Liquid Glass' + 'sidebar' + 'toolbar floating' sin preguntar por estilo",
+        "Lee preview/window.html como specimen canónico de ventana compuesta (sidebar + toolbar + content)",
+        "Lee preview/sidebars.html y preview/toolbars.html para las recetas individuales",
+        "Importa colors_and_type.css al target (o porta los tokens equivalentes a tailwind.config.ts si el stack lo requiere)",
+        "Aplica las 12 reglas duras: 26pt outer radius (--r-window), Liquid Glass solo en sidebar/toolbar (no en el contenido principal), spacing 24pt window edge, shadow-window con hairline, focus-visible con --focus-ring",
+        "Recrea la traffic-light buttons (rojo/amarillo/verde) con CSS plain según preview/window-controls.html, sin SF Symbols",
+        "Usa SF Pro vía fallback chain -apple-system (no descarga ni redistribuye la fuente)",
+        "Anuncia al operador qué specimens leyó, qué tokens importó y dónde quedó el componente"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "form pattern System Settings-style con labels y secciones",
+      "prompt": "Hazme un settings page tipo System Settings de macOS 26 con label column de 110pt, varias secciones y un footer de acciones.",
+      "files": [],
+      "expected_behavior": [
+        "Detecta triggers 'System Settings' + 'macOS 26' + 'label column 110pt'",
+        "Lee preview/form-pattern.html como specimen canónico (110pt label column es Apple-spec)",
+        "Lee preview/group-boxes.html para la receta de sección agrupada",
+        "Lee preview/monobar-window.html porque System Settings usa el chrome titlebar+toolbar fusionado",
+        "Aplica spacing 22pt entre sección header y primera row, 12pt entre label y control, 8pt entre controles adyacentes",
+        "Usa Title Case en headers de sección y labels de botones del footer (Save, Cancel, Reset to Defaults)",
+        "Aplica jerarquía de labels por opacidad (label-primary 0.85 / label-secondary 0.50) en lugar de tints grises",
+        "Si el target usa shadcn/ui o equivalente, sustituye primitives respetando los tokens del DS (radii, spacing, focus-ring)"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "popover anclado con tooltip + alert dialog",
+      "prompt": "Necesito un popover con flecha anclado a un botón, un tooltip flotante y un alert dialog modal — todos con sensibilidad macOS 26.",
+      "files": [],
+      "expected_behavior": [
+        "Detecta triggers 'popover anclado' + 'tooltip' + 'alert dialog' + 'macOS 26'",
+        "Lee preview/popovers.html (flechas en los 4 lados), preview/tooltips.html (light/dark + anchored), preview/alerts.html (single + side-by-side)",
+        "Aplica receta Liquid Glass a las tres superficies con la densidad correcta: tooltip = thin material (~57%), popover = regular (~67%), alert = thick (~85%)",
+        "Aplica shadows diferenciados: --shadow-tooltip (corto), --shadow-popover (medio), --shadow-window (deep) para el alert",
+        "Aplica motion: popover/tooltip fade+scale desde el anchor 150ms, alert sheet entry 250ms cubic-bezier(0.4, 0, 0.2, 1)",
+        "Alert primary message es oración completa con punto/signo de pregunta; secondary añade una oración corta",
+        "Botones del alert en Title Case imperative: Save / Don't Save / Cancel (orden Apple-canónico: destructive izquierda, primary derecha)",
+        "Respeta prefers-reduced-motion dropeando el transform y manteniendo solo el fade de opacity"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "sustitución de iconografía SF Symbols → Lucide en target no-Apple",
+      "prompt": "Voy a deployar esto en Linux production. Necesito reemplazar todos los SF Symbols del mock por Lucide y que se sienta lo más cercano posible al look macOS 26.",
+      "files": [],
+      "expected_behavior": [
+        "Detecta triggers 'SF Symbols' + 'Lucide' + 'Linux production' + 'macOS 26'",
+        "Lee preview/iconography.html para el mapping SF Symbols → Lucide canónico de este bundle",
+        "Sustituye los glyphs con Lucide CDN (https://unpkg.com/lucide-static@latest/icons/<name>.svg) manteniendo stroke 2px y tamaño aligned al x-height de SF Pro",
+        "Mantiene SF Pro como first choice en --font-system pero documenta que en Linux caerá al system font (Cantarell/Ubuntu/etc.); no descarga SF Pro porque no es redistribuible",
+        "NO sustituye los traffic-light window controls — esos quedan como CSS plain según preview/window-controls.html, no como icons",
+        "Flagea explícitamente al operador la substitución (no es pixel-equivalent) y ofrece la opción de bundlear SF Pro localmente desde developer.apple.com/fonts si el operador acepta el caveat de licencia",
+        "Verifica que no haya emojis en chrome tras la sustitución (status comunicado vía Lucide + color + copy)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Notifications</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+.notif { width:340px; background:rgba(245,245,247,0.85); backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur); border-radius:16px; padding:12px 14px; box-shadow:var(--shadow-popover); display:flex; gap:12px; }
+.notif.dark { background:rgba(40,40,42,0.75); color:#fff; }
+.notif .icon { width:38px; height:38px; border-radius:9px; background:linear-gradient(135deg,#0a84ff,#5eb4ff); flex:0 0 38px; display:grid; place-items:center; color:#fff; }
+.notif .body { flex:1; min-width:0; }
+.notif .app { font:600 12px/14px var(--font-system); color:var(--label-secondary); }
+.notif.dark .app { color:rgba(255,255,255,0.65); }
+.notif .title { font:600 13px/16px var(--font-system); margin-top:1px; }
+.notif .msg { font:400 13px/16px var(--font-system); color:var(--label-secondary); margin-top:1px; }
+.notif.dark .msg { color:rgba(255,255,255,0.75); }
+.notif .time { font:400 12px var(--font-system); color:var(--label-tertiary); margin-left:auto; flex:0 0 auto; }
+.badge { width:18px; height:18px; border-radius:50%; background:var(--sys-red); color:#fff; font:600 11px/18px var(--font-system); text-align:center; display:inline-block; }
+.dock-icon { width:54px; height:54px; border-radius:14px; background:linear-gradient(135deg,#5ac8fa,#0a84ff); position:relative; display:inline-block; box-shadow:0 4px 10px rgba(0,0,0,0.25); }
+.dock-icon .badge { position:absolute; top:-4px; right:-4px; box-shadow:0 0 0 2px #f2f2f7; }
+.banner-actions { display:flex; gap:6px; margin-top:8px; }
+.banner-actions button { font:500 12px/22px var(--font-system); padding:0 12px; border-radius:11px; background:rgba(0,0,0,0.08); border:0; color:var(--label-primary); }
+.notif.dark .banner-actions button { background:rgba(255,255,255,0.12); color:#fff; }
+.lbl { font:600 10px/14px var(--font-system); color:var(--label-secondary); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+.stack { gap:20px; }
+</style>
+<div class="stack">
+<div><div class="lbl">Banner</div>
+  <div class="notif">
+    <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3,7 12,13 21,7"/></svg></div>
+    <div class="body">
+      <div style="display:flex"><span class="app">Mail</span><span class="time">now</span></div>
+      <div class="title">Maya Lin</div>
+      <div class="msg">Q3 roadmap is ready for review — let me know what you think.</div>
+    </div>
+  </div>
+</div>
+<div><div class="lbl">Banner with actions</div>
+  <div class="notif">
+    <div class="icon" style="background:linear-gradient(135deg,#34c759,#86d96b)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+    <div class="body">
+      <div style="display:flex"><span class="app">Calendar</span><span class="time">in 5 min</span></div>
+      <div class="title">Design Review</div>
+      <div class="msg">10:00 AM – 11:00 AM · Apple Park, IL2</div>
+      <div class="banner-actions"><button>Snooze</button><button>Join</button></div>
+    </div>
+  </div>
+</div>
+<div><div class="lbl">Dark</div>
+  <div class="notif dark">
+    <div class="icon" style="background:linear-gradient(135deg,#bf5af2,#dc8df5)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 8.5 8.5 0 0 1-7.5-4.5L3 21l5.5-1.5A8.5 8.5 0 1 1 21 11.5z"/></svg></div>
+    <div class="body">
+      <div style="display:flex"><span class="app">Messages</span><span class="time">2m</span></div>
+      <div class="title">Alex Chen</div>
+      <div class="msg">Just pushed the new tokens 🎉</div>
+    </div>
+  </div>
+</div>
+<div><div class="lbl">Dock badge</div>
+  <div style="display:flex; gap:18px; align-items:flex-end;">
+    <div class="dock-icon"><span class="badge">3</span></div>
+    <div class="dock-icon" style="background:linear-gradient(135deg,#ff453a,#ff8a85)"><span class="badge">12</span></div>
+    <div class="dock-icon" style="background:linear-gradient(135deg,#ff9f0a,#ffd60a)"><span class="badge">99+</span></div>
+  </div>
+</div>
+</div></body></html>

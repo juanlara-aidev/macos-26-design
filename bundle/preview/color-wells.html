@@ -1,0 +1,47 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Color Wells</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+.cw { width:44px; height:22px; border-radius:4px; box-shadow:var(--shadow-control), inset 0 0 0 0.5px rgba(0,0,0,0.15); }
+.cw.lg { width:60px; height:28px; }
+.cw.mini { width:22px; height:22px; border-radius:50%; }
+.cw.dis { opacity:.45; }
+.popover { width:240px; background:rgba(245,245,247,0.92); backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur); border-radius:10px; padding:14px; box-shadow:var(--shadow-popover); }
+.swatches { display:grid; grid-template-columns:repeat(8,1fr); gap:8px; }
+.sw { width:22px; height:22px; border-radius:50%; box-shadow:inset 0 0 0 0.5px rgba(0,0,0,0.15); cursor:default; }
+.sw.sel { box-shadow:inset 0 0 0 0.5px rgba(0,0,0,0.15), 0 0 0 2px #fff, 0 0 0 3.5px var(--accent); }
+.eyedrop { display:flex; align-items:center; gap:8px; margin-top:12px; padding-top:12px; border-top:0.5px solid var(--separator); font:400 12px var(--font-system); }
+.row { display:flex; align-items:center; gap:14px; }
+.lbl { font:600 10px/14px var(--font-system); color:var(--label-secondary); text-transform:uppercase; letter-spacing:.06em; min-width:110px; }
+</style>
+<div class="stack">
+<div class="row"><span class="lbl">Default</span>
+  <span class="cw" style="background:linear-gradient(135deg,#2a6fdb,#29a6e0)"></span>
+  <span class="cw" style="background:#ff453a"></span>
+  <span class="cw" style="background:#34c759"></span>
+  <span class="cw" style="background:#ff9f0a"></span>
+</div>
+<div class="row"><span class="lbl">Large</span>
+  <span class="cw lg" style="background:linear-gradient(135deg,#bf5af2,#dc8df5)"></span>
+  <span class="cw lg" style="background:#000"></span>
+</div>
+<div class="row"><span class="lbl">Mini (round)</span>
+  <span class="cw mini" style="background:#0a84ff"></span>
+  <span class="cw mini" style="background:#ff2d55"></span>
+  <span class="cw mini" style="background:#ffcc00"></span>
+  <span class="cw mini" style="background:#5ac8fa"></span>
+  <span class="cw mini" style="background:#34c759"></span>
+</div>
+<div class="row"><span class="lbl">Disabled</span><span class="cw dis" style="background:#0a84ff"></span></div>
+
+<div><div class="lbl" style="margin-bottom:8px">Popover (open)</div>
+<div class="popover">
+  <div class="swatches">
+    <div class="sw" style="background:#ff453a"></div><div class="sw" style="background:#ff9f0a"></div><div class="sw" style="background:#ffcc00"></div><div class="sw" style="background:#34c759"></div>
+    <div class="sw sel" style="background:#0a84ff"></div><div class="sw" style="background:#5856d6"></div><div class="sw" style="background:#af52de"></div><div class="sw" style="background:#ff2d55"></div>
+    <div class="sw" style="background:#a2845e"></div><div class="sw" style="background:#8e8e93"></div><div class="sw" style="background:#000"></div><div class="sw" style="background:#fff"></div>
+    <div class="sw" style="background:#1c1c1e"></div><div class="sw" style="background:#3a3a3c"></div><div class="sw" style="background:#636366"></div><div class="sw" style="background:#aeaeb2"></div>
+  </div>
+  <div class="eyedrop"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22l3-1 10-10-2-2L3 19l-1 3z"/><path d="M15 9l-2-2 4-4a1.4 1.4 0 0 1 2 2l-4 4z"/></svg> Pick from screen…</div>
+</div></div>
+</div></body></html>

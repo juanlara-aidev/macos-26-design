@@ -1,0 +1,58 @@
+MIT License
+
+Copyright (c) 2026 Juan Lara
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+----------------------------------------------------------------------------
+
+Third-party assets and attributions:
+
+* SF Pro typeface (referenced via the -apple-system fallback chain).
+  Copyright (c) Apple Inc. Not bundled with this repository.
+  Distributed by Apple at https://developer.apple.com/fonts/ under the Apple
+  Color Emoji / SF Pro license. Renders natively on Apple hardware via the
+  system fallback chain in colors_and_type.css; substituted by the system
+  font on other platforms.
+
+* SF Symbols. Copyright (c) Apple Inc. Not bundled. This bundle substitutes
+  SF Symbols glyphs with Lucide (https://lucide.dev/, ISC License) per the
+  iconography mapping in bundle/preview/iconography.html.
+
+* Wallpapers in bundle/assets/wallpaper-*.png and bundle/assets/cover-bg.png.
+  Copyright (c) Apple Inc. Sourced from the public "macOS 26 (Community).fig"
+  file in the Apple Design Resources Figma Community. Used for design
+  preview, prototyping, and mocks under fair use. Not redistributable as
+  part of a shipped product — replace with your own asset before publishing
+  an application that uses this bundle.
+
+* The "macOS 26 (Community).fig" source file. Published by Apple via
+  https://www.figma.com/@apple. Used to derive the design tokens and HTML
+  specimens contained in this bundle. Apple Design Resources are provided
+  by Apple for design exploration and prototyping; refer to Apple's terms
+  for redistribution and commercial use.
+
+* Lucide icons (https://lucide.dev/). Copyright (c) Lucide Contributors.
+  ISC License. Used by reference only (loaded from the public unpkg CDN as
+  documented in bundle/preview/iconography.html); not bundled.
+
+* This bundle was wrapped as an Agent Skill via Claude Design at
+  https://claude.ai/design and follows the Anthropic Agent Skills 2.0
+  specification at
+  https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview.

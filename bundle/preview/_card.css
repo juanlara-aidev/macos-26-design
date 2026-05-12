@@ -1,0 +1,14 @@
+/* Shared preview-card styles */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; padding: 22px 24px; background: #fff; font-family: var(--font-system); color: var(--label-primary); }
+body.tinted { background: #f4f4f6; }
+h2 { font: 700 13px/16px var(--font-system); margin: 0 0 12px; color: var(--label-secondary); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; font-size: 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 18px; }
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.cluster { display: flex; align-items: center; gap: 10px; }
+.lbl { font: 700 10px/13px var(--font-system); color: var(--label-tertiary); text-transform: uppercase; letter-spacing: .04em; min-width: 90px; }
+.swatch-bg {
+  background-image:
+    linear-gradient(135deg, #cfd6e4 0%, #aabbd6 35%, #f1c6c0 70%, #ffd9a8 100%);
+  padding: 22px; border-radius: 14px;
+}

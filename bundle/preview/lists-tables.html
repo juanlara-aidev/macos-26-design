@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Lists & Tables</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+.table { width: 480px; border-radius: 8px; overflow: hidden; box-shadow: 0 0 0 0.5px var(--separator); }
+.thead { display: grid; grid-template-columns: 2fr 1fr 1fr; padding: 0 12px; height: 26px; align-items: center; font: 400 12px var(--font-system); color: var(--label-secondary); border-bottom: 0.5px solid var(--separator); background: #fafafa; }
+.tr { display: grid; grid-template-columns: 2fr 1fr 1fr; padding: 0 12px; height: 24px; align-items: center; font: 400 13px var(--font-system); }
+.tr.alt { background: rgba(0,0,0,0.025); }
+.tr.selected { background: var(--accent); color: #fff; }
+.tr.selected .sec { color: rgba(255,255,255,0.85); }
+.sec { color: var(--label-secondary); }
+.group { padding: 14px 12px 4px; font: 700 11px var(--font-system); color: var(--label-secondary); }
+.tile { width: 14px; height: 10px; background: linear-gradient(180deg,#7CC4FF,#5AA6F2); border-radius: 2px; display:inline-block; vertical-align: middle; margin-right: 6px; }
+</style>
+<div class="row">
+  <div class="table">
+    <div class="thead"><span>Name</span><span>Size</span><span>Kind</span></div>
+    <div class="tr"><span><span class="tile"></span>Annual Reports</span><span class="sec">7 MB</span><span class="sec">Folder</span></div>
+    <div class="tr alt"><span><span class="tile"></span>Brand Assets</span><span class="sec">35 MB</span><span class="sec">Folder</span></div>
+    <div class="tr selected"><span><span class="tile"></span>Design System</span><span class="sec">55 MB</span><span class="sec">Folder</span></div>
+    <div class="tr alt"><span><span class="tile"></span>Roadmap</span><span class="sec">42 MB</span><span class="sec">Folder</span></div>
+    <div class="group">Today</div>
+    <div class="tr"><span><span class="tile"></span>Meeting.rtf</span><span class="sec">20 MB</span><span class="sec">File</span></div>
+    <div class="tr alt"><span><span class="tile"></span>Specs.pdf</span><span class="sec">12 MB</span><span class="sec">File</span></div>
+  </div>
+</div></body></html>

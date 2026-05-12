@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Search Fields</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head>
+<body>
+<style>
+  .stack-v { display: flex; flex-direction: column; gap: 22px; max-width: 720px; }
+  .lbl { font: 700 10px/14px var(--font-system); color: var(--label-tertiary); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+
+  /* Base search field */
+  .sf {
+    display: inline-flex; align-items: center; height: 22px;
+    background: #fff; border-radius: 5px; padding: 0 6px;
+    box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.18), inset 0 1px 1px rgba(0,0,0,0.04);
+    font: 400 13px/22px var(--font-system); color: rgba(0,0,0,0.85);
+    width: 260px;
+    gap: 4px;
+  }
+  .sf svg.mag { width: 12px; height: 12px; color: rgba(0,0,0,0.45); flex: 0 0 12px; }
+  .sf .input {
+    flex: 1; border: 0; outline: 0; background: transparent;
+    font: inherit; color: inherit; padding: 0;
+  }
+  .sf .clear {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: rgba(0,0,0,0.35); color: #fff;
+    display: grid; place-items: center;
+    font: 700 10px/14px var(--font-system);
+    cursor: default;
+  }
+  .sf.lg { height: 26px; font-size: 13px; }
+  .sf.lg svg.mag { width: 14px; height: 14px; }
+  .sf.sm { height: 18px; font-size: 11px; }
+  .sf.sm svg.mag { width: 10px; height: 10px; }
+
+  /* Focused */
+  .sf.focus {
+    box-shadow:
+      inset 0 0 0 0.5px rgba(0,0,0,0.18),
+      0 0 0 3px rgba(0,122,255,0.40);
+  }
+
+  /* Disabled */
+  .sf.dis { opacity: 0.45; }
+
+  /* Scope buttons */
+  .scope-bar {
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .scope-bar .seg {
+    display: inline-flex; padding: 2px;
+    background: rgba(0,0,0,0.06); border-radius: 5px;
+  }
+  .scope-bar .seg span {
+    font: 500 11px/18px var(--font-system); padding: 0 8px; border-radius: 3px;
+    color: rgba(0,0,0,0.65);
+  }
+  .scope-bar .seg .sel {
+    background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+    color: rgba(0,0,0,0.85);
+  }
+
+  /* Token chips inside field */
+  .sf .token {
+    display: inline-flex; align-items: center; gap: 3px;
+    height: 16px; padding: 0 6px 0 8px;
+    background: rgba(0,122,255,0.14); color: var(--accent);
+    border-radius: 8px;
+    font: 500 11px/16px var(--font-system);
+  }
+  .sf .token .x {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(0,122,255,0.45); color: #fff;
+    display: grid; place-items: center; font: 700 8px/10px var(--font-system);
+  }
+
+  /* Recent searches popover */
+  .recent-wrap { position: relative; width: 260px; }
+  .recent {
+    position: absolute; left: 0; right: 0; top: 28px;
+    background: rgba(245,245,245,0.92);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18), 0 0 0 0.5px rgba(0,0,0,0.18);
+    padding: 6px;
+    font: 400 13px/22px var(--font-system);
+  }
+  .recent .sec {
+    font: 700 10px/16px var(--font-system); color: rgba(0,0,0,0.50);
+    text-transform: uppercase; letter-spacing: .04em;
+    padding: 4px 8px 2px;
+  }
+  .recent .item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 3px 8px; border-radius: 5px;
+    color: rgba(0,0,0,0.85);
+  }
+  .recent .item.sel { background: var(--accent); color: #fff; }
+  .recent .item svg { width: 12px; height: 12px; opacity: 0.55; }
+  .recent .item.sel svg { opacity: 0.9; }
+  .recent .sep {
+    height: 0.5px; background: rgba(0,0,0,0.12); margin: 4px 8px;
+  }
+
+  /* Toolbar example */
+  .toolbar-ex {
+    display: flex; align-items: center; gap: 8px;
+    height: 38px; padding: 0 12px;
+    border-radius: 8px;
+    background: rgba(245,245,245,0.85);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.10);
+    width: 540px;
+  }
+  .toolbar-ex .grow { flex: 1; }
+  .toolbar-ex .btn {
+    width: 26px; height: 26px; border-radius: 6px;
+    background: rgba(0,0,0,0.06); display: grid; place-items: center;
+  }
+  .toolbar-ex .btn svg { width: 14px; height: 14px; }
+
+  /* Dark variant */
+  .darkbox {
+    background: #1d1d1f; padding: 18px; border-radius: 10px;
+    display: inline-flex; gap: 12px; align-items: center;
+  }
+  .darkbox .sf {
+    background: rgba(255,255,255,0.08);
+    box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.85);
+  }
+  .darkbox .sf svg.mag { color: rgba(255,255,255,0.45); }
+  .darkbox .sf .clear { background: rgba(255,255,255,0.40); color: #1d1d1f; }
+</style>
+
+<div class="stack-v">
+
+  <div>
+    <div class="lbl">Sizes — default / large / small</div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <span class="sf"><svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg><span class="input" style="color:rgba(0,0,0,0.42)">Search</span></span>
+      <span class="sf lg"><svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg><span class="input" style="color:rgba(0,0,0,0.42)">Search</span></span>
+      <span class="sf sm"><svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg><span class="input" style="color:rgba(0,0,0,0.42)">Search</span></span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">States — idle / typing / focused / disabled</div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <span class="sf"><svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg><span class="input" style="color:rgba(0,0,0,0.42)">Search Mail</span></span>
+      <span class="sf"><svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg><span class="input">design system</span><span class="clear"><svg width="6" height="6" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="2" y1="2" x2="6" y2="6"/><line x1="6" y1="2" x2="2" y2="6"/></svg></span></span>
+      <span class="sf focus"><svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg><span class="input">Liquid Glass<span style="display:inline-block;width:1px;height:13px;background:var(--accent);vertical-align:-2px;margin-left:1px;animation:blink 1s steps(2) infinite;"></span></span></span>
+      <span class="sf dis"><svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg><span class="input" style="color:rgba(0,0,0,0.32)">Search</span></span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">With scope buttons</div>
+    <div class="scope-bar">
+      <span class="sf"><svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg><span class="input">apple design resources</span></span>
+      <span class="seg"><span class="sel">All</span><span>Inbox</span><span>Sent</span><span>Drafts</span></span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">With token chips (filter pills)</div>
+    <span class="sf" style="width:340px;height:24px;">
+      <svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg>
+      <span class="token">From: Maria <span class="x"><svg width="5" height="5" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="2" x2="6" y2="6"/><line x1="6" y1="2" x2="2" y2="6"/></svg></span></span>
+      <span class="token">Has: PDF <span class="x"><svg width="5" height="5" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="2" x2="6" y2="6"/><line x1="6" y1="2" x2="2" y2="6"/></svg></span></span>
+      <span class="input" style="min-width:30px;color:rgba(0,0,0,0.42);">Search</span>
+    </span>
+  </div>
+
+  <div>
+    <div class="lbl">Inside a toolbar</div>
+    <div class="toolbar-ex">
+      <span class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15,18 9,12 15,6"/></svg></span>
+      <span class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9,18 15,12 9,6"/></svg></span>
+      <span class="grow"></span>
+      <span class="sf" style="width:200px;">
+        <svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg>
+        <span class="input" style="color:rgba(0,0,0,0.42)">Search</span>
+      </span>
+      <span class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">Recent-searches popover</div>
+    <div class="recent-wrap">
+      <span class="sf focus">
+        <svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg>
+        <span class="input" style="color:rgba(0,0,0,0.42)">Search</span>
+      </span>
+      <div class="recent">
+        <div class="sec">Recent</div>
+        <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>liquid glass material</div>
+        <div class="item sel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>SF Pro Display</div>
+        <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>apple HIG</div>
+        <div class="sep"></div>
+        <div class="sec">Suggestions</div>
+        <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Search the web…</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl">Dark</div>
+    <div class="darkbox">
+      <span class="sf">
+        <svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg>
+        <span class="input" style="color:rgba(255,255,255,0.45)">Search</span>
+      </span>
+      <span class="sf">
+        <svg class="mag" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="6" r="4.25"/><line x1="9" y1="9" x2="12" y2="12"/></svg>
+        <span class="input">macOS 26</span>
+        <span class="clear"><svg width="6" height="6" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="2" y1="2" x2="6" y2="6"/><line x1="6" y1="2" x2="2" y2="6"/></svg></span>
+      </span>
+    </div>
+  </div>
+
+</div>
+<style>@keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: 0 } }</style>
+</body></html>

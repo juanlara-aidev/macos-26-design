@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Type Ramp</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 16px 20px; background: #fff; color: var(--label-primary); }
+  .row { display: grid; grid-template-columns: 90px 1fr 60px; align-items: baseline; gap: 14px; padding: 4px 0; }
+  .row + .row { border-top: 1px solid rgba(0,0,0,0.06); }
+  .label { font: 700 10px/13px var(--font-system); color: var(--label-tertiary); text-transform: uppercase; letter-spacing: 0.04em; }
+  .meta  { font: 500 10px/13px var(--font-mono); color: var(--label-tertiary); text-align: right; }
+</style>
+</head>
+<body>
+  <div class="row"><span class="label">LargeTitle</span><span class="macos-largetitle">The quick brown fox</span><span class="meta">26 / 32</span></div>
+  <div class="row"><span class="label">Title 1</span><span class="macos-title1">The quick brown fox</span><span class="meta">22 / 26</span></div>
+  <div class="row"><span class="label">Title 2</span><span class="macos-title2">The quick brown fox jumps</span><span class="meta">17 / 22</span></div>
+  <div class="row"><span class="label">Title 3</span><span class="macos-title3">The quick brown fox jumps over</span><span class="meta">15 / 20</span></div>
+  <div class="row"><span class="label">Headline</span><span class="macos-headline">The quick brown fox jumps over the lazy dog</span><span class="meta">13 / 16 · 700</span></div>
+  <div class="row"><span class="label">Body</span><span class="macos-body">The quick brown fox jumps over the lazy dog</span><span class="meta">13 / 16</span></div>
+  <div class="row"><span class="label">Callout</span><span class="macos-callout">The quick brown fox jumps over the lazy dog</span><span class="meta">12 / 15</span></div>
+  <div class="row"><span class="label">Subheadline</span><span class="macos-subheadline">The quick brown fox jumps over the lazy dog</span><span class="meta">11 / 14</span></div>
+  <div class="row"><span class="label">Footnote</span><span class="macos-footnote">The quick brown fox jumps over the lazy dog</span><span class="meta">10 / 13</span></div>
+  <div class="row"><span class="label">Caption 2</span><span class="macos-caption2">THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG</span><span class="meta">10 / 13 · 700</span></div>
+</body>
+</html>

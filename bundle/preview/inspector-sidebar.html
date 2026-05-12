@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Inspector Sidebar</title>
+<link rel="stylesheet" href="../colors_and_type.css"></head>
+<body style="margin:0;padding:24px;background:url('../assets/wallpaper-sequoia.png') center/cover fixed,#222;min-height:560px;font-family:var(--font-system);">
+<style>
+  .window {
+    width: 1040px; height: 600px;
+    border-radius: 26px; overflow: hidden; position: relative;
+    box-shadow: 0 22px 60px rgba(0,0,0,0.32), 0 0 0 0.5px rgba(0,0,0,0.30);
+    display: grid; grid-template-columns: 220px 1fr 280px;
+    background: #fff;
+  }
+  .lsb {
+    background: rgba(118,118,121,0.55);
+    backdrop-filter: var(--glass-blur);
+    padding: 46px 10px 12px;
+  }
+  .lsb .lights { position: absolute; top: 16px; left: 16px; display: flex; gap: 8px; }
+  .lsb .l { width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.18); }
+  .close { background: #ff5f57; } .min { background: #febc2e; } .zoom { background: #28c840; }
+  .lsb .item { padding: 4px 10px; font: 500 13px var(--font-system); color: rgba(0,0,0,0.82); border-radius: 6px; display: flex; gap: 8px; align-items: center; }
+  .lsb .item.sel { background: rgba(0,0,0,0.20); color: rgba(0,0,0,0.95); }
+  .lsb .sec { padding: 14px 10px 4px; font: 600 11px var(--font-system); color: rgba(0,0,0,0.55); }
+  .lsb svg { width: 16px; height: 12px; flex: 0 0 16px; }
+
+  .main {
+    background: #fff;
+    padding: 60px 50px 30px;
+    overflow: hidden;
+    position: relative;
+  }
+  .doc { font: 700 32px/40px var(--font-display); letter-spacing: -0.02em; color: rgba(0,0,0,0.88); margin: 0 0 10px; }
+  .doc-meta { font: 400 11px/14px var(--font-system); color: rgba(0,0,0,0.45); margin-bottom: 18px; }
+  .doc-body { font: 400 14px/22px var(--font-system); color: rgba(0,0,0,0.78); max-width: 460px; }
+  .doc-body p { margin: 0 0 12px; }
+  .doc-img {
+    width: 100%; height: 140px; margin: 16px 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f4dac6 0%, #d8a899 35%, #a47391 70%, #5d4a8a 100%);
+  }
+
+  .insp {
+    background: rgba(245,245,245,0.85);
+    backdrop-filter: var(--glass-blur);
+    border-left: 0.5px solid rgba(0,0,0,0.12);
+    padding: 16px 14px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .insp .tabs {
+    display: flex; gap: 2px;
+    background: rgba(0,0,0,0.06); border-radius: 7px; padding: 2px;
+  }
+  .insp .tabs span {
+    flex: 1; text-align: center;
+    font: 500 12px/22px var(--font-system); color: rgba(0,0,0,0.65);
+    border-radius: 5px;
+  }
+  .insp .tabs .sel { background: #fff; color: rgba(0,0,0,0.85); box-shadow: 0 1px 2px rgba(0,0,0,0.10); }
+
+  .insp .section {
+    display: flex; flex-direction: column; gap: 8px;
+    border-top: 0.5px solid rgba(0,0,0,0.10);
+    padding-top: 12px;
+  }
+  .insp .section:first-of-type { border-top: 0; padding-top: 0; }
+  .insp h4 { margin: 0 0 4px; font: 700 11px/14px var(--font-system); color: rgba(0,0,0,0.80); }
+  .insp .row { display: grid; grid-template-columns: 76px 1fr; align-items: center; column-gap: 10px; row-gap: 6px; }
+  .insp .row .l { font: 400 11px/14px var(--font-system); color: rgba(0,0,0,0.50); text-align: right; }
+  .insp .field {
+    height: 22px; border-radius: 5px;
+    background: #fff;
+    box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.15);
+    padding: 0 6px; font: 400 12px/22px var(--font-system); color: rgba(0,0,0,0.85);
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .insp .swatch { width: 14px; height: 14px; border-radius: 3px; background: var(--accent); margin-right: 4px; }
+  .insp .popup {
+    height: 22px; border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 0 0 0.5px rgba(0,0,0,0.18);
+    padding: 0 4px 0 8px; font: 400 12px/22px var(--font-system); color: rgba(0,0,0,0.85);
+    display: inline-flex; align-items: center; justify-content: space-between;
+  }
+  .insp .popup .chev {
+    width: 14px; height: 14px; border-radius: 3px;
+    background: var(--accent); color: #fff;
+    display: grid; place-items: center;
+  }
+  .insp .seg {
+    display: inline-flex; padding: 2px;
+    background: rgba(0,0,0,0.06); border-radius: 6px;
+  }
+  .insp .seg span {
+    padding: 2px 0; flex: 1; text-align: center; min-width: 32px;
+    font: 500 11px/16px var(--font-system); color: rgba(0,0,0,0.65); border-radius: 4px;
+  }
+  .insp .seg .sel { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.10); color: rgba(0,0,0,0.85); }
+  .insp .stack { display: flex; flex-direction: column; gap: 6px; }
+  .insp .stepper {
+    display: inline-flex; align-items: center;
+    background: #fff; border-radius: 5px;
+    box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.15);
+    padding: 0 4px; height: 22px;
+  }
+  .insp .stepper input {
+    width: 38px; border: 0; outline: 0; background: transparent;
+    font: 400 12px/22px var(--font-system); text-align: right;
+  }
+  .insp .stepper .u { font: 400 11px/22px var(--font-system); color: rgba(0,0,0,0.45); }
+</style>
+
+<div class="window">
+  <aside class="lsb">
+    <div class="lights"><span class="l close"></span><span class="l min"></span><span class="l zoom"></span></div>
+    <div class="item">Inbox</div>
+    <div class="item">Drafts</div>
+    <div class="item sel">Sent</div>
+    <div class="item">Archive</div>
+    <div class="item">Trash</div>
+    <div class="sec">Folders</div>
+    <div class="item">Personal</div>
+    <div class="item">Work</div>
+  </aside>
+
+  <main class="main">
+    <h1 class="doc">Sequoia Renderings</h1>
+    <div class="doc-meta">Edited today &middot; 9:41 AM</div>
+    <p class="doc-body">The macOS 26 wallpapers are designed to read calmly under floating Liquid Glass surfaces. Each composition is balanced warm-to-cool so the chrome's translucent fills always have something to pick up.</p>
+    <div class="doc-img"></div>
+    <p class="doc-body">When you place a sidebar over a wallpaper, the material samples the underlying pixels at roughly 60% opacity and adds 20px of saturated blur. The 0.5 px hairline edge keeps the panel separated from the content even when the colors collide.</p>
+  </main>
+
+  <aside class="insp">
+    <div class="tabs">
+      <span class="sel">Format</span><span>Style</span><span>Arrange</span>
+    </div>
+
+    <div class="section">
+      <h4>Document</h4>
+      <div class="row">
+        <span class="l">Paper</span>
+        <span class="popup">US Letter <span class="chev">
+          <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg>
+        </span></span>
+        <span class="l">Orientation</span>
+        <span class="seg"><span class="sel">Portrait</span><span>Landscape</span></span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Text</h4>
+      <div class="row">
+        <span class="l">Font</span>
+        <span class="popup">SF Pro Display <span class="chev">
+          <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg>
+        </span></span>
+        <span class="l">Size</span>
+        <span class="stepper"><input value="32"><span class="u">pt</span></span>
+        <span class="l">Color</span>
+        <span class="field"><span class="swatch"></span>007AFF</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Alignment</h4>
+      <div class="row">
+        <span class="l">Horizontal</span>
+        <span class="seg"><span class="sel">Left</span><span>Center</span><span>Right</span><span>Justify</span></span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Spacing</h4>
+      <div class="row">
+        <span class="l">Line</span>
+        <span class="stepper"><input value="1.2"><span class="u">×</span></span>
+        <span class="l">Before ¶</span>
+        <span class="stepper"><input value="12"><span class="u">pt</span></span>
+        <span class="l">After ¶</span>
+        <span class="stepper"><input value="0"><span class="u">pt</span></span>
+      </div>
+    </div>
+  </aside>
+</div>
+</body></html>

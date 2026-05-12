@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Menu</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 16px; background: #ececec; font-family: var(--font-system); }
+  .menu {
+    width: 220px; margin: 0 auto;
+    background: var(--material-thick-light);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 9px; padding: 5px; box-shadow: var(--shadow-popover);
+  }
+  .item { display: flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 5px; font: 400 13px/16px var(--font-system); color: var(--label-primary); }
+  .item.sel { background: var(--accent); color: #fff; }
+  .item .shortcut { margin-left: auto; color: var(--label-tertiary); font-size: 12px; }
+  .item.sel .shortcut { color: rgba(255,255,255,0.85); }
+  .sep { height: 1px; background: rgba(0,0,0,0.08); margin: 5px 4px; }
+  .item.disabled { color: var(--label-tertiary); }
+</style>
+</head>
+<body>
+<div class="menu">
+  <div class="item">New Window<span class="shortcut">⌘N</span></div>
+  <div class="item sel">New Tab<span class="shortcut">⌘T</span></div>
+  <div class="item">Open…<span class="shortcut">⌘O</span></div>
+  <div class="sep"></div>
+  <div class="item">Save<span class="shortcut">⌘S</span></div>
+  <div class="item">Save As…<span class="shortcut">⇧⌘S</span></div>
+  <div class="sep"></div>
+  <div class="item disabled">Revert</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dialog</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 16px; background: #ececec; font-family: var(--font-system); }
+  .dialog {
+    width: 280px; margin: 0 auto; background: var(--material-thick-light); backdrop-filter: var(--glass-blur);
+    border-radius: 14px; padding: 18px 18px 14px; text-align: center; box-shadow: var(--shadow-popover);
+  }
+  .icon { width: 44px; height: 44px; margin: 0 auto 10px; border-radius: 10px; background: linear-gradient(180deg, #fafafa, #d0d0d3); display: grid; place-items: center; font: 700 22px/1 var(--font-system); color: var(--label-secondary); }
+  .title { font: 700 13px/16px var(--font-system); color: var(--label-primary); margin: 0 0 4px; }
+  .body  { font: 400 11px/15px var(--font-system); color: var(--label-secondary); margin: 0 0 14px; }
+  .row { display: flex; gap: 6px; }
+  .btn { flex: 1; padding: 4px 0; border-radius: 6px; border: 0; font: 500 13px/16px var(--font-system); cursor: default; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-default { background: rgba(0,0,0,0.06); color: var(--label-primary); }
+</style>
+</head>
+<body>
+<div class="dialog">
+  <p class="title">Do you want to save the changes you made to "Untitled"?</p>
+  <p class="body">Your changes will be lost if you don't save them.</p>
+  <div class="row">
+    <button class="btn btn-default">Don't Save</button>
+    <button class="btn btn-default">Cancel</button>
+    <button class="btn btn-primary">Save</button>
+  </div>
+</div>
+</body>
+</html>

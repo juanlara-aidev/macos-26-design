@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Buttons</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+</head>
+<body style="padding: 0; background: transparent;">
+<style>
+  .pane { padding: 22px 24px; }
+  .pane.dark { background: #1d1d1f; }
+  .pane.dark { color: rgba(255,255,255,0.85); }
+
+  /* Header */
+  h2 { font: 700 10px/13px var(--font-system); color: var(--label-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 10px; }
+
+  /* Layout */
+  .matrix { display: grid; grid-template-columns: 80px repeat(6, 1fr); gap: 10px 14px; align-items: center; }
+  .col-h { font: 600 10px/13px var(--font-system); color: var(--label-secondary); text-transform: uppercase; letter-spacing: 0.05em; text-align: center; }
+  .row-h { font: 500 11px/14px var(--font-system); color: var(--label-secondary); text-align: right; }
+
+  /* Buttons */
+  .btn {
+    height: 22px; padding: 0 12px;
+    border: 0; border-radius: var(--r-control);
+    font: 500 13px/22px var(--font-system);
+    color: var(--btn-label-idle);
+    background: #fff;
+    box-shadow: var(--shadow-control);
+    cursor: default;
+  }
+  .btn.primary  { background: var(--accent); color: #fff; }
+  .btn.destruct { color: var(--sys-red); }
+  .btn.primary.destruct { background: var(--sys-red); color: #fff; }
+  .btn.borderless { background: transparent; box-shadow: none; color: var(--accent); }
+  .btn.borderless.destruct { color: var(--sys-red); }
+
+  /* States */
+  .btn.hover    { background: var(--btn-fill-hover); }
+  .btn.primary.hover { background: color-mix(in srgb, var(--accent) 88%, #000 12%); }
+  .btn.primary.destruct.hover { background: color-mix(in srgb, var(--sys-red) 88%, #000 12%); }
+  .btn.pressed  { background: var(--accent); color: #fff; box-shadow: var(--shadow-control), inset 0 0 0 0.5px rgba(0,0,0,0.18); }
+  .btn.primary.pressed { background: var(--accent-pressed); }
+  .btn.primary.destruct.pressed { background: #d4302a; }
+  .btn.disabled { opacity: 0.40; }
+  .btn.borderless.hover { background: rgba(0,0,0,0.06); }
+
+  .pane.dark .btn { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.95); }
+  .pane.dark .btn.primary { background: var(--sys-blue); color: #fff; }
+  .pane.dark .btn.destruct { color: #ff6961; }
+  .pane.dark .btn.primary.destruct { background: #ff453a; color: #fff; }
+  .pane.dark .btn.borderless { background: transparent; box-shadow: none; color: #0a84ff; }
+  .pane.dark .btn.hover { background: rgba(255,255,255,0.18); }
+  .pane.dark .btn.pressed { background: #006fdb; color: #fff; }
+
+  /* Sizes */
+  .btn.mini { height: 16px; padding: 0 8px; font: 500 11px/16px var(--font-system); border-radius: 4px; }
+  .btn.small { height: 19px; padding: 0 10px; font: 500 12px/19px var(--font-system); border-radius: 5px; }
+  .btn.large { height: 32px; padding: 0 18px; font: 500 14px/32px var(--font-system); border-radius: 8px; }
+
+  /* Arrow buttons */
+  .arrow {
+    width: 22px; height: 22px; display: inline-grid; place-items: center;
+    background: rgba(0,0,0,0.06); border-radius: 4px; color: var(--label-primary);
+  }
+  .arrow svg { width: 11px; height: 11px; }
+  .arrow.disabled { opacity: 0.4; }
+  .pane.dark .arrow { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+
+  /* Toolbar buttons */
+  .toolbtn { width: 28px; height: 24px; border-radius: 6px; display: inline-grid; place-items: center; color: var(--label-primary); background: transparent; }
+  .toolbtn:hover { background: var(--fill-tertiary); }
+  .toolbtn svg { width: 14px; height: 14px; }
+  .pane.dark .toolbtn { color: rgba(255,255,255,0.85); }
+  .pane.dark .toolbtn:hover { background: rgba(255,255,255,0.10); }
+
+  .row { gap: 10px; align-items: center; }
+  .row.tight { gap: 6px; }
+
+  .pane > section { margin-bottom: 26px; }
+</style>
+
+<!-- ───────── LIGHT ───────── -->
+<div class="pane">
+  <section>
+    <h2>Push Buttons — Light</h2>
+    <div class="matrix">
+      <span></span>
+      <span class="col-h">Idle</span>
+      <span class="col-h">Hover</span>
+      <span class="col-h">Pressed</span>
+      <span class="col-h">Disabled</span>
+      <span class="col-h">Primary</span>
+      <span class="col-h">Primary&nbsp;Pressed</span>
+
+      <span class="row-h">Default</span>
+      <button class="btn">Label</button>
+      <button class="btn hover">Label</button>
+      <button class="btn pressed">Label</button>
+      <button class="btn disabled">Label</button>
+      <button class="btn primary">Label</button>
+      <button class="btn primary pressed">Label</button>
+
+      <span class="row-h">Destructive</span>
+      <button class="btn destruct">Label</button>
+      <button class="btn destruct hover">Label</button>
+      <button class="btn destruct pressed" style="background:var(--sys-red);color:#fff;">Label</button>
+      <button class="btn destruct disabled">Label</button>
+      <button class="btn primary destruct">Label</button>
+      <button class="btn primary destruct pressed">Label</button>
+
+      <span class="row-h">Borderless</span>
+      <button class="btn borderless">Label</button>
+      <button class="btn borderless hover">Label</button>
+      <button class="btn borderless pressed">Label</button>
+      <button class="btn borderless disabled">Label</button>
+      <button class="btn borderless destruct">Label</button>
+      <button class="btn borderless destruct hover">Label</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sizes</h2>
+    <div class="row">
+      <button class="btn mini">Mini</button>
+      <button class="btn small">Small</button>
+      <button class="btn">Regular</button>
+      <button class="btn large">Large</button>
+      <button class="btn primary mini">Mini</button>
+      <button class="btn primary small">Small</button>
+      <button class="btn primary">Regular</button>
+      <button class="btn primary large">Large</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Arrow & toolbar buttons</h2>
+    <div class="row tight">
+      <span class="arrow"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,3 7,6"/></svg></span>
+      <span class="arrow"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,4 5,7 7,4"/></svg></span>
+      <span class="arrow disabled"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,3 7,6"/></svg></span>
+      <span style="width:14px"></span>
+      <button class="toolbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,6 9,12 15,18"/></svg></button>
+      <button class="toolbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,6 15,12 9,18"/></svg></button>
+      <button class="toolbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+      <button class="toolbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+      <button class="toolbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>
+    </div>
+  </section>
+</div>
+
+<!-- ───────── DARK ───────── -->
+<div class="pane dark" data-theme="dark">
+  <section>
+    <h2 style="color: rgba(255,255,255,0.45);">Push Buttons — Dark</h2>
+    <div class="matrix">
+      <span></span>
+      <span class="col-h" style="color: rgba(255,255,255,0.55);">Idle</span>
+      <span class="col-h" style="color: rgba(255,255,255,0.55);">Hover</span>
+      <span class="col-h" style="color: rgba(255,255,255,0.55);">Pressed</span>
+      <span class="col-h" style="color: rgba(255,255,255,0.55);">Disabled</span>
+      <span class="col-h" style="color: rgba(255,255,255,0.55);">Primary</span>
+      <span class="col-h" style="color: rgba(255,255,255,0.55);">Primary&nbsp;Pressed</span>
+
+      <span class="row-h" style="color: rgba(255,255,255,0.55);">Default</span>
+      <button class="btn">Label</button>
+      <button class="btn hover">Label</button>
+      <button class="btn pressed">Label</button>
+      <button class="btn disabled">Label</button>
+      <button class="btn primary">Label</button>
+      <button class="btn primary pressed">Label</button>
+
+      <span class="row-h" style="color: rgba(255,255,255,0.55);">Destructive</span>
+      <button class="btn destruct">Label</button>
+      <button class="btn destruct hover">Label</button>
+      <button class="btn destruct pressed" style="background:#ff453a;color:#fff;">Label</button>
+      <button class="btn destruct disabled">Label</button>
+      <button class="btn primary destruct">Label</button>
+      <button class="btn primary destruct pressed">Label</button>
+
+      <span class="row-h" style="color: rgba(255,255,255,0.55);">Borderless</span>
+      <button class="btn borderless">Label</button>
+      <button class="btn borderless hover">Label</button>
+      <button class="btn borderless pressed">Label</button>
+      <button class="btn borderless disabled">Label</button>
+      <button class="btn borderless destruct">Label</button>
+      <button class="btn borderless destruct hover">Label</button>
+    </div>
+  </section>
+</div>
+</body>
+</html>

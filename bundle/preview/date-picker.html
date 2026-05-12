@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Date Pickers</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head>
+<body>
+<style>
+  .stack-col { display: flex; flex-direction: column; gap: 30px; }
+  .row { display: flex; gap: 28px; align-items: flex-start; flex-wrap: wrap; }
+
+  /* Compact textual */
+  .dp-text {
+    display: inline-flex; align-items: center; gap: 1px;
+    padding: 2px 6px; border-radius: 5px;
+    background: #fff; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.18);
+    font: 400 12px/18px var(--font-system); color: rgba(0,0,0,0.85);
+  }
+  .dp-text .seg { padding: 0 2px; }
+  .dp-text .sel { background: var(--accent); color: #fff; border-radius: 3px; padding: 0 4px; }
+  .dp-text .sep { color: rgba(0,0,0,0.45); }
+
+  .stepper {
+    display: inline-flex; flex-direction: column; margin-left: 4px;
+    border-left: 0.5px solid rgba(0,0,0,0.15);
+    padding-left: 4px;
+  }
+  .stepper .b {
+    width: 14px; height: 9px; display: grid; place-items: center;
+    color: rgba(0,0,0,0.55);
+  }
+  .stepper svg { width: 8px; height: 6px; }
+
+  /* Big calendar popover */
+  .cal {
+    width: 240px; border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.20), 0 0 0 0.5px rgba(0,0,0,0.18);
+    padding: 10px 12px 12px;
+    font: 400 11px/14px var(--font-system);
+  }
+  .cal .head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .cal .head .title { font: 700 13px/16px var(--font-system); color: rgba(0,0,0,0.88); }
+  .cal .head .nav { display: flex; gap: 2px; }
+  .cal .head .nav span {
+    width: 22px; height: 22px; border-radius: 4px;
+    display: grid; place-items: center; color: rgba(0,0,0,0.65);
+    cursor: default;
+  }
+  .cal .head .nav span:hover { background: rgba(0,0,0,0.06); }
+  .cal .head .nav .today {
+    width: auto; padding: 0 8px; font: 500 11px/22px var(--font-system); color: var(--accent);
+  }
+  .cal .grid {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px;
+  }
+  .cal .dow {
+    text-align: center; font: 600 9px/16px var(--font-system); color: rgba(0,0,0,0.45);
+    text-transform: uppercase; letter-spacing: .04em;
+  }
+  .cal .day {
+    height: 24px; display: grid; place-items: center;
+    font: 400 11px/24px var(--font-system); color: rgba(0,0,0,0.85);
+    border-radius: 50%; cursor: default;
+  }
+  .cal .day.off { color: rgba(0,0,0,0.28); }
+  .cal .day.today { color: var(--sys-red); font-weight: 700; }
+  .cal .day.sel { background: var(--accent); color: #fff; }
+  .cal .day:hover:not(.sel) { background: rgba(0,0,0,0.06); }
+
+  /* Graphical style (DatePickerStyle.graphical) */
+  .gcal {
+    width: 320px; border-radius: 12px; padding: 14px 16px;
+    background: #fff;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.12), 0 6px 16px rgba(0,0,0,0.10);
+  }
+  .gcal .head .title { font: 700 17px/22px var(--font-display); }
+  .gcal .grid { gap: 2px; }
+  .gcal .day { height: 32px; font-size: 13px; line-height: 32px; }
+  .gcal .dow { font-size: 10px; line-height: 22px; }
+
+  /* Time picker */
+  .timewheel {
+    display: inline-flex; gap: 6px; align-items: center;
+    background: #fff; padding: 8px 12px; border-radius: 7px;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.15);
+  }
+  .col {
+    width: 38px; height: 80px; overflow: hidden;
+    text-align: center;
+    border-radius: 4px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.85) 100%), #fff;
+    position: relative;
+  }
+  .col::after {
+    content:""; position: absolute; left: 4px; right: 4px; top: 30px; height: 22px;
+    background: rgba(0,0,0,0.06); border-radius: 4px; z-index: 0;
+  }
+  .col span { display: block; font: 500 13px/22px var(--font-system); position: relative; z-index: 1; color: rgba(0,0,0,0.45); }
+  .col span.sel { color: rgba(0,0,0,0.88); font-weight: 600; }
+  .timewheel .sep { font: 600 18px/22px var(--font-system); color: rgba(0,0,0,0.45); }
+</style>
+
+<h2>Compact (textual)</h2>
+<div class="row">
+  <div class="dp-text">
+    <span class="seg sel">6</span><span class="sep">/</span><span class="seg">10</span><span class="sep">/</span><span class="seg">2026</span>
+    <div class="stepper">
+      <span class="b"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="2,4.5 5,1.5 8,4.5"/></svg></span>
+      <span class="b"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="2,1.5 5,4.5 8,1.5"/></svg></span>
+    </div>
+  </div>
+  <div class="dp-text">
+    <span class="seg">06</span><span class="sep">/</span><span class="seg">10</span><span class="sep">/</span><span class="seg">2026</span>
+    <span class="sep" style="padding:0 6px 0 8px;">&middot;</span>
+    <span class="seg">9</span><span class="sep">:</span><span class="seg sel">41</span>
+    <span class="seg" style="margin-left:4px;color:rgba(0,0,0,0.55);">AM</span>
+    <div class="stepper">
+      <span class="b"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="2,4.5 5,1.5 8,4.5"/></svg></span>
+      <span class="b"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="2,1.5 5,4.5 8,1.5"/></svg></span>
+    </div>
+  </div>
+</div>
+
+<h2 style="margin-top:24px">Popover · attached to a field</h2>
+<div class="row">
+  <div class="cal">
+    <div class="head">
+      <div class="title">June 2026</div>
+      <div class="nav">
+        <span><svg width="6" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="4.5,1.5 1.5,5 4.5,8.5"/></svg></span>
+        <span class="today">Today</span>
+        <span><svg width="6" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="1.5,1.5 4.5,5 1.5,8.5"/></svg></span>
+      </div>
+    </div>
+    <div class="grid">
+      <span class="dow">S</span><span class="dow">M</span><span class="dow">T</span><span class="dow">W</span><span class="dow">T</span><span class="dow">F</span><span class="dow">S</span>
+      <span class="day off">31</span><span class="day">1</span><span class="day">2</span><span class="day">3</span><span class="day">4</span><span class="day">5</span><span class="day today">6</span>
+      <span class="day">7</span><span class="day">8</span><span class="day">9</span><span class="day sel">10</span><span class="day">11</span><span class="day">12</span><span class="day">13</span>
+      <span class="day">14</span><span class="day">15</span><span class="day">16</span><span class="day">17</span><span class="day">18</span><span class="day">19</span><span class="day">20</span>
+      <span class="day">21</span><span class="day">22</span><span class="day">23</span><span class="day">24</span><span class="day">25</span><span class="day">26</span><span class="day">27</span>
+      <span class="day">28</span><span class="day">29</span><span class="day">30</span><span class="day off">1</span><span class="day off">2</span><span class="day off">3</span><span class="day off">4</span>
+    </div>
+  </div>
+
+  <div class="gcal cal">
+    <div class="head">
+      <div class="title">June 2026</div>
+      <div class="nav">
+        <span><svg width="6" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="4.5,1.5 1.5,5 4.5,8.5"/></svg></span>
+        <span class="today">Today</span>
+        <span><svg width="6" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polyline points="1.5,1.5 4.5,5 1.5,8.5"/></svg></span>
+      </div>
+    </div>
+    <div class="grid">
+      <span class="dow">Sun</span><span class="dow">Mon</span><span class="dow">Tue</span><span class="dow">Wed</span><span class="dow">Thu</span><span class="dow">Fri</span><span class="dow">Sat</span>
+      <span class="day off">31</span><span class="day">1</span><span class="day">2</span><span class="day">3</span><span class="day">4</span><span class="day">5</span><span class="day today">6</span>
+      <span class="day">7</span><span class="day">8</span><span class="day">9</span><span class="day sel">10</span><span class="day">11</span><span class="day">12</span><span class="day">13</span>
+      <span class="day">14</span><span class="day">15</span><span class="day">16</span><span class="day">17</span><span class="day">18</span><span class="day">19</span><span class="day">20</span>
+      <span class="day">21</span><span class="day">22</span><span class="day">23</span><span class="day">24</span><span class="day">25</span><span class="day">26</span><span class="day">27</span>
+      <span class="day">28</span><span class="day">29</span><span class="day">30</span><span class="day off">1</span><span class="day off">2</span><span class="day off">3</span><span class="day off">4</span>
+    </div>
+  </div>
+</div>
+
+<h2 style="margin-top:24px">Time wheel</h2>
+<div class="timewheel">
+  <div class="col">
+    <span>7</span><span>8</span><span class="sel">9</span><span>10</span>
+  </div>
+  <div class="sep">:</div>
+  <div class="col">
+    <span>39</span><span>40</span><span class="sel">41</span><span>42</span>
+  </div>
+  <div class="col">
+    <span>PM</span><span class="sel">AM</span>
+  </div>
+</div>
+
+</body></html>

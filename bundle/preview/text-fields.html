@@ -1,0 +1,43 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Text Fields</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+.f { height:22px; padding:0 8px; border-radius:5px; background:#fff; box-shadow:var(--shadow-field-inset); font:400 13px/22px var(--font-system); color:var(--label-primary); border:0; outline:0; width:240px; }
+.f.focus { box-shadow:var(--shadow-field-inset), 0 0 0 3px rgba(0,122,255,0.35), inset 0 0 0 1px var(--accent); }
+.f.err { box-shadow:var(--shadow-field-inset), 0 0 0 3px rgba(255,59,48,0.30), inset 0 0 0 1px var(--sys-red); }
+.f.dis { color:var(--label-tertiary); background:rgba(0,0,0,0.04); }
+.token { display:inline-flex; align-items:center; gap:4px; background:rgba(10,132,255,0.15); color:var(--accent); padding:0 6px; border-radius:9px; font:500 11px/18px var(--font-system); margin-right:4px; }
+.token .x { font-size:12px; opacity:.7; }
+.tfield { display:inline-flex; flex-wrap:wrap; align-items:center; gap:3px; min-height:22px; padding:2px 8px; width:240px; border-radius:5px; background:#fff; box-shadow:var(--shadow-field-inset); }
+.tfield input { border:0; outline:0; background:transparent; flex:1; min-width:60px; font:400 13px/18px var(--font-system); }
+.search { display:inline-flex; align-items:center; gap:6px; height:22px; padding:0 8px; width:240px; border-radius:11px; background:#fff; box-shadow:var(--shadow-field-inset); }
+.search svg { color:var(--label-tertiary); }
+.search input { border:0; outline:0; background:transparent; flex:1; min-width:0; font:400 13px var(--font-system); }
+.recents { width:240px; background:#fff; border-radius:8px; box-shadow:var(--shadow-popover); padding:4px; margin-top:4px; }
+.recents .head { font:600 10px var(--font-system); color:var(--label-tertiary); text-transform:uppercase; letter-spacing:.06em; padding:6px 10px 2px; }
+.recents .opt { padding:3px 10px; font:400 13px var(--font-system); border-radius:4px; display:flex; align-items:center; gap:6px; }
+.recents .opt:hover { background:var(--accent); color:#fff; }
+.row { display:flex; align-items:center; gap:14px; }
+.lbl { font:600 10px/14px var(--font-system); color:var(--label-secondary); text-transform:uppercase; letter-spacing:.06em; min-width:120px; }
+</style>
+<div class="stack">
+<div class="row"><span class="lbl">Default · Focus · Error</span><input class="f" value="Untitled"><input class="f focus" value="Hello"><input class="f err" value="bad"></div>
+<div class="row"><span class="lbl">Disabled</span><input class="f dis" value="Read‑only" disabled></div>
+<div class="row"><span class="lbl">Secure</span><input class="f" type="password" value="••••••••"></div>
+<div class="row"><span class="lbl">Token field</span>
+  <div class="tfield">
+    <span class="token">design <span class="x">×</span></span>
+    <span class="token">macos <span class="x">×</span></span>
+    <input placeholder="Add tag…">
+  </div>
+</div>
+<div><span class="lbl" style="display:block; margin-bottom:6px;">Search with recents</span>
+  <div class="search"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg><input placeholder="Search"></div>
+  <div class="recents">
+    <div class="head">Recent searches</div>
+    <div class="opt"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,14"/></svg> design system</div>
+    <div class="opt"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,14"/></svg> q3 roadmap</div>
+    <div class="opt"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,14"/></svg> liquid glass</div>
+  </div>
+</div>
+</div></body></html>

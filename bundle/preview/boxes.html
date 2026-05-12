@@ -1,0 +1,32 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Boxes</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+.box { background:#fff; border-radius:8px; box-shadow:inset 0 0 0 0.5px rgba(0,0,0,0.10); padding:14px 16px; width:340px; font:400 13px/18px var(--font-system); }
+.box .title { font:600 13px var(--font-system); margin-bottom:6px; }
+.well { background:rgba(0,0,0,0.04); border-radius:6px; padding:10px 12px; width:340px; box-shadow:inset 0 0 0 0.5px rgba(0,0,0,0.08); font:400 12px/16px var(--font-system); color:var(--label-secondary); }
+.divider-h { width:340px; height:1px; background:var(--separator); }
+.divider-v { width:1px; height:60px; background:var(--separator); }
+.gbox { background:#fff; border-radius:10px; width:340px; box-shadow:inset 0 0 0 0.5px rgba(0,0,0,0.10); overflow:hidden; }
+.gbox .row { padding:8px 14px; display:flex; align-items:center; font:400 13px var(--font-system); }
+.gbox .row + .row { border-top:0.5px solid var(--separator); }
+.gbox .row .v { margin-left:auto; color:var(--label-secondary); }
+.lbl { font:600 10px/14px var(--font-system); color:var(--label-secondary); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+</style>
+<div class="stack">
+<div><div class="lbl">Custom box</div><div class="box"><div class="title">Storage</div>iCloud + On My Mac · 234 GB available of 1 TB</div></div>
+<div><div class="lbl">Well (recessed)</div><div class="well">Drag files here to import them into your library.</div></div>
+<div><div class="lbl">Grouped box</div><div class="gbox">
+  <div class="row">Account<span class="v">maya@studio.com</span></div>
+  <div class="row">Plan<span class="v">Pro · Annual</span></div>
+  <div class="row">Storage<span class="v">23.4 GB / 200 GB</span></div>
+</div></div>
+<div><div class="lbl">Separators</div>
+  <div style="display:flex; align-items:center; gap:14px;">
+    <span>Horizontal:</span><div class="divider-h" style="width:200px"></div>
+  </div>
+  <div style="display:flex; align-items:center; gap:14px; margin-top:10px;">
+    <span>Vertical:</span><span>Item</span><div class="divider-v"></div><span>Item</span><div class="divider-v"></div><span>Item</span>
+  </div>
+</div>
+</div></body></html>

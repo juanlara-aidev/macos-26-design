@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Toolbars & Titlebars</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+.bar { background: rgba(252,252,252,0.85); backdrop-filter: var(--glass-blur); border-bottom: 0.5px solid var(--separator); padding: 8px 10px; display: flex; align-items: center; gap: 8px; border-radius: 14px 14px 0 0; box-shadow: 0 1px 0 var(--separator); }
+.bar.title { justify-content: center; font: 700 13px var(--font-system); }
+.tl { display:flex; gap: 8px; }
+.tl span { width: 12px; height: 12px; border-radius: 50%; }
+.tl .c { background: #FF5F57; } .tl .m { background: #FEBC2E; } .tl .z { background: #28C840; }
+.btn { height: 28px; min-width: 30px; padding: 0 12px; background: rgba(0,0,0,0.06); border-radius: 7px; border: 0; font: 500 13px var(--font-system); color: var(--label-primary); box-shadow: var(--shadow-control); cursor: default; }
+.icon { width: 30px; padding: 0; display: grid; place-items: center; }
+.spacer { flex: 1; }
+.seg { display:inline-flex; background: rgba(0,0,0,0.06); border-radius: 7px; padding: 2px; box-shadow: var(--shadow-control); }
+.seg span { padding: 3px 10px; font: 500 13px var(--font-system); border-radius: 5px; }
+.seg .sel { background:#fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+.frame { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-window); margin-bottom: 16px; }
+.body { height: 60px; }
+</style>
+<div class="frame">
+  <div class="bar">
+    <div class="tl"><span class="c"></span><span class="m"></span><span class="z"></span></div>
+    <button class="btn icon">‹</button><button class="btn icon">›</button>
+    <span style="font:700 15px var(--font-system); margin: 0 6px;">Untitled Folder</span>
+    <div class="spacer"></div>
+    <div class="seg"><span class="sel">⊞</span><span>≡</span><span>‖</span></div>
+    <button class="btn icon">⇪</button>
+    <button class="btn">Share</button>
+    <button class="btn icon">⊕</button>
+    <input class="btn" placeholder="Search" style="background:#fff;box-shadow:var(--shadow-field-inset);width:140px;text-align:left;font-weight:400;font-size:13px;padding:0 10px">
+  </div>
+  <div class="body"></div>
+</div>
+<div class="frame" style="max-width: 320px">
+  <div class="bar title">
+    <div class="tl" style="position:absolute; left: 14px;"><span class="c"></span><span class="m"></span><span class="z"></span></div>
+    <span>Utility Window</span>
+  </div>
+  <div class="body"></div>
+</div></body></html>

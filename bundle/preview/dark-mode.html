@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Dark Mode</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+</head>
+<body data-theme="dark">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; padding: 0; background: #1d1d1f; color: rgba(255,255,255,0.92); font-family: var(--font-system); }
+  .wrap { padding: 28px 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px 36px; max-width: 1100px; }
+  section { display: flex; flex-direction: column; gap: 12px; }
+  section.full { grid-column: 1 / -1; }
+  h2 { font: 700 10px/13px var(--font-system); color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.06em; margin: 0; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .stack { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+
+  /* ─── Buttons ─── */
+  .btn { height: 22px; padding: 0 12px; border: 0; border-radius: 6px; font: 500 13px/22px var(--font-system); background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.95); cursor: default; }
+  .btn.primary { background: #0a84ff; color: #fff; }
+  .btn.destruct { color: #ff6961; }
+  .btn.primary.destruct { background: #ff453a; color: #fff; }
+  .btn.borderless { background: transparent; color: #0a84ff; }
+  .btn.hover { background: rgba(255,255,255,0.18); }
+  .btn.pressed { background: #006fdb; color: #fff; }
+  .btn.disabled { opacity: 0.4; }
+
+  /* ─── Text fields ─── */
+  .field { height: 22px; padding: 0 8px; border-radius: 5px; background: rgba(255,255,255,0.06); box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.10); color: rgba(255,255,255,0.92); border: 0; outline: 0; font: 400 13px/22px var(--font-system); width: 200px; }
+  .field::placeholder { color: rgba(255,255,255,0.30); }
+  .field.focused { box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.10), 0 0 0 3px rgba(10,132,255,0.40), 0 0 0 1px #0a84ff; }
+  .field.error { box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.10), 0 0 0 3px rgba(255,69,58,0.35), 0 0 0 1px #ff453a; }
+
+  /* ─── Search ─── */
+  .search { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 9px; width: 200px; border-radius: 14px; background: rgba(255,255,255,0.08); box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.10); }
+  .search input { border: 0; outline: 0; background: transparent; color: rgba(255,255,255,0.92); font: 400 13px/22px var(--font-system); width: 100%; }
+  .search input::placeholder { color: rgba(255,255,255,0.30); }
+  .search svg { color: rgba(255,255,255,0.40); }
+
+  /* ─── Popup / pulldown / combo ─── */
+  .popup, .pulldown { display: inline-flex; align-items: center; justify-content: space-between; height: 22px; padding: 0 6px 0 9px; gap: 8px; width: 200px; border-radius: 5px; background: rgba(255,255,255,0.12); font: 400 13px/22px var(--font-system); color: rgba(255,255,255,0.92); }
+  .popup .chev { width: 14px; height: 14px; border-radius: 3px; background: #0a84ff; color: #fff; display: grid; place-items: center; }
+  .pulldown .chev { background: transparent; color: rgba(255,255,255,0.55); }
+
+  /* ─── Stepper ─── */
+  .stepper { display: inline-flex; height: 22px; background: rgba(255,255,255,0.06); border-radius: 5px; box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.10); overflow: hidden; }
+  .stepper input { border: 0; outline: 0; background: transparent; width: 56px; padding: 0 8px; font: 400 13px var(--font-system); color: rgba(255,255,255,0.92); text-align: right; }
+  .stepper .arrows { display: flex; flex-direction: column; border-left: 0.5px solid rgba(255,255,255,0.10); }
+  .stepper .arrows span { flex: 1; width: 16px; display: grid; place-items: center; color: rgba(255,255,255,0.55); }
+  .stepper .arrows span + span { border-top: 0.5px solid rgba(255,255,255,0.10); }
+
+  /* ─── Checkbox / Radio ─── */
+  .check, .radio { width: 14px; height: 14px; border-radius: 3px; background: rgba(255,255,255,0.06); box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.20); display: inline-grid; place-items: center; vertical-align: middle; }
+  .radio { border-radius: 50%; }
+  .check.on, .radio.on { background: #0a84ff; box-shadow: none; }
+  .check.on::after { content: ""; width: 8px; height: 8px; background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='2,5.4 4.2,7.6 8,3.4'/></svg>") center/contain no-repeat; }
+  .radio.on::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #fff; }
+  .opt { display: inline-flex; align-items: center; gap: 7px; font: 400 13px/16px var(--font-system); color: rgba(255,255,255,0.92); }
+
+  /* ─── Toggle ─── */
+  .tog { width: 32px; height: 20px; border-radius: 100px; background: rgba(255,255,255,0.15); position: relative; display: inline-block; }
+  .tog::after { content: ""; position: absolute; left: 2px; top: 2px; width: 16px; height: 16px; background: #fff; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.4); transition: transform 120ms ease; }
+  .tog.on { background: #30D158; }
+  .tog.on::after { transform: translateX(12px); }
+
+  /* ─── Segmented ─── */
+  .seg { display: inline-flex; padding: 2px; background: rgba(255,255,255,0.10); border-radius: 7px; }
+  .seg span { padding: 2px 12px; border-radius: 5px; font: 500 12px/16px var(--font-system); color: rgba(255,255,255,0.70); }
+  .seg span.on { background: rgba(255,255,255,0.22); color: #fff; box-shadow: 0 0.5px 1.5px rgba(0,0,0,0.4); }
+
+  /* ─── Slider / Dial ─── */
+  .slider { position: relative; width: 220px; height: 16px; }
+  .slider .track { position: absolute; left: 0; right: 0; height: 4px; border-radius: 100px; background: rgba(255,255,255,0.15); top: 50%; transform: translateY(-50%); }
+  .slider .fill { position: absolute; left: 0; height: 4px; border-radius: 100px; background: #0a84ff; top: 50%; transform: translateY(-50%); }
+  .slider .thumb { position: absolute; top: 50%; transform: translate(-50%,-50%); width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+  .dial { width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #4a4a4d 0%, #2c2c2e 70%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 1px 2px rgba(0,0,0,0.4); position: relative; }
+  .dial::after { content: ""; position: absolute; left: 50%; top: 6px; width: 2px; height: 10px; background: #0a84ff; border-radius: 1px; transform: translateX(-50%) rotate(45deg); transform-origin: 50% 16px; }
+
+  /* ─── Progress ─── */
+  .bar { height: 10px; width: 220px; background: rgba(255,255,255,0.10); border-radius: 100px; overflow: hidden; }
+  .bar .pf { height: 100%; background: #0a84ff; border-radius: 100px; }
+  .bar.sm { height: 6px; }
+  .bar.indet .pf { width: 32%; animation: slide 1.6s ease-in-out infinite; }
+  @keyframes slide { 0% { transform: translateX(-100%);} 100% { transform: translateX(320%);} }
+  .ind-cap { width: 20px; height: 20px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.15); border-top-color: #0a84ff; animation: spinrot 0.9s linear infinite; display: inline-block; }
+  @keyframes spinrot { to { transform: rotate(360deg); } }
+
+  /* ─── Color well ─── */
+  .colorwell { width: 44px; height: 22px; border-radius: 4px; background: linear-gradient(135deg, #0a84ff, #5E5CE6); box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.15), 0 1px 2px rgba(0,0,0,0.4); }
+
+  /* ─── Image well ─── */
+  .well { width: 76px; height: 76px; border-radius: 10px; background: rgba(255,255,255,0.06); box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.15); display: grid; place-items: center; color: rgba(255,255,255,0.30); }
+  .well.filled { background-image: linear-gradient(135deg, #5e5ce6, #bf5af2 60%, #ff375f); box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.15); }
+  .well svg { width: 26px; height: 26px; }
+
+  /* ─── Date picker ─── */
+  .datepick { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 6px; background: rgba(255,255,255,0.06); border-radius: 5px; box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.10); font: 400 13px/22px var(--font-system); color: rgba(255,255,255,0.92); }
+  .datepick .seg2 { padding: 0 2px; }
+  .datepick .seg2.sel { background: rgba(10,132,255,0.30); color: #0a84ff; border-radius: 2px; }
+  .datepick .sep { color: rgba(255,255,255,0.30); }
+
+  /* ─── Disclosure ─── */
+  .dc-row { display: flex; align-items: center; gap: 6px; padding: 3px 0; font: 400 13px/16px var(--font-system); color: rgba(255,255,255,0.92); }
+  .dc-row .chev { width: 12px; height: 12px; display: grid; place-items: center; color: rgba(255,255,255,0.55); transition: transform 120ms ease; }
+  .dc-row.open .chev { transform: rotate(90deg); }
+  .dc-row .children { padding-left: 18px; }
+
+  /* ─── Group box ─── */
+  .gb { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 14px; }
+  .gb-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid rgba(255,255,255,0.08); font: 400 13px/16px var(--font-system); }
+  .gb-row:last-child { border-bottom: 0; }
+  .gb-row span:last-child { color: rgba(255,255,255,0.55); }
+
+  /* ─── Sidebar ─── */
+  .sb { background: rgba(48,48,52,0.85); backdrop-filter: var(--glass-blur); border-radius: 12px; padding: 10px 8px; box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.06); min-width: 200px; }
+  .sbt { font: 700 10px/14px var(--font-system); color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 8px 2px; }
+  .sbi { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border-radius: 6px; font: 500 13px/16px var(--font-system); color: rgba(255,255,255,0.90); }
+  .sbi.sel { background: #0a84ff; color: #fff; }
+  .sbi .ic { width: 14px; height: 14px; display: grid; place-items: center; color: rgba(255,255,255,0.55); }
+  .sbi.sel .ic { color: #fff; }
+  .sbi .ic svg { width: 12px; height: 12px; }
+  .sbi .badge { margin-left: auto; font: 600 10px var(--font-system); color: rgba(255,255,255,0.45); }
+  .sbi.sel .badge { color: rgba(255,255,255,0.85); }
+
+  /* ─── Toolbar ─── */
+  .toolbar { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; background: rgba(48,48,52,0.78); backdrop-filter: var(--glass-blur); border-radius: 12px; box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.06); }
+  .pill { display: inline-flex; align-items: center; background: rgba(255,255,255,0.10); border-radius: 999px; padding: 3px 4px; }
+  .pill .icon { width: 28px; height: 22px; display: grid; place-items: center; color: rgba(255,255,255,0.92); }
+  .pill .icon svg { width: 13px; height: 13px; }
+  .pill .divider { width: 1px; height: 14px; background: rgba(255,255,255,0.15); margin: 0 2px; }
+
+  /* ─── Menu ─── */
+  .menu { background: rgba(40,40,42,0.82); backdrop-filter: var(--glass-blur); border-radius: 8px; padding: 4px; box-shadow: 0 8px 24px rgba(0,0,0,0.45), inset 0 0 0 0.5px rgba(255,255,255,0.06); min-width: 220px; }
+  .mi { display: flex; align-items: center; justify-content: space-between; padding: 4px 10px; border-radius: 4px; font: 400 13px/18px var(--font-system); color: rgba(255,255,255,0.92); }
+  .mi.sel { background: #0a84ff; color: #fff; }
+  .mi.sel .sh { color: rgba(255,255,255,0.85); }
+  .mi .sh { color: rgba(255,255,255,0.40); font-size: 11px; }
+  .msep { height: 0.5px; background: rgba(255,255,255,0.10); margin: 4px 0; }
+
+  /* ─── Tooltip ─── */
+  .tt { display: inline-flex; padding: 3px 7px 2px; border-radius: 3px; background: rgba(40,40,40,0.78); backdrop-filter: var(--glass-blur); box-shadow: 0 1px 3px rgba(0,0,0,0.4); font: 500 11px/13px var(--font-system); color: rgba(255,255,255,0.92); }
+
+  /* ─── Popover ─── */
+  .popover { background: rgba(50,50,52,0.92); backdrop-filter: var(--glass-blur); border-radius: 12px; padding: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.45), inset 0 0 0 0.5px rgba(255,255,255,0.06); min-width: 240px; position: relative; }
+  .popover h3 { margin: 0 0 4px; font: 700 13px/16px var(--font-system); color: rgba(255,255,255,0.95); }
+  .popover p { margin: 0 0 10px; font: 400 11px/15px var(--font-system); color: rgba(255,255,255,0.60); }
+
+  /* ─── Notification ─── */
+  .notif { background: rgba(50,50,52,0.92); backdrop-filter: var(--glass-blur); border-radius: 14px; padding: 12px 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.45), inset 0 0 0 0.5px rgba(255,255,255,0.06); display: flex; gap: 10px; align-items: flex-start; min-width: 280px; }
+  .notif .app { width: 28px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, #0a84ff, #5e5ce6); flex: 0 0 28px; }
+  .notif .ttl { font: 600 12px/15px var(--font-system); color: rgba(255,255,255,0.95); }
+  .notif .body { font: 400 11px/14px var(--font-system); color: rgba(255,255,255,0.65); }
+  .notif .time { margin-left: auto; font: 400 10px var(--font-system); color: rgba(255,255,255,0.40); }
+
+  /* ─── Alert ─── */
+  .alert { width: 270px; padding: 20px 22px 14px; border-radius: 16px; background: rgba(50,50,52,0.92); backdrop-filter: var(--glass-blur); box-shadow: 0 8px 24px rgba(0,0,0,0.45), inset 0 0 0 0.5px rgba(255,255,255,0.06); text-align: center; }
+  .alert h3 { margin: 0 0 4px; font: 700 13px/16px var(--font-system); color: rgba(255,255,255,0.95); }
+  .alert p { margin: 0 0 14px; font: 400 11px/14px var(--font-system); color: rgba(255,255,255,0.55); }
+  .alert .acts { display: flex; gap: 8px; }
+  .alert .acts .btn { flex: 1; }
+
+  /* ─── Sheet (mini) ─── */
+  .sheet { background: rgba(45,45,47,0.94); backdrop-filter: var(--glass-blur); border-radius: 16px; padding: 18px 20px; box-shadow: 0 16px 48px rgba(0,0,0,0.55), inset 0 0 0 0.5px rgba(255,255,255,0.06); display: grid; grid-template-columns: 90px 1fr; gap: 10px 14px; align-items: center; min-width: 320px; }
+  .sheet .lbl { font: 400 12px/16px var(--font-system); color: rgba(255,255,255,0.55); text-align: right; }
+  .sheet .title { grid-column: 1/-1; font: 700 15px/20px var(--font-system); margin-bottom: 4px; }
+  .sheet .foot { grid-column: 1/-1; display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
+
+  /* ─── Window ─── */
+  .window-mini { width: 320px; height: 200px; border-radius: 14px; overflow: hidden; background: #1d1d1f; box-shadow: 0 12px 32px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.6); display: grid; grid-template-columns: 90px 1fr; }
+  .window-mini .sb-pane { background: rgba(80,80,84,0.55); backdrop-filter: var(--glass-blur); padding: 28px 6px 6px; }
+  .window-mini .tb { height: 32px; display: flex; align-items: center; padding: 0 10px; gap: 6px; border-bottom: 0.5px solid rgba(255,255,255,0.08); font: 600 12px var(--font-system); color: rgba(255,255,255,0.85); }
+  .window-mini .body { padding: 10px; }
+  .window-mini .lights { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; }
+  .window-mini .l { width: 10px; height: 10px; border-radius: 50%; }
+  .pos { position: relative; }
+
+  /* ─── Materials ─── */
+  .mat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .mat-tile { aspect-ratio: 2/1; border-radius: 10px; position: relative; overflow: hidden; box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.10); }
+  .mat-tile::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(135deg, #1e3a8a 0%, #7e22ce 40%, #ec4899 80%, #f59e0b 100%); }
+  .mat-tile .glass { position: absolute; inset: 12px; border-radius: 6px; backdrop-filter: var(--glass-blur); }
+  .mat-thin .glass { background: rgba(38,38,38,0.57); }
+  .mat-reg .glass { background: rgba(38,38,38,0.67); }
+  .mat-thick .glass { background: rgba(38,38,38,0.85); }
+  .mat-tile .lbl { position: absolute; left: 16px; bottom: 12px; font: 600 11px/14px var(--font-system); color: #fff; z-index: 2; }
+
+  /* ─── Color swatches ─── */
+  .sw-row { display: grid; grid-template-columns: repeat(13, 1fr); gap: 6px; }
+  .sw { aspect-ratio: 1; border-radius: 6px; box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.10); }
+
+  /* ─── Labels & fills ─── */
+  .label-tile { padding: 10px 12px; border-radius: 8px; background: rgba(255,255,255,0.05); font: 500 13px var(--font-system); }
+
+  /* ─── Type ─── */
+  .type-stack > div { margin-bottom: 4px; color: rgba(255,255,255,0.92); }
+  .type-stack .meta { font: 400 10px var(--font-system); color: rgba(255,255,255,0.40); margin-left: 8px; }
+</style>
+
+<div class="wrap">
+
+  <section>
+    <h2>Push Buttons</h2>
+    <div class="row">
+      <button class="btn">Cancel</button>
+      <button class="btn primary">Save</button>
+      <button class="btn destruct">Delete</button>
+      <button class="btn primary destruct">Move to Trash</button>
+      <button class="btn borderless">Learn More</button>
+      <button class="btn disabled">Disabled</button>
+    </div>
+    <div class="row">
+      <button class="btn pressed">Pressed</button>
+      <button class="btn hover">Hover</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Text Fields</h2>
+    <div class="stack">
+      <input class="field" value="Untitled">
+      <input class="field focused" value="Hello world">
+      <input class="field" placeholder="user@example.com">
+      <input class="field error" value="not-an-email">
+      <input class="field" type="password" value="••••••••">
+    </div>
+  </section>
+
+  <section>
+    <h2>Search &amp; Menus</h2>
+    <div class="stack">
+      <label class="search">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+        <input placeholder="Search">
+      </label>
+      <span class="popup">English (United States)
+        <span class="chev"><svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg></span>
+      </span>
+      <span class="pulldown">Action
+        <span class="chev"><svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg></span>
+      </span>
+      <span class="stepper">
+        <input value="12">
+        <span class="arrows">
+          <span><svg width="7" height="7" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,3 8,6"/></svg></span>
+          <span><svg width="7" height="7" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 5,7 8,4"/></svg></span>
+        </span>
+      </span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Choices &amp; Toggles</h2>
+    <div class="stack">
+      <label class="opt"><span class="check on"></span> Show desktop preview</label>
+      <label class="opt"><span class="check"></span> Automatically save changes</label>
+      <label class="opt"><span class="radio on"></span> Light</label>
+      <label class="opt"><span class="radio"></span> Dark</label>
+      <div class="row">
+        <span class="tog on"></span>
+        <span class="tog"></span>
+      </div>
+      <div class="seg"><span>Day</span><span class="on">Week</span><span>Month</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sliders, Dials &amp; Progress</h2>
+    <div class="stack">
+      <div class="slider">
+        <div class="track"></div>
+        <div class="fill" style="width:55%"></div>
+        <div class="thumb" style="left:55%"></div>
+      </div>
+      <div class="slider">
+        <div class="track"></div>
+        <div class="fill" style="width:30%"></div>
+        <div class="thumb" style="left:30%"></div>
+      </div>
+      <div class="row" style="align-items:center;gap:14px;">
+        <span class="dial"></span>
+        <span class="ind-cap"></span>
+      </div>
+      <div class="bar"><div class="pf" style="width:70%"></div></div>
+      <div class="bar indet"><div class="pf"></div></div>
+      <div class="bar sm"><div class="pf" style="width:40%"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Color, Image &amp; Date</h2>
+    <div class="stack">
+      <div class="row">
+        <span class="colorwell"></span>
+        <span class="datepick">
+          <span class="seg2 sel">11</span><span class="sep">/</span><span class="seg2">15</span><span class="sep">/</span><span class="seg2">2025</span>
+        </span>
+      </div>
+      <div class="row" style="gap:14px;">
+        <div class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="1.6"/><path d="M21 17l-6-6-9 8"/></svg></div>
+        <div class="well filled"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Disclosure &amp; Group Box</h2>
+    <div class="stack" style="width:100%;max-width:340px;">
+      <div style="width:100%">
+        <div class="dc-row open"><span class="chev"><svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 8,5 2,9"/></svg></span> Documents</div>
+        <div class="children" style="padding-left:18px">
+          <div class="dc-row open"><span class="chev"><svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 8,5 2,9"/></svg></span> Projects</div>
+          <div class="children" style="padding-left:18px">
+            <div class="dc-row"><span class="chev"><svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 8,5 2,9"/></svg></span> Q3 Roadmap</div>
+          </div>
+          <div class="dc-row"><span class="chev"><svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 8,5 2,9"/></svg></span> Archive 2025</div>
+        </div>
+        <div class="dc-row"><span class="chev"><svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 8,5 2,9"/></svg></span> Downloads</div>
+      </div>
+      <div class="gb" style="width:100%">
+        <div class="gb-row"><span>Show desktop icons</span><span>On</span></div>
+        <div class="gb-row"><span>Show hidden files</span><span>Off</span></div>
+        <div class="gb-row"><span>Default new window</span><span>Recents</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sidebar</h2>
+    <div class="sb">
+      <div class="sbt">Favorites</div>
+      <div class="sbi"><span class="ic"><svg viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M1 4a2 2 0 0 1 2-2h5l2 2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4z"/></svg></span>Recents</div>
+      <div class="sbi sel"><span class="ic"><svg viewBox="0 0 24 18" fill="currentColor"><path d="M1 4a2 2 0 0 1 2-2h5l2 2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4z"/></svg></span>Documents<span class="badge">132</span></div>
+      <div class="sbi"><span class="ic"><svg viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M1 4a2 2 0 0 1 2-2h5l2 2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4z"/></svg></span>Downloads</div>
+      <div class="sbi"><span class="ic"><svg viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M1 4a2 2 0 0 1 2-2h5l2 2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4z"/></svg></span>Pictures</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Toolbar</h2>
+    <div class="toolbar">
+      <div class="pill">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="14,6 8,12 14,18"/></svg></span>
+        <span class="divider"></span>
+        <span class="icon" style="color:rgba(255,255,255,0.30)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="10,6 16,12 10,18"/></svg></span>
+      </div>
+      <span style="font:700 13px var(--font-system);">Folder 2</span>
+      <div class="pill" style="margin-left:auto;">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Menu</h2>
+    <div class="menu">
+      <div class="mi sel">Cut <span class="sh">⌘ X</span></div>
+      <div class="mi">Copy <span class="sh">⌘ C</span></div>
+      <div class="mi">Paste <span class="sh">⌘ V</span></div>
+      <div class="msep"></div>
+      <div class="mi">Delete <span class="sh">⌫</span></div>
+      <div class="mi">Select All <span class="sh">⌘ A</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Tooltip &amp; Popover</h2>
+    <div class="stack">
+      <span class="tt">This is a tooltip.</span>
+      <div class="popover">
+        <h3>Reminder</h3>
+        <p>Don't forget to submit your weekly summary before Friday.</p>
+        <div class="row" style="justify-content:flex-end;">
+          <button class="btn">Later</button>
+          <button class="btn primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Notification</h2>
+    <div class="notif">
+      <div class="app"></div>
+      <div>
+        <div class="ttl">Reminders</div>
+        <div class="body">Submit Q3 roadmap before Friday at 5 PM.</div>
+      </div>
+      <span class="time">now</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Alert</h2>
+    <div class="alert">
+      <h3>Move "Folder 2" to the Trash?</h3>
+      <p>This item will be moved to the Trash. You can put it back later.</p>
+      <div class="acts">
+        <button class="btn">Cancel</button>
+        <button class="btn primary" style="background:#ff453a;">Move to Trash</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sheet</h2>
+    <div class="sheet">
+      <div class="title">New Account</div>
+      <span class="lbl">Name</span>
+      <input class="field" value="Maya Lin" style="width:100%">
+      <span class="lbl">Email</span>
+      <input class="field focused" value="maya@studio.com" style="width:100%">
+      <span class="lbl">Role</span>
+      <span class="popup" style="width:100%">Designer
+        <span class="chev"><svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg></span>
+      </span>
+      <div class="foot">
+        <button class="btn">Cancel</button>
+        <button class="btn primary">Create</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="full">
+    <h2>Window Sample</h2>
+    <div class="window-mini pos">
+      <div class="lights"><span class="l" style="background:#ff5f57"></span><span class="l" style="background:#febc2e"></span><span class="l" style="background:#28c840"></span></div>
+      <aside class="sb-pane">
+        <div class="sbi" style="padding:3px 6px"><span class="ic"><svg viewBox="0 0 24 18" fill="currentColor"><path d="M1 4a2 2 0 0 1 2-2h5l2 2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4z"/></svg></span>Recents</div>
+        <div class="sbi sel" style="padding:3px 6px"><span class="ic"><svg viewBox="0 0 24 18" fill="currentColor"><path d="M1 4a2 2 0 0 1 2-2h5l2 2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4z"/></svg></span>Docs</div>
+      </aside>
+      <div>
+        <div class="tb">Documents</div>
+        <div class="body" style="color:rgba(255,255,255,0.55);font:400 11px var(--font-system);">132 items, 4.2 GB available</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="full">
+    <h2>Materials (Dark)</h2>
+    <div class="mat-grid">
+      <div class="mat-tile mat-thin"><div class="glass"></div><span class="lbl">Thin</span></div>
+      <div class="mat-tile mat-reg"><div class="glass"></div><span class="lbl">Regular</span></div>
+      <div class="mat-tile mat-thick"><div class="glass"></div><span class="lbl">Thick</span></div>
+    </div>
+  </section>
+
+  <section class="full">
+    <h2>System Accent Colors (Dark)</h2>
+    <div class="sw-row">
+      <div class="sw" style="background:#FF453A"></div>
+      <div class="sw" style="background:#FF9F0A"></div>
+      <div class="sw" style="background:#FFD60A"></div>
+      <div class="sw" style="background:#32D74B"></div>
+      <div class="sw" style="background:#66D4CF"></div>
+      <div class="sw" style="background:#6AC4DC"></div>
+      <div class="sw" style="background:#5AC8F5"></div>
+      <div class="sw" style="background:#0A84FF"></div>
+      <div class="sw" style="background:#5E5CE6"></div>
+      <div class="sw" style="background:#BF5AF2"></div>
+      <div class="sw" style="background:#FF375F"></div>
+      <div class="sw" style="background:#B59469"></div>
+      <div class="sw" style="background:#98989D"></div>
+    </div>
+  </section>
+
+  <section class="full">
+    <h2>Labels &amp; Fills (Dark Hierarchy)</h2>
+    <div class="row" style="gap:8px;flex-wrap:nowrap;">
+      <div class="label-tile" style="color:rgba(255,255,255,0.85);">Primary 85%</div>
+      <div class="label-tile" style="color:rgba(255,255,255,0.55);">Secondary 55%</div>
+      <div class="label-tile" style="color:rgba(255,255,255,0.25);">Tertiary 25%</div>
+      <div class="label-tile" style="color:rgba(255,255,255,0.10);">Quat 10%</div>
+    </div>
+    <div class="row" style="gap:8px;flex-wrap:nowrap;">
+      <div class="label-tile" style="background:rgba(255,255,255,0.14);color:rgba(255,255,255,0.85);">Fill Primary</div>
+      <div class="label-tile" style="background:rgba(255,255,255,0.10);">Fill Secondary</div>
+      <div class="label-tile" style="background:rgba(255,255,255,0.06);">Fill Tertiary</div>
+      <div class="label-tile" style="background:rgba(255,255,255,0.04);">Fill Quaternary</div>
+    </div>
+  </section>
+
+  <section class="full type-stack">
+    <h2>Type (Dark)</h2>
+    <div style="font:700 26px/32px var(--font-display);letter-spacing:-0.02em;">Large Title<span class="meta">26 / 32 · 700</span></div>
+    <div style="font:700 22px/26px var(--font-display);letter-spacing:-0.01em;">Title 1<span class="meta">22 / 26 · 700</span></div>
+    <div style="font:700 17px/22px var(--font-display);">Title 2<span class="meta">17 / 22 · 700</span></div>
+    <div style="font:600 15px/20px var(--font-display);">Title 3<span class="meta">15 / 20 · 600</span></div>
+    <div style="font:700 13px/16px var(--font-system);">Headline<span class="meta">13 / 16 · 700</span></div>
+    <div style="font:400 13px/16px var(--font-system);">Body — the quick brown fox<span class="meta">13 / 16 · 400</span></div>
+    <div style="font:400 11px/14px var(--font-system);color:rgba(255,255,255,0.55);">Subheadline / Footnote<span class="meta">11 / 14 · 400</span></div>
+  </section>
+
+</div>
+</body></html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Liquid Glass Materials</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 18px 20px; background: url("../assets/cover-bg.png") center / cover no-repeat; font-family: var(--font-system); min-height: 220px; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .m {
+    height: 110px;
+    border-radius: 18px;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--shadow-glass);
+    display: flex; align-items: flex-end; padding: 12px;
+    font: 600 12px/14px var(--font-system); color: rgba(0,0,0,0.85);
+  }
+  .thin    { background: var(--material-thin-light); }
+  .regular { background: var(--material-regular-light); }
+  .thick   { background: var(--material-thick-light); }
+  .meta { display: block; font: 500 10px/12px var(--font-mono); color: rgba(0,0,0,0.5); margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="m thin"><div>Thin<span class="meta">~60% · blur 20</span></div></div>
+  <div class="m regular"><div>Regular<span class="meta">~72% · blur 20</span></div></div>
+  <div class="m thick"><div>Thick<span class="meta">~85% · blur 20</span></div></div>
+</div>
+</body>
+</html>

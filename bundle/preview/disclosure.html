@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Disclosure</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+  .dc { display: flex; flex-direction: column; gap: 4px; max-width: 360px; }
+  .dc .row { display: flex; align-items: center; gap: 8px; padding: 4px 0; font: 400 13px/16px var(--font-system); }
+  .chev { width: 14px; height: 14px; display: grid; place-items: center; color: var(--label-secondary); transition: transform 120ms ease; }
+  .chev svg { width: 9px; height: 9px; }
+  .open .chev { transform: rotate(90deg); }
+  .children { padding-left: 22px; display: flex; flex-direction: column; gap: 2px; }
+  .triangle { width: 16px; height: 16px; border-radius: 4px; background: var(--fill-tertiary); display: grid; place-items: center; color: var(--label-secondary); }
+  .triangle svg { width: 8px; height: 8px; }
+
+  .pill {
+    height: 22px; padding: 0 10px; border-radius: 11px;
+    background: var(--fill-tertiary); display: inline-flex; align-items: center; gap: 6px;
+    font: 500 12px/22px var(--font-system); color: var(--label-primary);
+  }
+  .pill svg { width: 9px; height: 9px; color: var(--label-secondary); }
+  .pill.open svg { transform: rotate(180deg); }
+
+  .stack { display: flex; flex-direction: column; gap: 18px; }
+  .row.cluster { gap: 12px; }
+</style>
+
+<div class="stack">
+  <div>
+    <h2>Disclosure triangles</h2>
+    <div class="dc">
+      <div class="row open">
+        <span class="chev"><svg viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 8,5 2,9"/></svg></span>
+        <span>Documents</span>
+      </div>
+      <div class="children">
+        <div class="row open">
+          <span class="chev"><svg viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 8,5 2,9"/></svg></span>
+          <span>Projects</span>
+        </div>
+        <div class="children">
+          <div class="row"><span class="chev"><svg viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 8,5 2,9"/></svg></span><span>Q3 Roadmap</span></div>
+          <div class="row"><span class="chev"><svg viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 8,5 2,9"/></svg></span><span>Brand refresh</span></div>
+        </div>
+        <div class="row"><span class="chev"><svg viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 8,5 2,9"/></svg></span><span>Archive 2025</span></div>
+      </div>
+      <div class="row"><span class="chev"><svg viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 8,5 2,9"/></svg></span><span>Downloads</span></div>
+    </div>
+  </div>
+
+  <div>
+    <h2>Disclosure buttons</h2>
+    <div class="row cluster">
+      <span class="pill"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg> Show more</span>
+      <span class="pill open"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg> Hide details</span>
+    </div>
+  </div>
+</div>
+</body></html>

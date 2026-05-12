@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Progress</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css"></head><body>
+<style>
+  .bar { background: var(--fill-secondary); border-radius: 100px; overflow: hidden; position: relative; }
+  .bar.med { height: 10px; width: 220px; }
+  .bar.sm { height: 6px; width: 220px; }
+  .bar > .fill { height: 100%; background: var(--accent); border-radius: 100px; }
+  .bar.indet > .fill {
+    width: 32%;
+    animation: slide 1.6s ease-in-out infinite;
+  }
+  @keyframes slide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(320%); }
+  }
+
+  /* Circular spinner */
+  .spin { width: 18px; height: 18px; border-radius: 50%; position: relative; display: inline-block; }
+  .spin svg { width: 100%; height: 100%; animation: spinrot 1s linear infinite; }
+  .spin .seg { stroke: var(--label-primary); stroke-linecap: round; stroke-width: 1.6; opacity: var(--o, 0.2); }
+  @keyframes spinrot { to { transform: rotate(360deg); } }
+
+  .ind-cap {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2.5px solid var(--fill-secondary);
+    border-top-color: var(--accent);
+    animation: spinrot 0.9s linear infinite;
+    display: inline-block;
+  }
+  .ind-cap.lg { width: 28px; height: 28px; border-width: 3px; }
+
+  .row.col { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .pair { display: flex; align-items: center; gap: 10px; }
+  .v { font: 600 11px/14px var(--font-system); color: var(--label-secondary); min-width: 36px; }
+</style>
+
+<h2>Determinate</h2>
+<div class="row col">
+  <div class="pair"><div class="bar med"><div class="fill" style="width: 25%"></div></div><span class="v">25%</span></div>
+  <div class="pair"><div class="bar med"><div class="fill" style="width: 50%"></div></div><span class="v">50%</span></div>
+  <div class="pair"><div class="bar med"><div class="fill" style="width: 75%"></div></div><span class="v">75%</span></div>
+  <div class="pair"><div class="bar sm"><div class="fill" style="width: 60%"></div></div><span class="v">Small</span></div>
+</div>
+
+<h2 style="margin-top: 18px;">Indeterminate</h2>
+<div class="row" style="gap: 22px; align-items: center;">
+  <div class="bar med indet"><div class="fill"></div></div>
+  <span class="ind-cap"></span>
+  <span class="ind-cap lg"></span>
+</div>
+
+<h2 style="margin-top: 18px;">Disabled</h2>
+<div class="row">
+  <div class="bar med" style="opacity: 0.45"><div class="fill" style="width: 40%"></div></div>
+</div>
+</body></html>
